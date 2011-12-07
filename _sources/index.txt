@@ -1,0 +1,72 @@
+.. Python School documentation master file, created by
+   sphinx-quickstart on Mon Oct 03 12:53:34 2011.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Python の学習
+=============
+管理ツールなどの補助スクリプトとして Python を使う方法を学びます。
+テキストファイルに対する処理、シェルスクリプトに代わるものを Python で記述することにより、
+チーム開発の生産性を向上させます。
+
+目次:
+
+.. toctree::
+   :maxdepth: 2
+
+   getting-started
+   basic-syntax
+   toy-program
+   basic-scripting
+   processing-csv-file-1
+   processing-csv-file-2
+   processing-csv-file-3
+   processing-csv-file-4
+   processing-csv-file-5
+   processing-csv-file-6
+
+..
+   run-test
+   wrap-bash
+   documents
+   projects
+   webapp
+   processing-xml-file
+   advanced
+
+
+なぜ Python か？
+----------------
+* 記述量が少ない
+    * タイプ量ではなく、ソースコード量の問題
+    * 記述量が少なければ、必然的に読む量も少ない
+    * 読む量が少なければ、多くの人が議論できる
+    * 多くの人が議論できれば、考える機会が多くなる
+    * 人に依存した体制を避けられるかも？
+* 「禅」
+    * 他の人が読むことも考えてコードを書く
+    * ドキュメントもテストも書く
+* 事例の増加
+    * 海外では Python の使用例が増えている (`TIOBEの2010年最優秀言語はPython`_)
+    * 日本語のドキュメントも増えている
+        * `Pythonスタートアップ勉強会201109 python入門`_
+        * `そろそろPython始めてみませんか?`_
+
+Perl は "There's more than one way to do it" の考え方。
+Python は "There's only one way to do it" の考え方。
+文法で担保できるものでもないが、気持ちの問題。
+
+Ruby (というか Rails) は CoC (Convention over configuration) の考え方。
+Python は "Explicit is better than implicit" の考え方。
+明示的に記述されている方が理解しやすい、ような気がする。
+
+* `Python and Django on Heroku`_ - blog.heroku.com
+* `Heroku上でPython と Django`_ - infoq.com (上記の日本語解説)
+
+.. _Python and Django on Heroku: http://blog.heroku.com/archives/2011/9/28/python_and_django/
+.. _Heroku上でPython と Django: http://www.infoq.com/jp/news/2011/10/python-django-heroku
+
+.. _Pythonスタートアップ勉強会201109 python入門: http://www.slideshare.net/shimizukawa/python201109-python
+.. _TIOBEの2010年最優秀言語はPython: http://www.infoq.com/jp/news/2011/01/python-tiobe-award
+.. _そろそろPython始めてみませんか?: http://wiki.liris.org/article/python_intro
+

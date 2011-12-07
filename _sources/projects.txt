@@ -1,0 +1,32 @@
+======================
+プロジェクトの構成方法
+======================
+ビルドツール
+============
+buildout
+buildbot
+scons
+waf
+
+* `Python のパッケージ化に関するガイド`_ - IBM developerWorks
+
+.. _Python のパッケージ化に関するガイド: http://www.ibm.com/developerworks/jp/opensource/library/os-pythonpackaging/
+
+設定ファイル
+============
+
+パッケージの作成
+================
+
+
+__init__.py
+-----------
+
+
+公開 / 非公開の設定
+-------------------
+``__all__`` を使います。
+
+setup.py
+--------
+

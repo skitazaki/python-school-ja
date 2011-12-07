@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>シェルスクリプトの置き換え &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>シェルスクリプトの置き換え</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>シェルスクリプトの置き換え<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>シェルコマンドの実行<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><cite>subprocess</cite> モジュールを使うことでシェルコマンドを実行できます。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/subprocess.html">subprocess — Subprocess management</a> (公式ドキュメント)</li>
+</ul>
+<p>コマンドプロンプトで対話シェルに対して実行します。 (Windows)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s">&quot;python -V&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="s">&#39;-V&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Linux で実行する場合にはシェルコマンドを渡します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s">&quot;ls&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ls&#39;</span><span class="p">,</span> <span class="s">&#39;/var/log&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>subprocess</cite> モジュールは以下のモジュールの置き換えになりますので、
+ちょっと古いブログ記事などを読む場合は気をつけましょう。</p>
+<ul class="simple">
+<li>os.system</li>
+<li>os.spawn*</li>
+<li>os.popen*</li>
+<li>popen2.*</li>
+<li>commands.*</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>環境変数の扱い<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>os.environ で環境変数を設定、参照できます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-20s</span><span class="se">\t</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>パスの扱い<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">os.path</span></tt> モジュールを使います。
+<tt class="docutils literal"><span class="pre">import</span> <span class="pre">os.path</span></tt> ではなく、 <tt class="docutils literal"><span class="pre">import</span> <span class="pre">os</span></tt> として使うようにしましょう。</p>
+<p><a class="reference external" href="http://www.python.jp/doc/2.4/lib/module-os.html">os.path</a></p>
+<div class="highlight-python"><pre>posixpath や macpath のように、システムごとに対応付けられているパス名操作のためのシステム依存の標準モジュールです。
+すなわち、正しく import が行われるかぎり、 os.path.split(file) は posixpath.split(file) と等価でありながらより汎用性があります。
+このモジュール自体が import 可能なモジュールでもあるので注意してください。
+: os.path として直接 import してもかまいません。</pre>
+</div>
+<p>パスを連結するためには <tt class="docutils literal"><span class="pre">os.path.join</span></tt> を使います。
+JAVA のホームディレクトリから <strong class="command">javap</strong> にアクセスするコードは次のように記述できます。
+環境変数 <em>JAVA_HOME</em> は事前に設定しておきましょう。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;JAVA_HOME&#39;</span><span class="p">],</span> <span class="s">&#39;bin&#39;</span><span class="p">,</span> <span class="s">&#39;javap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmd</span><span class="p">,</span> <span class="s">&#39;-help&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>ファイルシステムとのやり取り<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>ディレクトリ内のファイル一覧を取得するためには <tt class="docutils literal"><span class="pre">os.listdir()</span></tt> を使います。
+ファイルの最終更新時刻を取得するためには <tt class="docutils literal"><span class="pre">os.path.getmtime()</span></tt> を使います。</p>
+<p>カレントディレクトリのファイルを古い順に並べるには次のコードを実行します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-20s</span><span class="se">\t</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>リストに対するソート関数についてはこちらの記事を参照してください。</p>
+<ul class="simple">
+<li>Sorting Mini-HOWTO （和訳）: <a class="reference external" href="http://www.python.jp/Zope/articles/tips/sorthowto">http://www.python.jp/Zope/articles/tips/sorthowto</a></li>
+</ul>
+<p>カレントディレクトリ配下のディレクトリごとのファイル種類 (拡張子) の数を表示します。
+(<tt class="file docutils literal"><span class="pre">count-files-per-suffix.py</span></tt>)</p>
+</div>
+<div class="section" id="id6">
+<h2>ファイル操作<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>ファイルをコピーするためには <cite>shutil</cite> モジュールの <cite>copy</cite> 関数を使います。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/shutil.html">shutil — High-level file operations</a> (公式ドキュメント)</li>
+</ul>
+<p>公式ドキュメントのサンプルスクリプトに目を通しておきましょう。
+アーカイブの作成方法なども掲載されています。</p>
+</div>
+<div class="section" id="id7">
+<h2>設定ファイルの扱い<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python スクリプトをそのまま使う (<tt class="file docutils literal"><span class="pre">settings.py</span></tt>)</li>
+<li><a class="reference external" href="http://docs.python.org/library/configparser.html">ConfigParser</a> を使う (<em>.ini</em> 形式)</li>
+<li>JSON を使う (Python 2.6 から標準モジュール)</li>
+<li>YAML を使う (<a class="reference external" href="http://pyyaml.org/wiki/PyYAML">pyyaml</a> をインストール)</li>
+<li>自前で解析器を実装する (ダメなパターンが多い...)</li>
+</ul>
+<p>手っ取り早く始めるためには Python スクリプトをそのまま使いましょう。
+Django の設定ファイルを参考にしてください。</p>
+</div>
+<div class="section" id="id8">
+<h2>リモートファイルの取得<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<p>ダウンローダーやクローラーなどを実装する基礎を考えます。
+標準ライブラリには <tt class="docutils literal"><span class="pre">urllib</span></tt> と <tt class="docutils literal"><span class="pre">urllib2</span></tt> があり、この辺りの経緯は色々とややこしいので、
+Python に詳しい人に口頭で確認してください。
+ブログ記事などは参照する場合は、Python のどのバージョンを対象にしているかを <em>必ず</em> 確認してください。</p>
+<p>標準ライブラリ</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/urllib.html">urllib — Open arbitrary resources by URL</a> - (公式ドキュメント)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><a class="reference external" href="http://www.python.jp/doc/2.4/lib/module-httplib.html">httplib &#8211; HTTP プロトコルクライアント</a></p>
+<blockquote class="last">
+<div>通常、このモジュールは直接使いません</div></blockquote>
+</div>
+<p>サードパーティーライブラリもあります。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a></li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/requests">requests</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

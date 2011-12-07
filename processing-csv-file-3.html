@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CSV ファイルの処理方法 - 3 &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="CSV ファイルの処理方法 - 4" href="processing-csv-file-4.html" />
+    <link rel="prev" title="CSV ファイルの処理方法 - 2" href="processing-csv-file-2.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>CSV ファイルの処理方法 - 3</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="processing-csv-file-2.html">CSV ファイルの処理方法 - 2</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-4.html">CSV ファイルの処理方法 - 4</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="csv-3">
+<h1>CSV ファイルの処理方法 - 3<a class="headerlink" href="#csv-3" title="Permalink to this headline">¶</a></h1>
+<p>Python の文字列には通常の文字列とユニコード文字列があります。
+ASCII だけを扱う場合には問題になりませんが、日本語を扱う場合には大きな関門となります。</p>
+<p>内部的には Unicode で処理する習慣を身につけておきましょう。
+また、入力および出力のときにはエンコーディングを指定することも心掛けましょう。
+Unicode と UTF-8 は違います。
+違いが分からない場合は調べておいてください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://ja.wikipedia.org/wiki/Unicode">Unicode</a> (wikipedia)</li>
+<li><a class="reference external" href="http://dev.ariel-networks.com/column/tech/i18n/">国際化プログラミング(の前の知識)</a> (ありえるえりあ)</li>
+</ul>
+<div class="section" id="id2">
+<h2>日本語を含むデータの扱い方<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://docs.python.org/library/csv.html">公式ドキュメント</a> の一番下に <tt class="docutils literal"><span class="pre">UnicodeReader</span></tt> と <tt class="docutils literal"><span class="pre">UnicodeWriter</span></tt> の実装が掲載されています。
+これを <tt class="file docutils literal"><span class="pre">unicodecsv.py</span></tt> として保存しておきます。</p>
+<p>スクリプトから使う場合は次の１行を追加することで有効になります。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">unicodecsv</span>
+</pre></div>
+</div>
+<p>これを使って <tt class="file docutils literal"><span class="pre">csv02.py</span></tt> を改修します。
+サンプルデータにも日本語を追加しておきます。</p>
+<p><tt class="file docutils literal"><span class="pre">csv03.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">unicodecsv</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">optparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+
+<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+
+
+<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">unicodecsv</span><span class="o">.</span><span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">fname</span> <span class="o">+</span> <span class="s">&quot; is not found.&quot;</span><span class="p">)</span>
+    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>日本語を含むテストデータも作成します。
+エンコーディングは UTF-8 で保存してください。</p>
+<p><tt class="file docutils literal"><span class="pre">csv03.csv</span></tt></p>
+<div class="highlight-python"><pre>城端麦酒,www.jo-beer.com
+ブルーマスター,www.brewmaster2002.com
+栃木マイクロブルワリー,www.beatclub.jp/microb/
+厚木ビール,www.atsugi.to
+羽生の里,www.hana-beer.com
+三井食品,www.mitsuifoods.co.jp
+銀河高原ビール,www.gingakogenweb.com
+</pre>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python csv03.py csv01.csv
+2011-03-11      Earthquake
+2011-06-06      World IPv6 Day
+2011-11-11      Eleven Eleven
+2011-12-10      total lunar eclipse     not solar eclipse
+
+&gt; python csv03.py csv02.csv
+ISO8601 June, 1988
+ISO8601:2000    December, 2000
+Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
+
+&gt; python csv03.py csv03.csv
+城端麦酒        www.jo-beer.com
+ブルーマスター  www.brewmaster2002.com
+栃木マイクロブルワリー  www.beatclub.jp/microb/
+厚木ビール      www.atsugi.to
+羽生の里        www.hana-beer.com
+三井食品        www.mitsuifoods.co.jp
+銀河高原ビール  www.gingakogenweb.com</pre>
+</div>
+<p>差分</p>
+<div class="highlight-python"><pre>$ diff -U 1 csv02.py csv03.py
+@@ -6,3 +6,3 @@
+
+-import csv
++import unicodecsv
+ import logging
+@@ -41,3 +41,3 @@
+     with open(fname) as reader:
+-        for row in csv.reader(reader):
++        for row in unicodecsv.UnicodeReader(reader):
+             print '\t'.join(row)</pre>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>パッケージを作る<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>スクリプトをたくさん書いていくと、様々な場所に散り散りになってしまいます。
+また、全てがフラットに配置すると依存関係の把握が難しくなってしまいます。
+そこで、複数のスクリプトをパッケージとしてまとめます。</p>
+<p>Python のパッケージは基本的にディレクトリ構造に一致します。
+あるディレクトリを Python のパッケージとして有効にするためには、次のふたつの条件を満たす必要があります。</p>
+<ul class="simple">
+<li>パッケージのトップディレクトリが <tt class="docutils literal"><span class="pre">sys.path</span></tt> に含まれる。</li>
+<li>それぞれのディレクトリは <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> を持つ。</li>
+</ul>
+<p><tt class="file docutils literal"><span class="pre">__init__.py</span></tt> は特別な意味を持つファイルで、パッケージに関するメタ情報などを記述します。
+しかし、普通の Python ファイルでもありますから、普通に Python スクリプトを記述しても構いません。</p>
+<p>たとえば、上記の <tt class="file docutils literal"><span class="pre">unicodecsv.py</span></tt> を <em>pyschool</em> パッケージに入れると、次の構造になります。</p>
+<div class="highlight-python"><pre>pyschool
+        __init__.py
+        unicodecsv.py</pre>
+</div>
+<p>スクリプトから使う場合は import 文を変更します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyschool.unicodecsv</span>
+</pre></div>
+</div>
+<p>適切にパッケージを作成することで次のようなメリットがあります。</p>
+<ul class="simple">
+<li>関数やクラスを再利用できるようになる。</li>
+<li>全体の見通しが立ちやすくなる。</li>
+<li>部分的にテストできるようになる。</li>
+</ul>
+<p>引数の処理や環境依存のコードはモジュール化しておきましょう。
+引数処理の <tt class="docutils literal"><span class="pre">parse_args()</span></tt> は <tt class="file docutils literal"><span class="pre">pyschool/cmdline.py</span></tt> に移動します。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>インポートするモジュールのパス解決</p>
+<p>Python スクリプトは、それだけでモジュールとしてインポートできます。
+インポートするディレクトリの指定方法はいくつかあります。</p>
+<ul class="simple">
+<li>標準ライブラリ置き場 (virtualenv 環境の <tt class="file docutils literal"><span class="pre">Lib</span></tt> など)</li>
+<li>カレントディレクトリ</li>
+<li>環境変数 <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> で指定</li>
+<li>Python スクリプト内で <tt class="docutils literal"><span class="pre">sys.path</span></tt> に追加</li>
+</ul>
+<p class="last">実際には <tt class="docutils literal"><span class="pre">sys.path</span></tt> のリストが全てですが、その実現方法は色々ある、と覚えておいてください。</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="processing-csv-file-2.html">CSV ファイルの処理方法 - 2</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-4.html">CSV ファイルの処理方法 - 4</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

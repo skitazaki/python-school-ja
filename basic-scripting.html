@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>基本的なスクリプト &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="CSV ファイルの処理方法 - 1" href="processing-csv-file-1.html" />
+    <link rel="prev" title="トイプログラム - FizzBuzz" href="toy-program.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>基本的なスクリプト</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="toy-program.html">トイプログラム - FizzBuzz</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-1.html">CSV ファイルの処理方法 - 1</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>基本的なスクリプト<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Python はモジュールのトップレベルから記述を開始できますが、
+だらだらと書き進めてしまうと可読性が低くなります。
+基本的な構成を統一することでソースコードを共有しやすい状態にしましょう。</p>
+<p>前のセクション (<a class="reference internal" href="toy-program.html"><em>トイプログラム - FizzBuzz</em></a>) から、次の部分を共通項として抽出できます。</p>
+<ul class="simple">
+<li>main 関数の記述</li>
+<li>コマンドライン引数の処理</li>
+<li>shebang の記述、エンコーディングの指定 (PEP 263)</li>
+</ul>
+<div class="section" id="main">
+<h2>main 関数<a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h2>
+<p>C言語や Java のように、処理を開始する手続きは <tt class="docutils literal"><span class="pre">main()</span></tt> 関数として独立させましょう。
+これは慣習の面と、実際的な面の両方で有用です。
+たとえば、Google App Engine の場合は以下のリンクで説明されています。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://code.google.com/intl/ja/appengine/docs/python/runtime.html#App_Caching">アプリケーション キャッシュ</a> - code.google.com</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">main()</span></tt> を作ったら <tt class="docutils literal"><span class="pre">test()</span></tt> も作るようにしてください。
+実際に必要な処理と実験的な処理は分離しましょう。</p>
+</div>
+<div class="section" id="id3">
+<h2>コマンドライン引数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>コマンドライン引数はオプションと実引数から構成されます。
+オプションはハイフンから始まる文字列で、ハイフンが１つの場合はショートオプション、２つの場合はロングオプションと呼ばれます。
+また、値を取るオプションと取らないオプションもあります。
+詳しくは Unix 系のコマンドを調べてください。</p>
+<p>Python でコマンドライン引数を扱う場合には <tt class="docutils literal"><span class="pre">argparse</span></tt> か <tt class="docutils literal"><span class="pre">optparse</span></tt> を使います。
+新しくスクリプトを開発する場合には <tt class="docutils literal"><span class="pre">argparse</span></tt> を使いますが、Python 2.4 への後方互換性を考慮する場合には <tt class="docutils literal"><span class="pre">optparse</span></tt> を使いましょう。
+複数のモジュールからなるスクリプトを開発する場合には <tt class="docutils literal"><span class="pre">gflags</span></tt> も検討してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://code.google.com/p/python-gflags/">python-gflags</a> - code.google.com</li>
+</ul>
+<div class="section" id="id4">
+<h3>オプションの処理<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>コマンドラインスクリプトの場合は、以下の引数をオプションで制御できないかを検討してください。</p>
+<ul class="simple">
+<li>help</li>
+<li>version</li>
+<li>verbosity     - 出力の冗長性を高くする</li>
+<li>quiet         - 出力の冗長性を低くする</li>
+<li>force         - 何が何でも実行させる</li>
+<li>dryrun        - 実際には実行しない</li>
+<li>configuration - 設定ファイルを指定する</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>自動プログラミング<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>フルスクラッチでソースコードを記述するのではなく、
+何らかの雛型 / スニペットからソースコードを記述するクセを付けましょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://ja.wikipedia.org/wiki/%E8%87%AA%E5%8B%95%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0">自動プログラミング</a> - wikipepia.org</li>
+<li><a class="reference external" href="http://www.generative-programming.org/">Generative Programming - Methods, Tools, and Applications</a></li>
+</ul>
+<p>雛型を共有しておくことにより、エンコーディングの間違いは減少し、
+コマンドライン引数に関する最低限のルールは守られます。
+また、主要な処理を <tt class="docutils literal"><span class="pre">main</span></tt> 関数に閉じ込めておくことができますので、
+スクリプトの再利用性が高まります。</p>
+<p>もちろん、パッケージを共有することでもこれらは改善できます。
+基本的な記述に時間をかけることなく、関心の高い部分の実装に時間をかけられることが大切です。</p>
+<div class="section" id="id7">
+<h3>宿題<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>自分用のスクリプトテンプレートを用意してください。</p>
+<p>以降の章では次の３つを前提として進めます。</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__':</span></tt> で main 関数を呼び出す。</li>
+<li>main 関数から個別の処理を呼び出し、個別の処理は test からも確認可能にする。</li>
+<li>main 関数の最初で引数を処理する。</li>
+</ul>
+<p>例 (<tt class="file docutils literal"><span class="pre">boilerplate.py</span></tt>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] args</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">optparse</span>
+
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+
+<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+
+
+<span class="k">def</span> <span class="nf">proc</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Main procedure with some tests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="toy-program.html">トイプログラム - FizzBuzz</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-1.html">CSV ファイルの処理方法 - 1</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

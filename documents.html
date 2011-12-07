@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ドキュメントの構成方法 &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>ドキュメントの構成方法</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>ドキュメントの構成方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>ドキュメント作成ツールとして <a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a> を使います。</p>
+<div class="section" id="sphinx">
+<h2>Sphinx<a class="headerlink" href="#sphinx" title="Permalink to this headline">¶</a></h2>
+<p>Sphinx は <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> (reST) 形式のファイルを
+多様な出力形式に変換するドキュメントビルダーです。
+変換可能な出力形式は HTML, PDF, ePub, などがあり、自分で独自のビルダーを定義することもできます。
+HTML 出力ではテーマを切り替えることができますが、自分でカスタマイズもできます。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">「MySQL」や「全文検索」という文脈で使われる &#8220;Sphinx&#8221; は別のモノです。
+O&#8217;Reilly から出版されている Sphinx の書籍は全文検索の方ですから注意しましょう。</p>
+</div>
+<p>Python のドキュメンテーションで使われることが多いですが、
+Python 以外のプロジェクトでも採用が活発化してきています。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://sphinx.pocoo.org/examples.html">Projects using Sphinx</a></li>
+<li><a class="reference external" href="http://sphinx-users.jp/example.html">Sphinxを使用しているサイト</a></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>環境構築<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p><em>virtualenv</em> を有効にした環境で、Sphinx パッケージをインストールします。
+依存関係を明示するために <tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> を作成し、 <strong class="command">pip</strong> で読み込ませます。</p>
+<div class="highlight-python"><pre>&gt; Scripts\activate
+&gt; notepad requirements.txt
+&gt; pip install -r requirements.txt</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">Sphinx</span>
+</pre></div>
+</div>
+</div>
+<p><tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダに次の２つのファイルがあれば OK です。
+(インストールされるファイルはもう少したくさんあります)</p>
+<ul class="simple">
+<li><tt class="file docutils literal"><span class="pre">sphinx-build.exe</span></tt> - reST を変換するプログラム</li>
+<li><tt class="file docutils literal"><span class="pre">sphinx-quickstart.exe</span></tt> - プロジェクトを生成するプログラム</li>
+</ul>
+<p>具体的な方法は以下のリンクを参照してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://sphinx-users.jp/gettingstarted/make_project.html">プロジェクトを作る</a> - Sphinx-Users.jp</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>まずは書いてみる<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>「何を」「どうやって」「いつまでに」書くかを忘れないように記録しておきましょう。
+目的・目標がはっきりしている場合には「誰に向けて」「どこで共有する」かも明示しましょう。
+これによって文体や体裁も変わってきます。
+書いているうちに目的がブレルこともあるでしょうから、定期的に「なぜ」を繰り返すようにしましょう。</p>
+<p>まずは、こうした内容を <tt class="file docutils literal"><span class="pre">index.txt</span></tt> (or <tt class="file docutils literal"><span class="pre">index.rst</span></tt>) に書いてみてください。</p>
+<div class="section" id="id7">
+<h3>構成を考える<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id8">
+<h3>冗長性を排除する<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id9">
+<h3>自動化できる手順はスクリプトにまとめる<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>他の人が見えるようにする<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

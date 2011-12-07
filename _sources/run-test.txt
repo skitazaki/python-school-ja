@@ -1,0 +1,117 @@
+================
+テストの実行方法
+================
+Python の標準モジュールには有名なテスト実行方法が２つあります。
+
+* unittest
+* doctest
+
+標準モジュールの実行方法
+========================
+どちらも Doug Hellmann の PyMOTW で説明されています。 (英語)
+
+* `doctest – Testing through documentation`_
+* `unittest – Automated testing framework`_
+
+.. _doctest – Testing through documentation: http://www.doughellmann.com/PyMOTW/doctest/
+.. _unittest – Automated testing framework: http://www.doughellmann.com/PyMOTW/unittest/
+
+実行するには、 ``if __name__ == '__main__'`` のセクションでモジュールのドライバー関数を呼び出すか、
+Python のコマンドライン引数にモジュールを指定します。 (後者は doctest の場合)
+
+doctest の場合 ::
+
+    if __name__ == '__main__':
+        import doctest
+        doctest.testmod()
+
+or ::
+
+    $ python -m doctest -v doctest_simple.py
+
+unittest の場合 ::
+
+    if __name__ == '__main__':
+        unittest.main()
+
+Nose の利用
+===========
+個別のテストファイルにドライバー関数を記述するのは煩雑なので、
+テストの実行には `nose`_ というモジュールを使います。
+
+:file:`requirements.txt` に *nose* の記述を追加して、 :command:`pip` を使ってインストールします。
+
+.. note::
+
+    :file:`requirements.txt` ::
+
+        nose
+
+インストールできると、 :command:`nosetests` が使えるようになります。
+
+ここまでで記述したスクリプトで、 :file:`ex01.py` では何も関数を定義していませんが、
+:file:`fizzbuzz.py` には ``test()`` 関数が定義されていますので、自動で実行されます。
+
+::
+
+    (python-school) > nosetests ex01.py
+
+    ----------------------------------------------------------------------
+    Ran 0 tests in 0.000s
+
+    OK
+
+    (python-school) > nosetests fizzbuzz.py
+    .
+    ----------------------------------------------------------------------
+    Ran 1 test in 0.000s
+
+    OK
+
+ここで実行したテストケースは空なので有意な結果は得られませんが、
+適切なアサーションを実装しておけば定期的にテストを実行できるようになります。
+
+たとえば、ファイルが存在しない場合に失敗するテストは次のように記述できます。 ::
+
+    import os
+
+
+    def test_script_exists():
+        """This test intentionally fails"""
+        assert os.path.exists("notfound.csv")
+
+
+*test* から始まる関数は自動的に実行対象になりますので、
+:command:`nosetests` コマンドの引数に与えることでテストが走ります。
+
+Nose で実現できること
+---------------------
+* ユニットテストを実行
+* ドキュメンテーションテスト (doctest) を実行
+* xUnit のレポート出力
+* コードカバレッジを測定
+
+.. _nose: http://readthedocs.org/docs/nose/en/latest/
+
+テスト関数の実行
+----------------
+
+unittest の実行
+---------------
+
+doctest の実行
+--------------
+
+環境構築 / ビルドツール
+-----------------------
+* `zc.buildout`_
+    * Maven のようなビルドシステム
+    * 環境構築のレシピ集
+    * きちんと書けば、引き継ぎ簡単
+* `SCons`_
+* `Waf`_
+
+.. _zc.buildout: http://pypi.python.org/pypi/zc.buildout
+.. _SCons: http://www.scons.org/
+.. _Waf: http://code.google.com/p/waf/
+

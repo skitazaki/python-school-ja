@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CSV ファイルの処理方法 - 1 &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="CSV ファイルの処理方法 - 2" href="processing-csv-file-2.html" />
+    <link rel="prev" title="基本的なスクリプト" href="basic-scripting.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>CSV ファイルの処理方法 - 1</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="basic-scripting.html">基本的なスクリプト</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-2.html">CSV ファイルの処理方法 - 2</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="csv-1">
+<h1>CSV ファイルの処理方法 - 1<a class="headerlink" href="#csv-1" title="Permalink to this headline">¶</a></h1>
+<p>カンマ区切りの <tt class="file docutils literal"><span class="pre">csv01.csv</span></tt> を読み込んで、タブ区切りに変更するスクリプトを実装します。</p>
+<p><tt class="file docutils literal"><span class="pre">csv01.csv</span></tt></p>
+<div class="highlight-python"><pre>2011-03-11,Earthquake
+2011-06-06,World IPv6 Day
+2011-11-11,Eleven Eleven
+2011-12-10,total lunar eclipse,not solar eclipse
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>自力で実装する方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>基本的な部分から学習するために、簡単な CSV の処理を自力で実装します。
+<tt class="docutils literal"><span class="pre">open()</span></tt> でファイルを開き、イテレータを使って CSV 形式 (カンマ区切りテキスト) のファイルを読み込みます。
+新しいバージョンの Python だけをターゲットにする場合は、
+<tt class="docutils literal"><span class="pre">with</span></tt> を使うことでリソースリークなどを予防できます。</p>
+<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">optparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+
+<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+
+
+<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">fname</span> <span class="o">+</span> <span class="s">&quot; is not found.&quot;</span><span class="p">)</span>
+    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python csv01.py csv01.csv
+2011-03-11      Earthquake
+2011-06-06      World IPv6 Day
+2011-11-11      Eleven Eleven
+2011-12-10      total lunar eclipse     not solar eclipse</pre>
+</div>
+<p>このスクリプトでは、入力データに意図しないカンマが混入した場合に想定外の出力となります。
+このスクリプトを改善しても構いませんが、次からは標準モジュールを使っていきましょう。</p>
+</div>
+<div class="section" id="csv">
+<h2>そもそも CSV とは何か？<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h2>
+<p>インターネットにおけるデータ交換方式、という観点からは RFC で規定されています。</p>
+<ul class="simple">
+<li><span class="target" id="index-0"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc4180.html"><strong>RFC 4180</strong></a> (Common Format and MIME Type for Comma-Separated Values (CSV) Files)</li>
+</ul>
+<p>しかし、一般に広く普及している形式は Microsoft Excel が書き出す形式であり、
+RFC 4180 と等価ではありません。
+記号のエスケープルールや、暗黙的な型変換に違いがあります。</p>
+<p><a class="reference external" href="http://ja.wikipedia.org/wiki/Comma-Separated_Values">Comma-Separated Values</a> (wikipedia)</p>
+<blockquote>
+<div>レコードにコンマやダブルクォートが含まれている場合、エスケープされている場合でも、ソフトによって解釈が異なり、区切り方が変わることがある。
+その結果、データが破壊されることや、修正の手間が生じることがある。
+レコードにタブ文字が含まれている場合よりも、レコードにコンマやダブルクォートが含まれている場合のほうが多い。
+従って、CSVの代わりに、タブ区切りテキスト形式（TSV）を使うことで問題を避けられることがある。</div></blockquote>
+<p>また、数値をダブルクォートで囲まない場合、小数点の記号と混同される地域もあります。
+たとえば、Windows のパソコンでロケールをフランス語にして Excel を使うと、カンマが小数点の区切り文字になります。</p>
+<p><a class="reference external" href="http://ja.wikipedia.org/wiki/%E5%B0%8F%E6%95%B0%E7%82%B9">小数点</a> (wikipedia)</p>
+<blockquote>
+<div>また非英語圏の国においては、コンマ (,) が小数点として用いられ、ピリオド (.) が3桁ごとの位取りに用いられる。
+すなわち、日本と逆である。</div></blockquote>
+<p>したがって、「CSV でデータをください」という話題が出た場合には注意しましょう。
+一見簡単そうですが、細かい部分に違いがあります。
+可能ならば JSON (<span class="target" id="index-1"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc4627.html"><strong>RFC 4627</strong></a>) のように構造化されてデータ型に制限のあるフォーマットを検討してください。
+人間が読み書きするデータとコンピュータが読み書きするデータは、処理の難易度が必ずしも等価でないことに気をつけましょう。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="basic-scripting.html">基本的なスクリプト</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="processing-csv-file-2.html">CSV ファイルの処理方法 - 2</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

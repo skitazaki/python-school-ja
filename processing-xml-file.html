@@ -1,0 +1,114 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>XML ファイルの処理方法 &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>XML ファイルの処理方法</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="xml">
+<h1>XML ファイルの処理方法<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>XML 処理の基本<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>SAX - Simple API for XML</li>
+<li>DOM - Document Object Model</li>
+<li>Pull Parser</li>
+</ul>
+<p>多くの場合に DOM を使います。
+モダンな実装を求める場合は Pull Parser を使います。
+巨大な XML ストリームを扱う場合は SAX を使います。</p>
+</div>
+<div class="section" id="dom">
+<h2>DOM のサンプル<a class="headerlink" href="#dom" title="Permalink to this headline">¶</a></h2>
+<p>Maven で扱う POM ファイルを読み込み、
+アーティファクトに関する情報をオブジェクトにマップするスクリプトは次のように記述できます。</p>
+<p>XML ファイル (<tt class="file docutils literal"><span class="pre">xml-ex01.xml</span></tt>):</p>
+<p>Python スクリプト (<tt class="file docutils literal"><span class="pre">xml-ex01.py</span></tt>):</p>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python xml-ex01.py xml-ex01.xml
+sample-group/sample-group-commons/1.0.0</pre>
+</div>
+</div>
+<div class="section" id="elementtree">
+<h2>ElementTree を使う<a class="headerlink" href="#elementtree" title="Permalink to this headline">¶</a></h2>
+<p>DOM をそのまま扱うのは冗長な感じがありますので、多くの場合に何らかのライブラリを使います。
+Python 2.5 からは ElementTree が標準モジュール入りしましたので、これを使ってみます。</p>
+<p>Python スクリプト (<tt class="file docutils literal"><span class="pre">xml-ex02.py</span></tt>):</p>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python xml-ex02.py xml-ex01.xml
+sample-group/sample-group-commons/1.0.0</pre>
+</div>
+</div>
+<div class="section" id="sax">
+<h2>SAX のサンプル<a class="headerlink" href="#sax" title="Permalink to this headline">¶</a></h2>
+<p>Wikipedia のダンプデータを処理するスクリプトは次のように記述できます。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://dumps.wikimedia.org/jawiki/latest/">Index of /jawiki/latest/</a> - dumps.wikimedia.org</li>
+</ul>
+<p>！あとで！</p>
+</div>
+<div class="section" id="id2">
+<h2>宿題<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>「XMLの論考」のシリーズを読み、実際に Python スクリプト or Java プログラムを書いてみてください。
+古びてしまった記述もありますので、古そうだと感じたことをまとめてください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.ibm.com/developerworks/jp/xml/library/xml-matters1/">XMLの論考: 第1回</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

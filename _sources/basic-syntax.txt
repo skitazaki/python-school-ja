@@ -1,0 +1,171 @@
+============
+基本的な文法
+============
+基本的な文法を速足で確認します。
+丁寧に追いかけたい場合は公式のチュートリアルを参考にしてください。
+
+* `Python チュートリアル`_
+
+.. _`Python チュートリアル`: http://www.python.jp/doc/release/tutorial/
+
+
+条件分岐と繰り返し
+==================
+条件分岐には ``if``, ``elif``, ``else`` を使います。
+行の終わりには ``:`` (コロン) を書いて、次の行にインデントを入れます。
+インデントはタブ記号か半角空白の連続ですが、
+細かいことを気にするとややこしいので、半角空白４文字で統一してください。
+
+Python のインタラクティブシェルを使って、次のように確認できます。
+"#" 記号以降はコメントです。入力しないでください。 ::
+
+    >>> import time             # time モジュールをインポート
+    >>> now = time.time()       # time モジュールの time 関数を実行し、結果を変数 now に保存
+    >>> print now               # now の値を表示
+    1322531056.483
+    >>> if int(now) % 3 == 0:   # now が３で割り切れる場合
+    ...     print "A"
+    ... elif int(now) % 3 == 1: # now を３で割ると１余る場合
+    ...     print "B"
+    ... else:                   # 上記以外の場合
+    ...     print "C"
+    ...                         # エンターを押す
+    B
+
+インタラクティブシェルから抜けるには ``Ctrl+Z`` を入力してエンターを押します。
+
+繰り返し処理には ``for`` を使います。
+Java の拡張 for 文のように、オブジェクトのイテレーターを使って要素を走査します。 ::
+
+    >>> for i in range(5):     # range は組み込み関数
+    ...     print i
+    ...                         # エンターを押す
+    0
+    1
+    2
+    3
+    4
+
+Python のコードを読み書きしていると、 ``for`` 文にはたくさんの書き方があるように感じるかもしれません。
+気になる場合はイテレーターやジェネレーターという考え方を学習してください。
+
+.. note::
+    予約語、標準モジュール
+
+    Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
+    上述のサンプルでは、 ``import`` や ``print`` 、それから ``if``, ``for`` などが予約語で、 ``time`` が標準モジュールです。
+
+    予約語の一覧はドキュメントで確認してください。
+
+    * http://docs.python.org/reference/lexical_analysis.html#identifiers
+
+    標準モジュールは使いながら覚えていきましょう。
+    網羅的に学習したい場合には PyMOTW を読んでください。
+
+    * http://www.doughellmann.com/PyMOTW/contents.html
+
+例外処理
+========
+Java の場合は ``try-catch`` で例外処理を実現しますが、
+Python の場合は ``try-except`` という構文を使います。
+
+０で除算した場合に例外が投げられることは、次のようにして確認できます。
+
+    >>> a, b = 1, 0
+    >>> try:
+    ...     a / b
+    ...     print "Success"
+    ... except:
+    ...     print "Error"
+    ...
+    Error
+
+.. note::
+    アンパック代入
+
+    "a, b = 1, 0" というコードをアンパック代入と呼びます。
+    複数の変数にまとめて初期値を登録できます。
+    多用すると可読性が落ちますが、変数の関連性を明示するときには役立ちます。
+
+    ふたつの変数を交換 (スワップ) する場合や、固定長のリストから変数を展開する場合によく使われます。
+    辞書データのイテレーターとも相性が良いので、パターンとして覚えておきましょう。
+
+例外発生とは関係なく、終了処理を実行したい場合もあります。
+データベース接続を閉じる処理などです。
+Java の場合と同じように Python でも ``finally`` を使えます。
+
+実行環境によって注意すること
+============================
+
+* Python 2.4 だと ``except`` と ``finally`` を同時に使えない。
+* Python 2.4 だと後置IF文を使えない。
+* 標準モジュールが異なる。 (e.g. *json* が無い、など)
+* 同じモジュールでもプロパティに違いがある。
+* バージョンが古いと `with` を使えない。
+
+構文と規約
+==========
+`PEP 8`_ (`PEP 8 日本語`_) で Style Guide for Python Code が定義されています。
+違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながりますので、
+できるだけ従うようにしましょう。
+
+ソースコードが PEP 8 に従っているかをチェックするツールもあります。
+コードをコミットする前にチェッカーを実行する習慣を身につけてください。
+
+.. _PEP 8: http://www.python.org/dev/peps/pep-0008/
+.. _PEP 8 日本語: http://oldriver.org/python/pep-0008j.html
+
+モジュールのインストール
+------------------------
+PyPI に pep8 というモジュールがあります。
+引数として Python ファイルを与えると、規約に違反していないかを確認してくれます。
+
+:command:`pip` を使ってインストールします。 ::
+
+    > pip install pep8
+
+論理的な整合性も確認してくれるツールとして pyflakes_ があります。
+
+:command:`pip` を使ってインストールします。 ::
+
+    > pip install pyflakes
+
+.. _pyflakes: http://pypi.python.org/pypi/pyflakes
+
+いずれも :file:`Scripts` フォルダ (Linux などの場合は :file:`bin`) に
+:command:`pep8` と :command:`pyflakes` がインストールされます。
+
+.. note::
+
+    Windows 環境の場合は、 pyflakes スクリプトを直接実行できません。
+    Scripts フォルダに :file:`pyflakes.bat` というファイルを作成して、
+    スクリプトのラッパーを作成してください。
+    次のようなバッチファイルになります。(パスは要調整) ::
+
+        @echo off
+        D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflakes %*
+
+構文チェッカーの実行
+--------------------
+:file:`ex01.py` という Python ファイルを用意します。
+
+.. literalinclude:: ../src/ex01.py
+   :language: python
+   :linenos:
+
+:command:`pep8` を実行してみます。 ::
+
+    > pep8 ex01.py
+    ex01.py:3:7: E222 multiple spaces after operator
+    ex01.py:6:32: E231 missing whitespace after ','
+
+3行目と6行目に余計な空白が混入していることが分かります。
+
+:command:`pyflakes` を実行してみます。 ::
+
+    > pyflakes ex01.py
+    ex01.py:8: 'os' imported but unused
+
+空白にはノータッチですが、使っていない `import` 文を検知してくれます。
+
+次は、もう少し実際的なスクリプトを記述していきます。

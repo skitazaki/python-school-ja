@@ -1,0 +1,66 @@
+======================
+XML ファイルの処理方法
+======================
+
+XML 処理の基本
+==============
+* SAX - Simple API for XML
+* DOM - Document Object Model
+* Pull Parser
+
+多くの場合に DOM を使います。
+モダンな実装を求める場合は Pull Parser を使います。
+巨大な XML ストリームを扱う場合は SAX を使います。
+
+DOM のサンプル
+==============
+Maven で扱う POM ファイルを読み込み、
+アーティファクトに関する情報をオブジェクトにマップするスクリプトは次のように記述できます。
+
+XML ファイル (:file:`xml-ex01.xml`):
+
+.. literalinclude:: ../xml-ex01.xml
+
+Python スクリプト (:file:`xml-ex01.py`):
+
+.. literalinclude:: ../xml-ex01.py
+
+実行結果 ::
+
+    > python xml-ex01.py xml-ex01.xml
+    sample-group/sample-group-commons/1.0.0
+
+ElementTree を使う
+==================
+DOM をそのまま扱うのは冗長な感じがありますので、多くの場合に何らかのライブラリを使います。
+Python 2.5 からは ElementTree が標準モジュール入りしましたので、これを使ってみます。
+
+Python スクリプト (:file:`xml-ex02.py`):
+
+.. literalinclude:: ../xml-ex02.py
+
+実行結果 ::
+
+    > python xml-ex02.py xml-ex01.xml
+    sample-group/sample-group-commons/1.0.0
+
+
+SAX のサンプル
+==============
+Wikipedia のダンプデータを処理するスクリプトは次のように記述できます。
+
+* `Index of /jawiki/latest/`_ - dumps.wikimedia.org
+
+.. _Index of /jawiki/latest/: http://dumps.wikimedia.org/jawiki/latest/
+
+！あとで！
+
+
+宿題
+====
+「XMLの論考」のシリーズを読み、実際に Python スクリプト or Java プログラムを書いてみてください。
+古びてしまった記述もありますので、古そうだと感じたことをまとめてください。
+
+* `XMLの論考: 第1回`_
+
+.. _`XMLの論考: 第1回`: http://www.ibm.com/developerworks/jp/xml/library/xml-matters1/

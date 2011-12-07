@@ -1,0 +1,237 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>基本的な文法 &mdash; Python School 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="トイプログラム - FizzBuzz" href="toy-program.html" />
+    <link rel="prev" title="はじめの一歩" href="getting-started.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>基本的な文法</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="getting-started.html">はじめの一歩</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="toy-program.html">トイプログラム - FizzBuzz</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>基本的な文法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>基本的な文法を速足で確認します。
+丁寧に追いかけたい場合は公式のチュートリアルを参考にしてください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.python.jp/doc/release/tutorial/">Python チュートリアル</a></li>
+</ul>
+<div class="section" id="id2">
+<h2>条件分岐と繰り返し<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>条件分岐には <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">elif</span></tt>, <tt class="docutils literal"><span class="pre">else</span></tt> を使います。
+行の終わりには <tt class="docutils literal"><span class="pre">:</span></tt> (コロン) を書いて、次の行にインデントを入れます。
+インデントはタブ記号か半角空白の連続ですが、
+細かいことを気にするとややこしいので、半角空白４文字で統一してください。</p>
+<p>Python のインタラクティブシェルを使って、次のように確認できます。
+&#8220;#&#8221; 記号以降はコメントです。入力しないでください。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>             <span class="c"># time モジュールをインポート</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>       <span class="c"># time モジュールの time 関数を実行し、結果を変数 now に保存</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">now</span>               <span class="c"># now の値を表示</span>
+<span class="go">1322531056.483</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">now</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>   <span class="c"># now が３で割り切れる場合</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;A&quot;</span>
+<span class="gp">... </span><span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">now</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># now を３で割ると１余る場合</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;B&quot;</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>                   <span class="c"># 上記以外の場合</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;C&quot;</span>
+<span class="gp">... </span>                        <span class="c"># エンターを押す</span>
+<span class="go">B</span>
+</pre></div>
+</div>
+<p>インタラクティブシェルから抜けるには <tt class="docutils literal"><span class="pre">Ctrl+Z</span></tt> を入力してエンターを押します。</p>
+<p>繰り返し処理には <tt class="docutils literal"><span class="pre">for</span></tt> を使います。
+Java の拡張 for 文のように、オブジェクトのイテレーターを使って要素を走査します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>     <span class="c"># range は組み込み関数</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">i</span>
+<span class="gp">... </span>                        <span class="c"># エンターを押す</span>
+<span class="go">0</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">3</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<p>Python のコードを読み書きしていると、 <tt class="docutils literal"><span class="pre">for</span></tt> 文にはたくさんの書き方があるように感じるかもしれません。
+気になる場合はイテレーターやジェネレーターという考え方を学習してください。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>予約語、標準モジュール</p>
+<p>Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
+上述のサンプルでは、 <tt class="docutils literal"><span class="pre">import</span></tt> や <tt class="docutils literal"><span class="pre">print</span></tt> 、それから <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt> などが予約語で、 <tt class="docutils literal"><span class="pre">time</span></tt> が標準モジュールです。</p>
+<p>予約語の一覧はドキュメントで確認してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#identifiers">http://docs.python.org/reference/lexical_analysis.html#identifiers</a></li>
+</ul>
+<p>標準モジュールは使いながら覚えていきましょう。
+網羅的に学習したい場合には PyMOTW を読んでください。</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/contents.html">http://www.doughellmann.com/PyMOTW/contents.html</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>例外処理<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Java の場合は <tt class="docutils literal"><span class="pre">try-catch</span></tt> で例外処理を実現しますが、
+Python の場合は <tt class="docutils literal"><span class="pre">try-except</span></tt> という構文を使います。</p>
+<p>０で除算した場合に例外が投げられることは、次のようにして確認できます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;Success&quot;</span>
+<span class="gp">... </span><span class="k">except</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;Error&quot;</span>
+<span class="gp">...</span>
+<span class="go">Error</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>アンパック代入</p>
+<p>&#8220;a, b = 1, 0&#8221; というコードをアンパック代入と呼びます。
+複数の変数にまとめて初期値を登録できます。
+多用すると可読性が落ちますが、変数の関連性を明示するときには役立ちます。</p>
+<p class="last">ふたつの変数を交換 (スワップ) する場合や、固定長のリストから変数を展開する場合によく使われます。
+辞書データのイテレーターとも相性が良いので、パターンとして覚えておきましょう。</p>
+</div>
+<p>例外発生とは関係なく、終了処理を実行したい場合もあります。
+データベース接続を閉じる処理などです。
+Java の場合と同じように Python でも <tt class="docutils literal"><span class="pre">finally</span></tt> を使えます。</p>
+</div>
+<div class="section" id="id4">
+<h2>実行環境によって注意すること<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python 2.4 だと <tt class="docutils literal"><span class="pre">except</span></tt> と <tt class="docutils literal"><span class="pre">finally</span></tt> を同時に使えない。</li>
+<li>Python 2.4 だと後置IF文を使えない。</li>
+<li>標準モジュールが異なる。 (e.g. <em>json</em> が無い、など)</li>
+<li>同じモジュールでもプロパティに違いがある。</li>
+<li>バージョンが古いと <cite>with</cite> を使えない。</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>構文と規約<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP 8</a> (<a class="reference external" href="http://oldriver.org/python/pep-0008j.html">PEP 8 日本語</a>) で Style Guide for Python Code が定義されています。
+違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながりますので、
+できるだけ従うようにしましょう。</p>
+<p>ソースコードが PEP 8 に従っているかをチェックするツールもあります。
+コードをコミットする前にチェッカーを実行する習慣を身につけてください。</p>
+<div class="section" id="id7">
+<h3>モジュールのインストール<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>PyPI に pep8 というモジュールがあります。
+引数として Python ファイルを与えると、規約に違反していないかを確認してくれます。</p>
+<p><strong class="command">pip</strong> を使ってインストールします。</p>
+<div class="highlight-python"><pre>&gt; pip install pep8</pre>
+</div>
+<p>論理的な整合性も確認してくれるツールとして <a class="reference external" href="http://pypi.python.org/pypi/pyflakes">pyflakes</a> があります。</p>
+<p><strong class="command">pip</strong> を使ってインストールします。</p>
+<div class="highlight-python"><pre>&gt; pip install pyflakes</pre>
+</div>
+<p>いずれも <tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダ (Linux などの場合は <tt class="file docutils literal"><span class="pre">bin</span></tt>) に
+<strong class="command">pep8</strong> と <strong class="command">pyflakes</strong> がインストールされます。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Windows 環境の場合は、 pyflakes スクリプトを直接実行できません。
+Scripts フォルダに <tt class="file docutils literal"><span class="pre">pyflakes.bat</span></tt> というファイルを作成して、
+スクリプトのラッパーを作成してください。
+次のようなバッチファイルになります。(パスは要調整)</p>
+<div class="last highlight-python"><pre>@echo off
+D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflakes %*</pre>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>構文チェッカーの実行<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p><tt class="file docutils literal"><span class="pre">ex01.py</span></tt> という Python ファイルを用意します。</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">78</span>
+<span class="k">print</span> <span class="s">&quot;Hello World.&quot;</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+<span class="k">print</span> <span class="s">&quot;a=</span><span class="si">%d</span><span class="s">, b=</span><span class="si">%d</span><span class="s">, a+b=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
+<span class="k">print</span> <span class="s">&quot;a=</span><span class="si">%d</span><span class="s">, b=</span><span class="si">%d</span><span class="s">, a+b=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</td></tr></table></div>
+<p><strong class="command">pep8</strong> を実行してみます。</p>
+<div class="highlight-python"><pre>&gt; pep8 ex01.py
+ex01.py:3:7: E222 multiple spaces after operator
+ex01.py:6:32: E231 missing whitespace after ','</pre>
+</div>
+<p>3行目と6行目に余計な空白が混入していることが分かります。</p>
+<p><strong class="command">pyflakes</strong> を実行してみます。</p>
+<div class="highlight-python"><pre>&gt; pyflakes ex01.py
+ex01.py:8: 'os' imported but unused</pre>
+</div>
+<p>空白にはノータッチですが、使っていない <cite>import</cite> 文を検知してくれます。</p>
+<p>次は、もう少し実際的なスクリプトを記述していきます。</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="getting-started.html">はじめの一歩</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="toy-program.html">トイプログラム - FizzBuzz</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
