@@ -1,0 +1,69 @@
+==========================
+CSV ファイルの処理方法 - 6
+==========================
+CSV ファイルから読み込んだ情報をデータベースに保存します。
+
+データベースには SQLite を使い、O/R マッパーとして SQLAlchemy を使います。
+
+* `SQLite`_ - sqlite.org
+* `SQLAlchemy`_ - sqlalchemy.org
+
+.. _SQLite: http://www.sqlite.org/
+.. _SQLAlchemy: http://www.sqlalchemy.org/
+
+SQLAlchemy などの準備
+=====================
+:file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。 ::
+
+    > pip install -r requirements.txt
+
+Python のインタラクティブシェルからモジュールを読み込めることを確認します。 ::
+
+    > python
+    import sqlalchemy
+
+O/R マッパー経由でデータベースに保存
+====================================
+O/R マッパーを使うためにはいくつかの準備が必要になります。
+
+* `sqlalchemy` モジュールの読み込み
+* データオブジェクトの定義
+* データベースエンジンの作成 (SQLite の場合はファイル)
+* オブジェクトからデータベースのテーブルを生成
+* オブジェクトをデータベースに投入
+    * トランザクションを開始
+    * オブジェクトを生成 (必要な回数だけ繰り返し)
+    * トランザクションをコミット
+
+以上をスクリプトにまとめると次のようになります。
+
+:file:`csv06.py`
+
+.. literalinclude:: ../src/csv06.py
+   :language: python
+
+第一引数に CSV ファイルを渡します。
+第二引数がない場合はオンメモリで動作します。 ::
+
+    > python csv06.py csv05.csv
+
+第二引数で出力ファイル名を指定できます。 ::
+
+    > python csv06.py csv05.csv csv06.sqlite
+
+SQLite のビューアーとしては Lita などが便利です。
+
+* `Lita - SQLite Administration Tool`_
+
+.. _`Lita - SQLite Administration Tool`: http://www.dehats.com/drupal/?q=node/58
+
+宿題
+====
+フィールドに条件を課す処理を比較しましょう。
+SQLite を参照する場合と、CSV を参照する場合を比べてみてください。
+
+:doc:`processing-csv-file-4` の「宿題」には挙動を切り替える問題があります。
+同様に、出力データフォーマットも切り替えてみましょう。
+
+* CSV のデータを JSON で出力
+* CSV のデータを任意の XML で出力

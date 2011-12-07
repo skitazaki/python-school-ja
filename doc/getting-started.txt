@@ -1,0 +1,139 @@
+============
+はじめの一歩
+============
+Windows で Python を開発できる環境を整えます。
+次の４つのソフトウェアをインストールしていきましょう。
+
+* Python 2.7
+* distribute
+* pip
+* virtualenv
+
+インストールできたら、簡単なプロジェクトを作ってスクリプトを記述します。
+
+インストール手順
+================
+Python のインストール
+---------------------
+Python の公式サイトからインストーラーをダウンロードします。
+Python のメジャーバージョンには 2 系と 3 系があります。
+将来的には 3 系を使った方が良いですが、2011年時点では 2 系を使います。
+
+* http://www.python.org/download/
+    * ``python-2.7.2.msi``: 手元の環境が 32bit マシンの場合
+    * ``python-2.7.2.amd64.msi``: 手元の環境が 64bit マシンの場合
+
+インストーラーを実行したら、デフォルト設定で進めてください。
+
+インストールが完了すると、C ドライブ直下に ``Python27`` フォルダが作成されます。
+コマンドプロンプトを立ち上げて、バージョンを確認しましょう。 ::
+
+    > C:\Python27\python.exe -V
+    Python 2.7.2
+
+.. warning::
+
+    ここでは環境変数 ``PATH`` を編集しないでください。
+    後で述べる `virtualenv` がパスを解決してくれます。
+
+distribute のインストール
+-------------------------
+サードパーティのライブラリを管理するライブラリとして ``distribute`` を使います。
+``distribute`` は ``setuptools`` の代替ツールです。
+
+* http://packages.python.org/distribute/
+    * `distribute_setup.py`_ を D ドライブ直下などにダウンロード
+
+.. _`distribute_setup.py`: http://python-distribute.org/distribute_setup.py
+
+コマンドプロンプトでダウンロードしたディレクトリに移動し、Python スクリプトを実行します。 ::
+
+    > D:
+    > C:\Python27\python.exe distribute_setup.py
+
+Python の `Scripts` フォルダに :command:`easy_install` が追加されます。 ::
+
+    > dir /b C:\Python27\Scripts
+
+.. note::
+
+    プロキシの設定が必要な場合があります。原因は分かっていません。
+    *URLError* が表示される場合には環境変数 ``http_proxy`` に適切なホストを指定してください。
+
+pip のインストール
+------------------
+サードパーティのライブラリをインストール / アンインストールするツールとして ``pip`` を使います。
+``pip`` は ``easy_install`` の代替ツールです。 ::
+
+    > C:\Python27\Scripts\easy_install.exe pip
+
+Python の `Scripts` フォルダに :command:`pip` が追加されます。 ::
+
+    > dir /b C:\Python27\Scripts
+
+Python コミュニティの方針として ``easy_install`` ではなく ``pip`` を使うように移行していきますので、
+新しく何かを始める場合には ``pip`` を使ってください。
+``pip`` の場合はモジュールのフリーズなどもできるようになります。
+
+virtualenv のインストール
+-------------------------
+Python 自体のバージョンや依存するモジュールのバージョンを整えるために ``virtualenv`` を使います。
+ひとりで開発する場合には不要ですが、複数人の開発者が関わる場合や、複数のプラットフォームに配布する場合には必須のモジュールとなります。
+Python 2.4 と Python 2.7 で明示的に使い分けたい場合にも重宝します。
+
+``virtualenv`` を使うとプロジェクトごとに Python の実行環境を構成しますので、
+環境変数 ``PATH`` も追加してくれます。
+
+PyPI (Python Package Index) に登録されていますので、 ``pip`` を使ってインストールできます。 ::
+
+    > C:\Python27\Scripts\pip.exe install virtualenv
+
+.. note::
+
+    PyPI とは？
+
+    Python のサードパーティーモジュールを集約したサイトです。
+    ``virtualenv`` の場合は次の場所に登録されています。
+
+    * http://pypi.python.org/pypi/virtualenv
+
+    PyPI に登録されているモジュールは ``setuptools`` でインストールできます。
+    多くのページには ``easy_install`` を使う方法が紹介されています。
+    ``pip`` は ``easy_install`` 互換のツールですから、同じようにしてインストールできます。
+
+サンプルプロジェクト
+====================
+:command:`virtualenv` を使ってプロジェクトを作成します。
+C ドライブ直下に :file:`sandbox` ディレクトリを作成し、その中に `python-school` プロジェクトを作成します。 ::
+
+    > mkdir C:\sandbox
+    > cd C:\sandbox
+    > C:\Python27\Scripts\virtualenv.exe --distribute python-school
+
+.. note::
+
+    D ドライブが別になっているマシンの場合には D ドライブを使った方が良いと思います。
+
+:command:`virtualenv` で作成したフォルダには、Python インタープリタやライブラリ置き場などが作成されます。
+一番最初に重要なのは `Scripts` フォルダにある :file:`activate.bat` です。
+まずはこれを実行しましょう。 ::
+
+    > cd python-school
+    > Scripts\activate.bat
+
+環境変数が書き変わり、プロンプトが切り替わります。
+``PATH`` の値も変わり、 :command:`python` がそのままで実行できます。 ::
+
+    > python -V
+
+簡単なスクリプトを書いて実行してみましょう。 ::
+
+    > echo print "Hello World." >example.py
+    > python example.py
+    Hello World.
+
+これではじめの一歩は完了です。
+次は簡単なスクリプトを書きながら Python の文法を学びましょう。
+
+以降のパートでは ``virtualenv`` が有効な状態 (activate された状態) だと仮定して話を進めます。
+マシンを再起動した場合などは :file:`activate.bat` の実行を忘れないようにしてください。
