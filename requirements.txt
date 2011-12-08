@@ -3,3 +3,5 @@ pep8
 pyflakes
 Sphinx
 SQLAlchemy
+fabric
+#Django==1.3

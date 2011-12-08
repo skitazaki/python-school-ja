@@ -5,7 +5,6 @@
 """
 
 import logging
-import os
 import optparse
 
 
@@ -40,6 +39,7 @@ def proc():
     """Main procedure with some tests.
     """
     pass
+
 
 def main():
     opts, args = parse_args()
