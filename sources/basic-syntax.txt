@@ -57,12 +57,23 @@ Python のコードを読み書きしていると、 ``for`` 文にはたくさ�
 
     予約語の一覧はドキュメントで確認してください。
 
-    * http://docs.python.org/reference/lexical_analysis.html#identifiers
+    * `2.3.1. Keywords`_ (The Python Language Reference)
 
     標準モジュールは使いながら覚えていきましょう。
     網羅的に学習したい場合には PyMOTW を読んでください。
 
-    * http://www.doughellmann.com/PyMOTW/contents.html
+    * `Python Module of the Week`_
+
+    また、組み込み関数もあります。
+    組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
+    多くの場合に予期せぬ振る舞いになってしまうでしょう。
+    この一覧に掲載されている文字列を変数名や関数名には使わないでください。
+
+    * `2. Built-in Functions`_ (公式ドキュメント)
+
+.. _`2.3.1. Keywords`: http://docs.python.org/reference/lexical_analysis.html#keywords
+.. _`2. Built-in Functions`: http://docs.python.org/library/functions.html
+.. _Python Module of the Week: http://www.doughellmann.com/PyMOTW/contents.html
 
 例外処理
 ========
@@ -147,24 +158,24 @@ PyPI に pep8 というモジュールがあります。
 
 構文チェッカーの実行
 --------------------
-:file:`ex01.py` という Python ファイルを用意します。
+:file:`first-sample.py` という Python ファイルを用意します。
 
-.. literalinclude:: ../src/ex01.py
+.. literalinclude:: ../src/first-sample.py
    :language: python
    :linenos:
 
 :command:`pep8` を実行してみます。 ::
 
-    > pep8 ex01.py
-    ex01.py:3:7: E222 multiple spaces after operator
-    ex01.py:6:32: E231 missing whitespace after ','
+    > pep8 first-sample.py
+    first-sample.py:3:7: E222 multiple spaces after operator
+    first-sample.py:6:32: E231 missing whitespace after ','
 
 3行目と6行目に余計な空白が混入していることが分かります。
 
 :command:`pyflakes` を実行してみます。 ::
 
-    > pyflakes ex01.py
-    ex01.py:8: 'os' imported but unused
+    > pyflakes first-sample.py
+    first-sample.py:8: 'os' imported but unused
 
 空白にはノータッチですが、使っていない `import` 文を検知してくれます。
 

@@ -52,8 +52,8 @@
         
   <div class="section" id="csv-1">
 <h1>CSV ファイルの処理方法 - 1<a class="headerlink" href="#csv-1" title="Permalink to this headline">¶</a></h1>
-<p>カンマ区切りの <tt class="file docutils literal"><span class="pre">csv01.csv</span></tt> を読み込んで、タブ区切りに変更するスクリプトを実装します。</p>
-<p><tt class="file docutils literal"><span class="pre">csv01.csv</span></tt></p>
+<p>カンマ区切りの <tt class="file docutils literal"><span class="pre">csv-1.csv</span></tt> を読み込んで、タブ区切りに変更するスクリプトを実装します。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-1.csv</span></tt></p>
 <div class="highlight-python"><pre>2011-03-11,Earthquake
 2011-06-06,World IPv6 Day
 2011-11-11,Eleven Eleven
@@ -66,7 +66,7 @@
 <tt class="docutils literal"><span class="pre">open()</span></tt> でファイルを開き、イテレータを使って CSV 形式 (カンマ区切りテキスト) のファイルを読み込みます。
 新しいバージョンの Python だけをターゲットにする場合は、
 <tt class="docutils literal"><span class="pre">with</span></tt> を使うことでリソースリークなどを予防できます。</p>
-<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-1.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -129,7 +129,7 @@
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>&gt; python csv01.py csv01.csv
+<div class="highlight-python"><pre>&gt; python csv-1.py csv-1.csv
 2011-03-11      Earthquake
 2011-06-06      World IPv6 Day
 2011-11-11      Eleven Eleven

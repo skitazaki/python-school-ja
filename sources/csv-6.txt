@@ -45,19 +45,19 @@ O/R マッパーを使うためにはいくつかの準備が必要になりま�
 
 以上をスクリプトにまとめると次のようになります。
 
-:file:`csv06.py`
+:file:`csv-6.py`
 
-.. literalinclude:: ../src/csv06.py
+.. literalinclude:: ../src/csv-6.py
    :language: python
 
 第一引数に CSV ファイルを渡します。
 第二引数がない場合はオンメモリで動作します。 ::
 
-    > python csv06.py csv05.csv
+    > python csv-6.py csv-5.csv
 
 第二引数で出力ファイル名を指定できます。 ::
 
-    > python csv06.py csv05.csv csv06.sqlite
+    > python csv-6.py csv-5.csv csv-6.sqlite
 
 SQLite のビューアーとしては Lita などが便利です。
 
@@ -65,12 +65,22 @@ SQLite のビューアーとしては Lita などが便利です。
 
 .. _`Lita - SQLite Administration Tool`: http://www.dehats.com/drupal/?q=node/58
 
+.. note::
+
+    トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+    マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
+    ループ回数を取得するには ``enumerate()`` を使います。
+
+    * `enumerate`_ (公式ドキュメント)
+
+.. _enumerate: http://docs.python.org/library/functions.html#enumerate
+
 宿題
 ====
 フィールドに条件を課す処理を比較しましょう。
 SQLite を参照する場合と、CSV を参照する場合を比べてみてください。
 
-:doc:`processing-csv-file-4` の「宿題」には挙動を切り替える問題があります。
+:doc:`csv-4` の「宿題」には挙動を切り替える問題があります。
 同様に、出力データフォーマットも切り替えてみましょう。
 
 * CSV のデータを JSON で出力

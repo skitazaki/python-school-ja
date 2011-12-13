@@ -65,7 +65,7 @@
 文字列をファイル風オブジェクトとして使うには <tt class="docutils literal"><span class="pre">StringIO</span></tt> モジュールを使います。
 (C 拡張で実装された <tt class="docutils literal"><span class="pre">cStringIO</span></tt> モジュールもありますが、Unicode の扱いが異なりますので注意しましょう。)</p>
 <p>まずは CSV ファイルの先頭行にフィールド名を記述しておきます。</p>
-<p><tt class="file docutils literal"><span class="pre">csv05.csv</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-5.csv</span></tt></p>
 <div class="highlight-python"><pre>rank,team,point,match,goaldiff
 1,Ｆ東京,77,38,+45
 2,鳥栖,69,38,+34
@@ -76,7 +76,7 @@
 </div>
 <p>次に、 <tt class="docutils literal"><span class="pre">UnicodeReader</span></tt> の <tt class="docutils literal"><span class="pre">next()</span></tt> を使ってヘッダー行を保存しておき、
 データを読み込む度に <tt class="docutils literal"><span class="pre">zip()</span></tt> で組み合わせて辞書形式に変換します。</p>
-<p><tt class="file docutils literal"><span class="pre">csv05.py</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-5.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -125,7 +125,7 @@
 </pre></div>
 </div>
 <p>差分</p>
-<div class="highlight-python"><pre>$ diff -U 1 csv04.py csv05.py
+<div class="highlight-python"><pre>$ diff -U 1 csv-4.py csv-5.py
 @@ -12,3 +12,2 @@
  DEFAULT_CSV_FILE = 'sample.csv'
 -LEAGUE_STATS = ('rank', 'team', 'point', 'match', 'goaldiff')
@@ -146,7 +146,7 @@
 <h2>DictReader を使う<a class="headerlink" href="#dictreader" title="Permalink to this headline">¶</a></h2>
 <p>標準 csv モジュールには <tt class="docutils literal"><span class="pre">DictReader</span></tt> クラスがあります。
 ユニコード対応は一度切り落として、このクラスを使って再実装してみましょう。</p>
-<p><tt class="file docutils literal"><span class="pre">csv05a.py</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-5a.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 

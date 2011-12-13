@@ -101,12 +101,19 @@ Java の拡張 for 文のように、オブジェクトのイテレーターを�
 上述のサンプルでは、 <tt class="docutils literal"><span class="pre">import</span></tt> や <tt class="docutils literal"><span class="pre">print</span></tt> 、それから <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt> などが予約語で、 <tt class="docutils literal"><span class="pre">time</span></tt> が標準モジュールです。</p>
 <p>予約語の一覧はドキュメントで確認してください。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#identifiers">http://docs.python.org/reference/lexical_analysis.html#identifiers</a></li>
+<li><a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#keywords">2.3.1. Keywords</a> (The Python Language Reference)</li>
 </ul>
 <p>標準モジュールは使いながら覚えていきましょう。
 網羅的に学習したい場合には PyMOTW を読んでください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/contents.html">Python Module of the Week</a></li>
+</ul>
+<p>また、組み込み関数もあります。
+組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
+多くの場合に予期せぬ振る舞いになってしまうでしょう。
+この一覧に掲載されている文字列を変数名や関数名には使わないでください。</p>
 <ul class="last simple">
-<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/contents.html">http://www.doughellmann.com/PyMOTW/contents.html</a></li>
+<li><a class="reference external" href="http://docs.python.org/library/functions.html">2. Built-in Functions</a> (公式ドキュメント)</li>
 </ul>
 </div>
 </div>
@@ -181,7 +188,7 @@ D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflake
 </div>
 <div class="section" id="id8">
 <h3>構文チェッカーの実行<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<p><tt class="file docutils literal"><span class="pre">ex01.py</span></tt> という Python ファイルを用意します。</p>
+<p><tt class="file docutils literal"><span class="pre">first-sample.py</span></tt> という Python ファイルを用意します。</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -200,14 +207,14 @@ D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflake
 </pre></div>
 </td></tr></table></div>
 <p><strong class="command">pep8</strong> を実行してみます。</p>
-<div class="highlight-python"><pre>&gt; pep8 ex01.py
-ex01.py:3:7: E222 multiple spaces after operator
-ex01.py:6:32: E231 missing whitespace after ','</pre>
+<div class="highlight-python"><pre>&gt; pep8 first-sample.py
+first-sample.py:3:7: E222 multiple spaces after operator
+first-sample.py:6:32: E231 missing whitespace after ','</pre>
 </div>
 <p>3行目と6行目に余計な空白が混入していることが分かります。</p>
 <p><strong class="command">pyflakes</strong> を実行してみます。</p>
-<div class="highlight-python"><pre>&gt; pyflakes ex01.py
-ex01.py:8: 'os' imported but unused</pre>
+<div class="highlight-python"><pre>&gt; pyflakes first-sample.py
+first-sample.py:8: 'os' imported but unused</pre>
 </div>
 <p>空白にはノータッチですが、使っていない <cite>import</cite> 文を検知してくれます。</p>
 <p>次は、もう少し実際的なスクリプトを記述していきます。</p>

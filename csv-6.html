@@ -98,7 +98,7 @@
 </li>
 </ul>
 <p>以上をスクリプトにまとめると次のようになります。</p>
-<p><tt class="file docutils literal"><span class="pre">csv06.py</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-6.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -180,21 +180,30 @@
 </div>
 <p>第一引数に CSV ファイルを渡します。
 第二引数がない場合はオンメモリで動作します。</p>
-<div class="highlight-python"><pre>&gt; python csv06.py csv05.csv</pre>
+<div class="highlight-python"><pre>&gt; python csv-6.py csv-5.csv</pre>
 </div>
 <p>第二引数で出力ファイル名を指定できます。</p>
-<div class="highlight-python"><pre>&gt; python csv06.py csv05.csv csv06.sqlite</pre>
+<div class="highlight-python"><pre>&gt; python csv-6.py csv-5.csv csv-6.sqlite</pre>
 </div>
 <p>SQLite のビューアーとしては Lita などが便利です。</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.dehats.com/drupal/?q=node/58">Lita - SQLite Administration Tool</a></li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
+ループ回数を取得するには <tt class="docutils literal"><span class="pre">enumerate()</span></tt> を使います。</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://docs.python.org/library/functions.html#enumerate">enumerate</a> (公式ドキュメント)</li>
+</ul>
+</div>
 </div>
 <div class="section" id="id2">
 <h2>宿題<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>フィールドに条件を課す処理を比較しましょう。
 SQLite を参照する場合と、CSV を参照する場合を比べてみてください。</p>
-<p><tt class="xref doc docutils literal"><span class="pre">processing-csv-file-4</span></tt> の「宿題」には挙動を切り替える問題があります。
+<p><a class="reference internal" href="csv-4.html"><em>CSV ファイルの処理方法 - 4</em></a> の「宿題」には挙動を切り替える問題があります。
 同様に、出力データフォーマットも切り替えてみましょう。</p>
 <ul class="simple">
 <li>CSV のデータを JSON で出力</li>

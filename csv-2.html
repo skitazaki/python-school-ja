@@ -67,8 +67,8 @@
 </ul>
 <div class="section" id="id1">
 <h2>標準 csv モジュール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>csv モジュールを使って、 <tt class="xref doc docutils literal"><span class="pre">processing-csv-file-1</span></tt> と同様の処理を実装しましょう。</p>
-<p><tt class="file docutils literal"><span class="pre">csv02.py</span></tt></p>
+<p>csv モジュールを使って、 <a class="reference internal" href="csv-1.html"><em>CSV ファイルの処理方法 - 1</em></a> と同様の処理を実装しましょう。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-2.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -132,35 +132,35 @@
 </pre></div>
 </div>
 <p>処理する CSV は少し変更します。</p>
-<p><tt class="file docutils literal"><span class="pre">csv02.csv</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-2.csv</span></tt></p>
 <div class="highlight-python"><pre>ISO8601,"June, 1988"
 ISO8601:2000,"December, 2000"
 Leap Seconds,31 December 2008,http://tycho.usno.navy.mil/leapsec.html
 </pre>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>&gt; python csv02.py csv02.csv
+<div class="highlight-python"><pre>&gt; python csv-2.py csv-2.csv
 ISO8601 June, 1988
 ISO8601:2000    December, 2000
 Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 
-&gt; python csv02.py csv01.csv
+&gt; python csv-2.py csv-1.csv
 2011-03-11      Earthquake
 2011-06-06      World IPv6 Day
 2011-11-11      Eleven Eleven
 2011-12-10      total lunar eclipse     not solar eclipse</pre>
 </div>
-<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt> で処理した結果</p>
-<div class="highlight-python"><pre>&gt; python csv01.py csv02.csv
+<p><tt class="file docutils literal"><span class="pre">csv-1.py</span></tt> で処理した結果</p>
+<div class="highlight-python"><pre>&gt; python csv-1.py csv-2.csv
 ISO8601 "June    1988"
 ISO8601:2000    "December        2000"
 Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html</pre>
 </div>
 <p>ダブルクォートを考慮できていないことが分かります。</p>
 <p>差分</p>
-<div class="highlight-python"><pre>$ diff -U 1 csv01.py csv02.py
---- csv01.py    2011-12-07 00:35:38.000000000 +0900
-+++ csv02.py    2011-12-07 00:46:55.000000000 +0900
+<div class="highlight-python"><pre>$ diff -U 1 csv-1.py csv-2.py
+--- csv-1.py    2011-12-07 00:35:38.000000000 +0900
++++ csv-2.py    2011-12-07 00:46:55.000000000 +0900
 @@ -6,2 +6,3 @@
 
 +import csv

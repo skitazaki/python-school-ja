@@ -70,9 +70,9 @@ Unicode と UTF-8 は違います。
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">unicodecsv</span>
 </pre></div>
 </div>
-<p>これを使って <tt class="file docutils literal"><span class="pre">csv02.py</span></tt> を改修します。
+<p>これを使って <tt class="file docutils literal"><span class="pre">csv-2.py</span></tt> を改修します。
 サンプルデータにも日本語を追加しておきます。</p>
-<p><tt class="file docutils literal"><span class="pre">csv03.py</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-3.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -137,7 +137,7 @@ Unicode と UTF-8 は違います。
 </div>
 <p>日本語を含むテストデータも作成します。
 エンコーディングは UTF-8 で保存してください。</p>
-<p><tt class="file docutils literal"><span class="pre">csv03.csv</span></tt></p>
+<p><tt class="file docutils literal"><span class="pre">csv-3.csv</span></tt></p>
 <div class="highlight-python"><pre>城端麦酒,www.jo-beer.com
 ブルーマスター,www.brewmaster2002.com
 栃木マイクロブルワリー,www.beatclub.jp/microb/
@@ -148,18 +148,18 @@ Unicode と UTF-8 は違います。
 </pre>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>&gt; python csv03.py csv01.csv
+<div class="highlight-python"><pre>&gt; python csv-3.py csv-1.csv
 2011-03-11      Earthquake
 2011-06-06      World IPv6 Day
 2011-11-11      Eleven Eleven
 2011-12-10      total lunar eclipse     not solar eclipse
 
-&gt; python csv03.py csv02.csv
+&gt; python csv-3.py csv-2.csv
 ISO8601 June, 1988
 ISO8601:2000    December, 2000
 Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 
-&gt; python csv03.py csv03.csv
+&gt; python csv-3.py csv-3.csv
 城端麦酒        www.jo-beer.com
 ブルーマスター  www.brewmaster2002.com
 栃木マイクロブルワリー  www.beatclub.jp/microb/
@@ -169,7 +169,7 @@ Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 銀河高原ビール  www.gingakogenweb.com</pre>
 </div>
 <p>差分</p>
-<div class="highlight-python"><pre>$ diff -U 1 csv02.py csv03.py
+<div class="highlight-python"><pre>$ diff -U 1 csv-2.py csv-3.py
 @@ -6,3 +6,3 @@
 
 -import csv
@@ -276,14 +276,14 @@ Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 <span class="go">{&#39;output&#39;: None, &#39;verbose&#39;: False, &#39;quiet&#39;: False} []</span>
 </pre></div>
 </div>
-<p>たとえば <tt class="file docutils literal"><span class="pre">csv03.py</span></tt> の場合は、</p>
+<p>たとえば <tt class="file docutils literal"><span class="pre">csv-3.py</span></tt> の場合は、</p>
 <ol class="arabic simple">
 <li><tt class="docutils literal"><span class="pre">def</span> <span class="pre">parse_args</span></tt> の定義を取り除いて</li>
 <li><tt class="docutils literal"><span class="pre">import</span> <span class="pre">optparse</span></tt> を取り除いて</li>
 <li>上記の <tt class="docutils literal"><span class="pre">from</span> <span class="pre">pyschool.cmdline</span> <span class="pre">import</span> <span class="pre">parse_args</span></tt> を追加する</li>
 </ol>
 <p>この三点だけが必要になります。</p>
-<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt> と <tt class="file docutils literal"><span class="pre">csv02.py</span></tt> も同様に変更できますので試してみてください。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-1.py</span></tt> と <tt class="file docutils literal"><span class="pre">csv-2.py</span></tt> も同様に変更できますので試してみてください。</p>
 </div>
 </div>
 
