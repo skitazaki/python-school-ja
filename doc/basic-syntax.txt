@@ -57,12 +57,23 @@ Python のコードを読み書きしていると、 ``for`` 文にはたくさ�
 
     予約語の一覧はドキュメントで確認してください。
 
-    * http://docs.python.org/reference/lexical_analysis.html#identifiers
+    * `2.3.1. Keywords`_ (The Python Language Reference)
 
     標準モジュールは使いながら覚えていきましょう。
     網羅的に学習したい場合には PyMOTW を読んでください。
 
-    * http://www.doughellmann.com/PyMOTW/contents.html
+    * `Python Module of the Week`_
+
+    また、組み込み関数もあります。
+    組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
+    多くの場合に予期せぬ振る舞いになってしまうでしょう。
+    この一覧に掲載されている文字列を変数名や関数名には使わないでください。
+
+    * `2. Built-in Functions`_ (公式ドキュメント)
+
+.. _`2.3.1. Keywords`: http://docs.python.org/reference/lexical_analysis.html#keywords
+.. _`2. Built-in Functions`: http://docs.python.org/library/functions.html
+.. _Python Module of the Week: http://www.doughellmann.com/PyMOTW/contents.html
 
 例外処理
 ========

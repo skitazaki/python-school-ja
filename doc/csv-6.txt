@@ -65,12 +65,22 @@ SQLite のビューアーとしては Lita などが便利です。
 
 .. _`Lita - SQLite Administration Tool`: http://www.dehats.com/drupal/?q=node/58
 
+.. note::
+
+    トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+    マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
+    ループ回数を取得するには ``enumerate()`` を使います。
+
+    * `enumerate`_ (公式ドキュメント)
+
+.. _enumerate: http://docs.python.org/library/functions.html#enumerate
+
 宿題
 ====
 フィールドに条件を課す処理を比較しましょう。
 SQLite を参照する場合と、CSV を参照する場合を比べてみてください。
 
-:doc:`processing-csv-file-4` の「宿題」には挙動を切り替える問題があります。
+:doc:`csv-4` の「宿題」には挙動を切り替える問題があります。
 同様に、出力データフォーマットも切り替えてみましょう。
 
 * CSV のデータを JSON で出力
