@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>CSV ファイルの処理方法 - 2 &mdash; Python School 1.0.0 documentation</title>
+    <title>CSV ファイルの処理方法 - 1 &mdash; Python School 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,55 +27,52 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="CSV ファイルの処理方法 - 3" href="processing-csv-file-3.html" />
-    <link rel="prev" title="CSV ファイルの処理方法 - 1" href="processing-csv-file-1.html" /> 
+    <link rel="top" title="Python School 1.0.1 documentation" href="index.html" />
+    <link rel="next" title="CSV ファイルの処理方法 - 2" href="csv-2.html" />
+    <link rel="prev" title="基本的なスクリプト" href="basic-scripting.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Python School 1.0.0 documentation</span></a></h1>
-        <h2 class="heading"><span>CSV ファイルの処理方法 - 2</span></h2>
+          <span>Python School 1.0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>CSV ファイルの処理方法 - 1</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="processing-csv-file-1.html">CSV ファイルの処理方法 - 1</a>
+        «&#160;&#160;<a href="basic-scripting.html">基本的なスクリプト</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="processing-csv-file-3.html">CSV ファイルの処理方法 - 3</a>&#160;&#160;»
+        <a href="csv-2.html">CSV ファイルの処理方法 - 2</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="csv-2">
-<h1>CSV ファイルの処理方法 - 2<a class="headerlink" href="#csv-2" title="Permalink to this headline">¶</a></h1>
-<p>前の章のように自前で実装すると次の二点への対応が難しくなります。</p>
-<ul class="simple">
-<li>エスケープ処理</li>
-<li>区切り文字の変更</li>
-</ul>
-<p>標準 csv モジュールを使うとこうした問題点を回避できます。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/csv.html">13.1. csv — CSV File Reading and Writing</a> - docs.python.org (公式ドキュメント)</li>
-</ul>
-<p>ステップバイステップの使い方は、とりあえずこれを読んでください。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.doughellmann.com/PyMOTW-ja/csv/">csv – カンマ区切りのファイル</a> (PyMOTW)</li>
-</ul>
+  <div class="section" id="csv-1">
+<h1>CSV ファイルの処理方法 - 1<a class="headerlink" href="#csv-1" title="Permalink to this headline">¶</a></h1>
+<p>カンマ区切りの <tt class="file docutils literal"><span class="pre">csv01.csv</span></tt> を読み込んで、タブ区切りに変更するスクリプトを実装します。</p>
+<p><tt class="file docutils literal"><span class="pre">csv01.csv</span></tt></p>
+<div class="highlight-python"><pre>2011-03-11,Earthquake
+2011-06-06,World IPv6 Day
+2011-11-11,Eleven Eleven
+2011-12-10,total lunar eclipse,not solar eclipse
+</pre>
+</div>
 <div class="section" id="id1">
-<h2>標準 csv モジュール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>csv モジュールを使って、 <a class="reference internal" href="processing-csv-file-1.html"><em>CSV ファイルの処理方法 - 1</em></a> と同様の処理を実装しましょう。</p>
-<p><tt class="file docutils literal"><span class="pre">csv02.py</span></tt></p>
+<h2>自力で実装する方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>基本的な部分から学習するために、簡単な CSV の処理を自力で実装します。
+<tt class="docutils literal"><span class="pre">open()</span></tt> でファイルを開き、イテレータを使って CSV 形式 (カンマ区切りテキスト) のファイルを読み込みます。
+新しいバージョンの Python だけをターゲットにする場合は、
+<tt class="docutils literal"><span class="pre">with</span></tt> を使うことでリソースリークなどを予防できます。</p>
+<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
 <span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">optparse</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -110,8 +107,8 @@
     <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-            <span class="k">print</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -131,56 +128,41 @@
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
-<p>処理する CSV は少し変更します。</p>
-<p><tt class="file docutils literal"><span class="pre">csv02.csv</span></tt></p>
-<div class="highlight-python"><pre>ISO8601,"June, 1988"
-ISO8601:2000,"December, 2000"
-Leap Seconds,31 December 2008,http://tycho.usno.navy.mil/leapsec.html
-</pre>
-</div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>&gt; python csv02.py csv02.csv
-ISO8601 June, 1988
-ISO8601:2000    December, 2000
-Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
-
-&gt; python csv02.py csv01.csv
+<div class="highlight-python"><pre>&gt; python csv01.py csv01.csv
 2011-03-11      Earthquake
 2011-06-06      World IPv6 Day
 2011-11-11      Eleven Eleven
 2011-12-10      total lunar eclipse     not solar eclipse</pre>
 </div>
-<p><tt class="file docutils literal"><span class="pre">csv01.py</span></tt> で処理した結果</p>
-<div class="highlight-python"><pre>&gt; python csv01.py csv02.csv
-ISO8601 "June    1988"
-ISO8601:2000    "December        2000"
-Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html</pre>
+<p>このスクリプトでは、入力データに意図しないカンマが混入した場合に想定外の出力となります。
+このスクリプトを改善しても構いませんが、次からは標準モジュールを使っていきましょう。</p>
 </div>
-<p>ダブルクォートを考慮できていないことが分かります。</p>
-<p>差分</p>
-<div class="highlight-python"><pre>$ diff -U 1 csv01.py csv02.py
---- csv01.py    2011-12-07 00:35:38.000000000 +0900
-+++ csv02.py    2011-12-07 00:46:55.000000000 +0900
-@@ -6,2 +6,3 @@
-
-+import csv
- import logging
-@@ -40,4 +41,4 @@
-     with open(fname) as reader:
--        for line in reader:
--            print line.strip().replace(',', '\t')
-+        for row in csv.reader(reader):
-+            print '\t'.join(row)</pre>
-</div>
-</div>
-<div class="section" id="id2">
-<h2>宿題<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>csv モジュールの <tt class="docutils literal"><span class="pre">reader()</span></tt> 関数は <em>dialect</em> という引数を解釈します。
-これを切り替えることで、区切り文字を変更できます。</p>
+<div class="section" id="csv">
+<h2>そもそも CSV とは何か？<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h2>
+<p>インターネットにおけるデータ交換方式、という観点からは RFC で規定されています。</p>
 <ul class="simple">
-<li>公式ドキュメントのコード例に目を通し、空白区切りやコロン区切りのデータを扱っている部分を確認してください。</li>
-<li>コマンドラインのオプションを解釈し、区切り文字をオプション引数で与えられるようにしてください。</li>
+<li><span class="target" id="index-0"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc4180.html"><strong>RFC 4180</strong></a> (Common Format and MIME Type for Comma-Separated Values (CSV) Files)</li>
 </ul>
+<p>しかし、一般に広く普及している形式は Microsoft Excel が書き出す形式であり、
+RFC 4180 と等価ではありません。
+記号のエスケープルールや、暗黙的な型変換に違いがあります。</p>
+<p><a class="reference external" href="http://ja.wikipedia.org/wiki/Comma-Separated_Values">Comma-Separated Values</a> (wikipedia)</p>
+<blockquote>
+<div>レコードにコンマやダブルクォートが含まれている場合、エスケープされている場合でも、ソフトによって解釈が異なり、区切り方が変わることがある。
+その結果、データが破壊されることや、修正の手間が生じることがある。
+レコードにタブ文字が含まれている場合よりも、レコードにコンマやダブルクォートが含まれている場合のほうが多い。
+従って、CSVの代わりに、タブ区切りテキスト形式（TSV）を使うことで問題を避けられることがある。</div></blockquote>
+<p>また、数値をダブルクォートで囲まない場合、小数点の記号と混同される地域もあります。
+たとえば、Windows のパソコンでロケールをフランス語にして Excel を使うと、カンマが小数点の区切り文字になります。</p>
+<p><a class="reference external" href="http://ja.wikipedia.org/wiki/%E5%B0%8F%E6%95%B0%E7%82%B9">小数点</a> (wikipedia)</p>
+<blockquote>
+<div>また非英語圏の国においては、コンマ (,) が小数点として用いられ、ピリオド (.) が3桁ごとの位取りに用いられる。
+すなわち、日本と逆である。</div></blockquote>
+<p>したがって、「CSV でデータをください」という話題が出た場合には注意しましょう。
+一見簡単そうですが、細かい部分に違いがあります。
+可能ならば JSON (<span class="target" id="index-1"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc4627.html"><strong>RFC 4627</strong></a>) のように構造化されてデータ型に制限のあるフォーマットを検討してください。
+人間が読み書きするデータとコンピュータが読み書きするデータは、処理の難易度が必ずしも等価でないことに気をつけましょう。</p>
 </div>
 </div>
 
@@ -189,11 +171,11 @@ Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html<
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="processing-csv-file-1.html">CSV ファイルの処理方法 - 1</a>
+        «&#160;&#160;<a href="basic-scripting.html">基本的なスクリプト</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="processing-csv-file-3.html">CSV ファイルの処理方法 - 3</a>&#160;&#160;»
+        <a href="csv-2.html">CSV ファイルの処理方法 - 2</a>&#160;&#160;»
         </p>
 
       </div>

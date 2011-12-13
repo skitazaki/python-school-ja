@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>CSV ファイルの処理方法 - 6 &mdash; Python School 1.0.0 documentation</title>
+    <title>CSV ファイルの処理方法 - 6 &mdash; Python School 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,18 +27,18 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="Python School 1.0.0 documentation" href="index.html" />
-    <link rel="prev" title="CSV ファイルの処理方法 - 5" href="processing-csv-file-5.html" /> 
+    <link rel="top" title="Python School 1.0.1 documentation" href="index.html" />
+    <link rel="prev" title="CSV ファイルの処理方法 - 5" href="csv-5.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Python School 1.0.0 documentation</span></a></h1>
+          <span>Python School 1.0.1 documentation</span></a></h1>
         <h2 class="heading"><span>CSV ファイルの処理方法 - 6</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="processing-csv-file-5.html">CSV ファイルの処理方法 - 5</a>
+        «&#160;&#160;<a href="csv-5.html">CSV ファイルの処理方法 - 5</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         </p>
@@ -56,14 +56,23 @@
 <li><a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> - sqlalchemy.org</li>
 </ul>
 <div class="section" id="id1">
-<h2>SQLAlchemy などの準備<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2>SQLAlchemy の準備<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に <cite>SQLAlchemy</cite> を追加し、 <strong class="command">pip</strong> を実行します。</p>
 <div class="highlight-python"><pre>&gt; pip install -r requirements.txt</pre>
 </div>
-<p>Python のインタラクティブシェルからモジュールを読み込めることを確認します。</p>
-<div class="highlight-python"><pre>&gt; python
-import sqlalchemy</pre>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に追加。</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">SQLAlchemy</span>
+</pre></div>
 </div>
+</div>
+<p>Python のインタラクティブシェルからモジュールを読み込めることを確認します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">help()</span></tt> 関数でモジュールのヘルプが表示されますので確認してみてください。</p>
 </div>
 <div class="section" id="o-r">
 <h2>O/R マッパー経由でデータベースに保存<a class="headerlink" href="#o-r" title="Permalink to this headline">¶</a></h2>
@@ -185,7 +194,7 @@ import sqlalchemy</pre>
 <h2>宿題<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>フィールドに条件を課す処理を比較しましょう。
 SQLite を参照する場合と、CSV を参照する場合を比べてみてください。</p>
-<p><a class="reference internal" href="processing-csv-file-4.html"><em>CSV ファイルの処理方法 - 4</em></a> の「宿題」には挙動を切り替える問題があります。
+<p><tt class="xref doc docutils literal"><span class="pre">processing-csv-file-4</span></tt> の「宿題」には挙動を切り替える問題があります。
 同様に、出力データフォーマットも切り替えてみましょう。</p>
 <ul class="simple">
 <li>CSV のデータを JSON で出力</li>
@@ -199,7 +208,7 @@ SQLite を参照する場合と、CSV を参照する場合を比べてみてく
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="processing-csv-file-5.html">CSV ファイルの処理方法 - 5</a>
+        «&#160;&#160;<a href="csv-5.html">CSV ファイルの処理方法 - 5</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         </p>

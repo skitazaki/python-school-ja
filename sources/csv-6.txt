@@ -11,16 +11,24 @@ CSV ファイルから読み込んだ情報をデータベースに保存しま�
 .. _SQLite: http://www.sqlite.org/
 .. _SQLAlchemy: http://www.sqlalchemy.org/
 
-SQLAlchemy などの準備
-=====================
+SQLAlchemy の準備
+=================
 :file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。 ::
 
     > pip install -r requirements.txt
 
+.. note::
+
+    :file:`requirements.txt` に追加。 ::
+
+        SQLAlchemy
+
 Python のインタラクティブシェルからモジュールを読み込めることを確認します。 ::
 
-    > python
-    import sqlalchemy
+    >>> import sqlalchemy
+    >>> help(sqlalchemy)
+
+``help()`` 関数でモジュールのヘルプが表示されますので確認してみてください。
 
 O/R マッパー経由でデータベースに保存
 ====================================

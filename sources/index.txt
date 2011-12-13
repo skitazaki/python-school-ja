@@ -18,16 +18,25 @@ Python の学習
    basic-syntax
    toy-program
    basic-scripting
-   processing-csv-file-1
-   processing-csv-file-2
-   processing-csv-file-3
-   processing-csv-file-4
-   processing-csv-file-5
-   processing-csv-file-6
+
+   csv-1
+   csv-2
+   csv-3
+   csv-4
+   csv-5
+   csv-6
+
+..
+
+   cmdline-1
+   cmdline-2
+   cmdline-3
+   cmdline-4
+   cmdline-5
+   cmdline-6
 
 ..
    run-test
-   wrap-bash
    documents
    projects
    webapp
