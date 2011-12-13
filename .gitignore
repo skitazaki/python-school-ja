@@ -1,0 +1,6 @@
+_build/
+lib/
+bin/
+include/
+man/
+.lock-*
