@@ -26,35 +26,35 @@ Unicode と UTF-8 は違います。
 
     import unicodecsv
 
-これを使って :file:`csv02.py` を改修します。
+これを使って :file:`csv-2.py` を改修します。
 サンプルデータにも日本語を追加しておきます。
 
-:file:`csv03.py`
+:file:`csv-3.py`
 
-.. literalinclude:: ../src/csv03.py
+.. literalinclude:: ../src/csv-3.py
    :language: python
 
 日本語を含むテストデータも作成します。
 エンコーディングは UTF-8 で保存してください。
 
-:file:`csv03.csv`
+:file:`csv-3.csv`
 
-.. literalinclude:: ../etc/csv03.csv
+.. literalinclude:: ../etc/csv-3.csv
 
 実行結果 ::
 
-    > python csv03.py csv01.csv
+    > python csv-3.py csv-1.csv
     2011-03-11      Earthquake
     2011-06-06      World IPv6 Day
     2011-11-11      Eleven Eleven
     2011-12-10      total lunar eclipse     not solar eclipse
 
-    > python csv03.py csv02.csv
+    > python csv-3.py csv-2.csv
     ISO8601 June, 1988
     ISO8601:2000    December, 2000
     Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 
-    > python csv03.py csv03.csv
+    > python csv-3.py csv-3.csv
     城端麦酒        www.jo-beer.com
     ブルーマスター  www.brewmaster2002.com
     栃木マイクロブルワリー  www.beatclub.jp/microb/
@@ -65,7 +65,7 @@ Unicode と UTF-8 は違います。
 
 差分 ::
 
-    $ diff -U 1 csv02.py csv03.py
+    $ diff -U 1 csv-2.py csv-3.py
     @@ -6,3 +6,3 @@
      
     -import csv
@@ -146,7 +146,7 @@ Python のパッケージは基本的にディレクトリ構造に一致しま�
     >>> print opts, args
     {'output': None, 'verbose': False, 'quiet': False} []
 
-たとえば :file:`csv03.py` の場合は、
+たとえば :file:`csv-3.py` の場合は、
 
 1. ``def parse_args`` の定義を取り除いて
 2. ``import optparse`` を取り除いて
@@ -154,5 +154,5 @@ Python のパッケージは基本的にディレクトリ構造に一致しま�
 
 この三点だけが必要になります。
 
-:file:`csv01.py` と :file:`csv02.py` も同様に変更できますので試してみてください。
+:file:`csv-1.py` と :file:`csv-2.py` も同様に変更できますので試してみてください。
 

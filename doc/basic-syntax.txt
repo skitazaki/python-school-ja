@@ -147,24 +147,24 @@ PyPI に pep8 というモジュールがあります。
 
 構文チェッカーの実行
 --------------------
-:file:`ex01.py` という Python ファイルを用意します。
+:file:`first-sample.py` という Python ファイルを用意します。
 
-.. literalinclude:: ../src/ex01.py
+.. literalinclude:: ../src/first-sample.py
    :language: python
    :linenos:
 
 :command:`pep8` を実行してみます。 ::
 
-    > pep8 ex01.py
-    ex01.py:3:7: E222 multiple spaces after operator
-    ex01.py:6:32: E231 missing whitespace after ','
+    > pep8 first-sample.py
+    first-sample.py:3:7: E222 multiple spaces after operator
+    first-sample.py:6:32: E231 missing whitespace after ','
 
 3行目と6行目に余計な空白が混入していることが分かります。
 
 :command:`pyflakes` を実行してみます。 ::
 
-    > pyflakes ex01.py
-    ex01.py:8: 'os' imported but unused
+    > pyflakes first-sample.py
+    first-sample.py:8: 'os' imported but unused
 
 空白にはノータッチですが、使っていない `import` 文を検知してくれます。
 

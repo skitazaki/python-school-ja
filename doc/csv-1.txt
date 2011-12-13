@@ -1,11 +1,11 @@
 ==========================
 CSV ファイルの処理方法 - 1
 ==========================
-カンマ区切りの :file:`csv01.csv` を読み込んで、タブ区切りに変更するスクリプトを実装します。
+カンマ区切りの :file:`csv-1.csv` を読み込んで、タブ区切りに変更するスクリプトを実装します。
 
-:file:`csv01.csv`
+:file:`csv-1.csv`
 
-.. literalinclude:: ../etc/csv01.csv
+.. literalinclude:: ../etc/csv-1.csv
 
 自力で実装する方法
 ==================
@@ -14,14 +14,14 @@ CSV ファイルの処理方法 - 1
 新しいバージョンの Python だけをターゲットにする場合は、
 ``with`` を使うことでリソースリークなどを予防できます。
 
-:file:`csv01.py`
+:file:`csv-1.py`
 
-.. literalinclude:: ../src/csv01.py
+.. literalinclude:: ../src/csv-1.py
    :language: python
 
 実行結果 ::
 
-    > python csv01.py csv01.csv
+    > python csv-1.py csv-1.csv
     2011-03-11      Earthquake
     2011-06-06      World IPv6 Day
     2011-11-11      Eleven Eleven
