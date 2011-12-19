@@ -1,7 +1,8 @@
-nose
 pep8
 pyflakes
 Sphinx
 SQLAlchemy
+paramiko
 fabric
+nose
 #Django==1.3
