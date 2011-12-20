@@ -19,35 +19,35 @@ CSV ファイルの処理方法 - 2
 
 標準 csv モジュール
 ===================
-csv モジュールを使って、 :doc:`processing-csv-file-1` と同様の処理を実装しましょう。
+csv モジュールを使って、 :doc:`csv-1` と同様の処理を実装しましょう。
 
-:file:`csv02.py`
+:file:`csv-2.py`
 
-.. literalinclude:: ../src/csv02.py
+.. literalinclude:: ../src/csv-2.py
    :language: python
 
 処理する CSV は少し変更します。
 
-:file:`csv02.csv`
+:file:`csv-2.csv`
 
-.. literalinclude:: ../etc/csv02.csv
+.. literalinclude:: ../etc/csv-2.csv
 
 実行結果 ::
 
-    > python csv02.py csv02.csv
+    > python csv-2.py csv-2.csv
     ISO8601 June, 1988
     ISO8601:2000    December, 2000
     Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
 
-    > python csv02.py csv01.csv
+    > python csv-2.py csv-1.csv
     2011-03-11      Earthquake
     2011-06-06      World IPv6 Day
     2011-11-11      Eleven Eleven
     2011-12-10      total lunar eclipse     not solar eclipse
 
-:file:`csv01.py` で処理した結果 ::
+:file:`csv-1.py` で処理した結果 ::
 
-    > python csv01.py csv02.csv
+    > python csv-1.py csv-2.csv
     ISO8601 "June    1988"
     ISO8601:2000    "December        2000"
     Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
@@ -56,9 +56,9 @@ csv モジュールを使って、 :doc:`processing-csv-file-1` と同様の処�
 
 差分 ::
 
-    $ diff -U 1 csv01.py csv02.py
-    --- csv01.py    2011-12-07 00:35:38.000000000 +0900
-    +++ csv02.py    2011-12-07 00:46:55.000000000 +0900
+    $ diff -U 1 csv-1.py csv-2.py
+    --- csv-1.py    2011-12-07 00:35:38.000000000 +0900
+    +++ csv-2.py    2011-12-07 00:46:55.000000000 +0900
     @@ -6,2 +6,3 @@
      
     +import csv

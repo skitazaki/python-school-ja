@@ -26,8 +26,6 @@ Python の学習
    csv-5
    csv-6
 
-..
-
    cmdline-1
    cmdline-2
    cmdline-3
@@ -39,9 +37,24 @@ Python の学習
    run-test
    documents
    projects
-   webapp
-   processing-xml-file
-   advanced
+   webapp-1
+   webapp-2
+   webapp-3
+   webapp-4
+   webapp-5
+   webapp-6
+   xml-1
+   xml-2
+   xml-3
+   xml-4
+   xml-5
+   xml-6
+   advanced-1
+   advanced-2
+   advanced-3
+   advanced-4
+   advanced-5
+   advanced-6
 
 
 なぜ Python か？

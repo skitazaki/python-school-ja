@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>コマンドライン操作 - 5 &mdash; Python School 1.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.1.0 documentation" href="index.html" />
+    <link rel="next" title="コマンドライン操作 - 6" href="cmdline-6.html" />
+    <link rel="prev" title="コマンドライン操作 - 4" href="cmdline-4.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>コマンドライン操作 - 5</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-4.html">コマンドライン操作 - 4</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-6.html">コマンドライン操作 - 6</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>コマンドライン操作 - 5<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p><em>SSH</em> を使ってリモートのサーバを操作してみます。</p>
+<p>今回と次回は Linux サーバとのやり取りを想定しています。
+(Mac OSX でも構いません。Windows しか使わない / 使えない場合はスキップしてください。)</p>
+<div class="section" id="id2">
+<h2>リモートサーバの操作<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">ssh</span></tt> コマンドを <tt class="docutils literal"><span class="pre">subprocess.call()</span></tt> に渡します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;ssh&quot;</span><span class="p">,</span> <span class="s">&quot;localhost&quot;</span><span class="p">])</span>
+<span class="go">ssh: connect to host localhost port 22: Connection refused</span>
+<span class="go">255</span>
+</pre></div>
+</div>
+<p>localhost では sshd を立ち上げていないので、接続を拒否しています。</p>
+<p>sshd を起動してから再度実行します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;ssh&quot;</span><span class="p">,</span> <span class="s">&quot;localhost&quot;</span><span class="p">])</span>
+<span class="go">Password:</span>
+<span class="go">Last login: Mon Dec 12 23:28:03 2011 from localhost</span>
+<span class="go">SK-MackBook-Pro:~ shigeru$</span>
+</pre></div>
+</div>
+<p>sshd の引数でコマンドを渡すと、ログインした先で実行されます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;ssh&quot;</span><span class="p">,</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="s">&quot;uname&quot;</span><span class="p">,</span> <span class="s">&quot;-v&quot;</span><span class="p">])</span>
+<span class="go">Password:</span>
+<span class="go">Could not open a connection to your authentication agent.</span>
+<span class="go">Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>あとはコマンドを羅列していけば構いません。</p>
+</div>
+<div class="section" id="paramiko">
+<h2>paramiko を使う<a class="headerlink" href="#paramiko" title="Permalink to this headline">¶</a></h2>
+<p>SSH2 プロトコルを扱うモジュールとして <cite>paramiko</cite> があります。
+コマンドを単に羅列するよりもプラグラマブルに管理できます。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.lag.net/paramiko/">paramiko</a></li>
+</ul>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に <em>paramiko</em> を追加し、 <strong class="command">pip</strong> でインストールします。</p>
+<div class="highlight-python"><pre>$ source bin/activate
+$ pip install -r requirements.txt</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に追加。</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">paramiko</span>
+</pre></div>
+</div>
+</div>
+<p>モジュールが読み込めることを確認します。
+(すべてを表示すると多すぎるので、大文字の &#8220;SSH&#8221; から始まるものを抜粋)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">paramiko</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;SSH&quot;</span><span class="p">),</span> <span class="nb">dir</span><span class="p">(</span><span class="n">paramiko</span><span class="p">))</span>
+<span class="go">[&#39;SSHClient&#39;, &#39;SSHConfig&#39;, &#39;SSHException&#39;]</span>
+</pre></div>
+</div>
+<p>サーバにログインして <strong class="command">uptime</strong> コマンドを実行します。</p>
+<p><tt class="file docutils literal"><span class="pre">cmdline-5.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">paramiko</span><span class="o">,</span> <span class="nn">getpass</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span>
+<span class="n">username</span> <span class="o">=</span> <span class="n">password</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;Username: (Default=</span><span class="si">%s</span><span class="s">) &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">u</span><span class="p">,))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">u</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s">&quot;Password: &quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;No password is given.&quot;</span><span class="p">)</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">paramiko</span><span class="o">.</span><span class="n">Transport</span><span class="p">((</span><span class="n">server</span><span class="p">,</span> <span class="mi">22</span><span class="p">))</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">hostkey</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;Bad username or password.&quot;</span><span class="p">)</span>
+
+<span class="n">ch</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">open_channel</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&quot;session&quot;</span><span class="p">)</span>
+<span class="n">ch</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s">&quot;uptime&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ch</span><span class="o">.</span><span class="n">recv_ready</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">server</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">ch</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">paramiko.Transport</span></tt> を使っていますが <tt class="docutils literal"><span class="pre">paramiko.SSHClient</span></tt> でも実現できます。
+興味があれば、様々な API を使ってみてください。</p>
+<p>また、上記のスクリプトは <tt class="docutils literal"><span class="pre">raw_input()</span></tt> と <cite>getpass</cite> モジュールを使っています。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/getpass.html">15.10. getpass — Portable password input</a> (公式ドキュメント)</li>
+</ul>
+<p>ユーザーからの入力を受け付ける方法には <tt class="docutils literal"><span class="pre">input()</span></tt> もあります。
+ケースバイケースで使い分けるようにしましょう。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-4.html">コマンドライン操作 - 4</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-6.html">コマンドライン操作 - 6</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -20,17 +20,17 @@ CSV はデータが単に羅列されたものですから、何番目のフィ�
     5               得失点差
     ==============  ======================
 
-:file:`csv04.csv`
+:file:`csv-4.csv`
 
-.. literalinclude:: ../etc/csv04.csv
+.. literalinclude:: ../etc/csv-4.csv
 
 辞書データに変換
 ----------------
 データの並びに意味をマップさせるには、 ``zip()`` と ``dict()`` を組み合わせることで実現できます。
 
-:file:`csv04.py`
+:file:`csv-4.py`
 
-.. literalinclude:: ../src/csv04.py
+.. literalinclude:: ../src/csv-4.py
    :language: python
 
 なお、辞書の値だけを取り出すには ``values()`` メソッドも使えます。
@@ -45,9 +45,9 @@ CSV はデータが単に羅列されたものですから、何番目のフィ�
 オブジェクトに変換する場合には型をチェックしても良いでしょう。
 値の制約条件をチェックするのも有効です。
 
-:file:`csv04a.py`
+:file:`csv-4a.py`
 
-.. literalinclude:: ../src/csv04a.py
+.. literalinclude:: ../src/csv-4a.py
    :language: python
 
 クラスを定義するときは ``self`` というキーワードが欠かせません。

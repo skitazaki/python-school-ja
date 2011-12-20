@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>コマンドライン操作 - 4 &mdash; Python School 1.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.1.0 documentation" href="index.html" />
+    <link rel="next" title="コマンドライン操作 - 5" href="cmdline-5.html" />
+    <link rel="prev" title="コマンドライン操作 - 3" href="cmdline-3.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>コマンドライン操作 - 4</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-3.html">コマンドライン操作 - 3</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-5.html">コマンドライン操作 - 5</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>コマンドライン操作 - 4<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p><cite>subprocess</cite> モジュールを使うことでシェルコマンドを実行できます。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/subprocess.html">17.1. subprocess — Subprocess management</a> (公式ドキュメント)</li>
+</ul>
+<div class="section" id="id2">
+<h2>シェルコマンドの実行<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>もっとも簡単なコマンドの実行方法は <tt class="docutils literal"><span class="pre">subprocess.call()</span></tt> の呼び出しです。</p>
+<p>コマンドプロンプトで対話シェルに対して実行します。 (Windows)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s">&quot;python -V&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="s">&#39;-V&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Linux で実行する場合にはシェルコマンドを渡します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s">&quot;ls&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ls&#39;</span><span class="p">,</span> <span class="s">&#39;/var/log&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>subprocess</cite> モジュールは以下のモジュールの置き換えになりますので、
+ちょっと古いブログ記事などを読む場合は気をつけましょう。</p>
+<ul class="simple">
+<li>os.system</li>
+<li>os.spawn*</li>
+<li>os.popen*</li>
+<li>popen2.*</li>
+<li>commands.*</li>
+</ul>
+<p>公式ドキュメントには、それぞれのモジュールで書かれたスクリプトを置き換える方法も掲載されています。</p>
+</div>
+<div class="section" id="id3">
+<h2>コマンドの実行を待つ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>少し込み入ったことを実装する場合には <tt class="docutils literal"><span class="pre">Popen</span></tt> を使います。
+<tt class="docutils literal"><span class="pre">subprocess.call()</span></tt> はこれのラッパーなわけです。</p>
+<p>Python 2.5 では <tt class="docutils literal"><span class="pre">check_call()</span></tt> 、 Python 2.7 では <tt class="docutils literal"><span class="pre">check_output()</span></tt> が追加されていますが、
+Python 2.4 でも <tt class="docutils literal"><span class="pre">Popen</span></tt> でガチャガチャと頑張れば同等の機能は実装できるはずです。</p>
+<p><tt class="docutils literal"><span class="pre">du</span></tt> コマンドが終わるのをまってみましょう。(Linux)</p>
+<p><tt class="file docutils literal"><span class="pre">cmdline-4.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s">&#39;du&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;[Before wait] Return Code&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span>
+<span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&quot;[After wait] Return Code&quot;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>$ python cmdline-4.py
+[Before wait] Return Code None
+1712    ./_build/doctrees
+40      ./_build/html/sources
+440     ./_build/html/static
+1712    ./_build/html
+3424    ./_build
+3984    .
+[After wait] Return Code 0</pre>
+</div>
+<p>呼び出したプロセスが終了するのを待ち受けたことが分かります。</p>
+<p>途中結果を待ち受けるには <tt class="docutils literal"><span class="pre">poll()</span></tt> 、プロセスにデータを渡すには <tt class="docutils literal"><span class="pre">communicate()</span></tt> を使います。</p>
+</div>
+<div class="section" id="id4">
+<h2>宿題<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Wikipedia は XML 形式でデータを公開しています。
+記事の概要である <tt class="file docutils literal"><span class="pre">jawiki-latest-abstract.xml</span></tt> をダウンロードし、それを解凍するスクリプトを記述してください。
+単一のスクリプトで記述しても、 <cite>subprocess</cite> でふたつのスクリプトを組み合わせても構いません。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://dumps.wikimedia.org/jawiki/latest/">Index of /jawiki/latest/</a> - dumps.wikimedia.org</li>
+</ul>
+<p>データ量が大きいため、通信回線が太い環境でもそれなりに時間がかかります。
+その進捗が分かるように、標準出力に何らかの情報を表示してください。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Linux や Mac の場合は <strong class="command">wget</strong> や <strong class="command">curl</strong> でダウンロードできますが、
+Windows の場合はそうしたツールが組み込まれていないため。
+また、&#8221;.tar.gz&#8221; や &#8221;.tar.bz2&#8221; を解凍する方法も標準では提供されていない。</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-3.html">コマンドライン操作 - 3</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-5.html">コマンドライン操作 - 5</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

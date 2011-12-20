@@ -1,0 +1,136 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>コマンドライン操作 - 2 &mdash; Python School 1.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.1.0 documentation" href="index.html" />
+    <link rel="next" title="コマンドライン操作 - 3" href="cmdline-3.html" />
+    <link rel="prev" title="コマンドライン操作 - 1" href="cmdline-1.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Python School 1.1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>コマンドライン操作 - 2</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-1.html">コマンドライン操作 - 1</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-3.html">コマンドライン操作 - 3</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>コマンドライン操作 - 2<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>異なるディレクトリの情報を扱うために、パスの扱いを確認します。</p>
+<div class="section" id="id2">
+<h2>パスを連結する<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">os.path.join()</span></tt> を使うことで、パス区切り文字を意識せずにファイルパスを扱えます。
+引数の数は可変長になっていますので、３つや４つもそのまま連結できます。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="s">&quot;src&quot;</span><span class="p">,</span> <span class="s">&quot;pyschool&quot;</span><span class="p">)</span>
+<span class="go">&#39;./src/pyschool&#39;</span>
+</pre></div>
+</div>
+<p>モジュールのインポートでは下位パッケージまで指定することが一般的ですが、
+<cite>os.path</cite> に限っては <cite>os</cite> だけをインポートした方が良いでしょう。
+実際に読み込むファイルは実行環境に依存するためです。
+詳細は難しいかもしれませんが、「インポートするにもいくつかの方法がある」と覚えておきましょう。</p>
+<p><a class="reference external" href="http://www.python.jp/doc/2.4/lib/module-os.html">os.path</a></p>
+<div class="highlight-python"><pre>posixpath や macpath のように、システムごとに対応付けられているパス名操作のためのシステム依存の標準モジュールです。
+すなわち、正しく import が行われるかぎり、 os.path.split(file) は posixpath.split(file) と等価でありながらより汎用性があります。
+このモジュール自体が import 可能なモジュールでもあるので注意してください。 : os.path として直接 import してもかまいません。</pre>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>ファイル操作いろいろ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>ファイルをコピーするためには <cite>shutil</cite> モジュールの <tt class="docutils literal"><span class="pre">copy()</span></tt> 関数を使います。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/shutil.html">shutil — High-level file operations</a> (公式ドキュメント)</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">shutil</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s">&quot;README.rst&quot;</span><span class="p">,</span> <span class="s">&quot;README.rst.backup&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imort</span> <span class="n">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&quot;ls README*&quot;</span><span class="p">)</span>
+<span class="go">README.rst              README.rst.backup</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>公式ドキュメントのサンプルスクリプトに目を通しておきましょう。
+アーカイブの作成方法なども掲載されています。</p>
+</div>
+<div class="section" id="id4">
+<h2>ファイルシステムの階層を辿る<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">os.walk()</span></tt> を使うことで階層的にファイルシステムを走査できます。
+使い方は独特なので、公式ドキュメントの例にも目を通しておいてください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/os.html?highlight=os.walk#os.walk">os — Miscellaneous operating system interfaces (os.walk)</a></li>
+</ul>
+<p>カレントディレクトリ配下にある XML ファイルの一覧を出力すると、次のようになります。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">imort</span> <span class="n">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">xmls</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.xml&quot;</span><span class="p">),</span> <span class="n">files</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">xml</span> <span class="ow">in</span> <span class="n">xmls</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">xml</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">./lib/python2.7/site-packages/sphinx/themes/basic/opensearch.xml</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>宿題<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>バージョン管理されたディレクトリには、 &#8221;.svn&#8221; や &#8221;.git&#8221; のようなディレクトリが存在します。
+<tt class="docutils literal"><span class="pre">os.walk()</span></tt> を使ったときに、これらを除外するスクリプトを記述してみましょう。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="cmdline-1.html">コマンドライン操作 - 1</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="cmdline-3.html">コマンドライン操作 - 3</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

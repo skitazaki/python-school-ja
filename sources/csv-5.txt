@@ -17,21 +17,21 @@ CSV ファイルの処理方法 - 5
 
 まずは CSV ファイルの先頭行にフィールド名を記述しておきます。
 
-:file:`csv05.csv`
+:file:`csv-5.csv`
 
-.. literalinclude:: ../etc/csv05.csv
+.. literalinclude:: ../etc/csv-5.csv
 
 次に、 ``UnicodeReader`` の ``next()`` を使ってヘッダー行を保存しておき、
 データを読み込む度に ``zip()`` で組み合わせて辞書形式に変換します。
 
-:file:`csv05.py`
+:file:`csv-5.py`
 
-.. literalinclude:: ../src/csv05.py
+.. literalinclude:: ../src/csv-5.py
    :language: python
 
 差分 ::
 
-    $ diff -U 1 csv04.py csv05.py
+    $ diff -U 1 csv-4.py csv-5.py
     @@ -12,3 +12,2 @@
      DEFAULT_CSV_FILE = 'sample.csv'
     -LEAGUE_STATS = ('rank', 'team', 'point', 'match', 'goaldiff')
@@ -52,9 +52,9 @@ DictReader を使う
 標準 csv モジュールには ``DictReader`` クラスがあります。
 ユニコード対応は一度切り落として、このクラスを使って再実装してみましょう。
 
-:file:`csv05a.py`
+:file:`csv-5a.py`
 
-.. literalinclude:: ../src/csv05a.py
+.. literalinclude:: ../src/csv-5a.py
    :language: python
 
 ヘッダー行を自動的に解釈してくれますので、場合によっては便利なモジュールだと言えます。
