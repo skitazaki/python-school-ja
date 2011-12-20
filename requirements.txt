@@ -1,8 +1,23 @@
+# Basic libraries
 pep8
 pyflakes
+
+# Document and Test
 Sphinx
+sphinxjp.themes.s6
+nose
+
+# CSV series
 SQLAlchemy
+
+# Command-line series
 paramiko
 fabric
-nose
-#Django==1.3
+
+# Web application series
+Django==1.3
+
+# Misc.
+pyyaml
+httplib2
+

@@ -16,7 +16,7 @@
     そのまま使い始められます。
 
 fabric のインストール
-====================
+=====================
 :file:`requirements.txt` に *fabric* を追加し、 :command:`pip` でインストールします。 ::
 
     $ source bin/activate
