@@ -15,6 +15,7 @@ SQLAlchemy の準備
 =================
 :file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。 ::
 
+    > Scripts/activate.bat
     > pip install -r requirements.txt
 
 .. note::

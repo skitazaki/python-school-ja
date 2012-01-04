@@ -1,6 +1,6 @@
-======================
-コマンドライン操作 - 3
-======================
+==================
+設定情報を管理する
+==================
 プログラムの設定情報を管理する方法はたくさんあります。
 ここでは、環境変数の利用と、設定ファイルの利用を紹介します。
 
@@ -46,14 +46,14 @@ os.environ で環境変数を設定、参照できます。
 
 :file:`settings.py` (geodjango の初期設定から抜粋)
 
-.. literalinclude:: ../src/settings.py
+.. literalinclude:: /../src/settings.py
    :encoding: utf-8
    :language: python
 
 
 :file:`cmdline-3.py` (:file:`settings.py` は同じディレクトリに配置)
 
-.. literalinclude:: ../src/cmdline-3.py
+.. literalinclude:: /../src/cmdline-3.py
    :encoding: utf-8
    :language: python
 
@@ -108,7 +108,7 @@ HTTP でダウンロード
 
 :file:`downloader.py`
 
-.. literalinclude:: ../src/downloader.py
+.. literalinclude:: /../src/downloader.py
    :encoding: utf-8
    :language: python
 

@@ -1,6 +1,6 @@
-======================
-コマンドライン操作 - 6
-======================
+=============
+fabric を使う
+=============
 アプリケーションのデプロイやシステム管理を簡単に扱えるライブラリとして
 *fabric* があります。
 
@@ -51,7 +51,7 @@ fabfile.py
 
 :file:`fabfile.py`
 
-.. literalinclude:: ../src/fabfile.py
+.. literalinclude:: /../src/fabfile.py
    :encoding: utf-8
    :language: python
 

@@ -1,6 +1,6 @@
-======================
-コマンドライン操作 - 4
-======================
+========================
+シェルコマンドを実行する
+========================
 `subprocess` モジュールを使うことでシェルコマンドを実行できます。
 
 * `17.1. subprocess — Subprocess management`_ (公式ドキュメント)
@@ -50,7 +50,7 @@ Python 2.4 でも ``Popen`` でガチャガチャと頑張れば同等の機能�
 
 :file:`cmdline-4.py`
 
-.. literalinclude:: ../src/cmdline-4.py
+.. literalinclude:: /../src/cmdline-4.py
    :encoding: utf-8
    :language: python
 
@@ -86,6 +86,6 @@ Wikipedia は XML 形式でデータを公開しています。
 .. note::
 
     Linux や Mac の場合は :command:`wget` や :command:`curl` でダウンロードできますが、
-    Windows の場合はそうしたツールが組み込まれていないため。
-    また、".tar.gz" や ".tar.bz2" を解凍する方法も標準では提供されていない。
+    Windows の場合はそうしたツールが組み込まれていません。
+    また、".tar.gz" や ".tar.bz2" を解凍する方法も標準では提供されていません。
 

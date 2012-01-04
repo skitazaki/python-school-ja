@@ -1,6 +1,6 @@
-======================
-コマンドライン操作 - 5
-======================
+==========
+SSH を使う
+==========
 *SSH* を使ってリモートのサーバを操作してみます。
 
 今回と次回は Linux サーバとのやり取りを想定しています。
@@ -8,15 +8,14 @@
 
 リモートサーバの操作
 ====================
-``ssh`` コマンドを ``subprocess.call()`` に渡します。 ::
+:command:`ssh` コマンドを ``subprocess.call()`` に渡します。 ::
 
     >>> import subprocess
     >>> subprocess.call(["ssh", "localhost"])
     ssh: connect to host localhost port 22: Connection refused
     255
 
-localhost では sshd を立ち上げていないので、接続を拒否しています。
-
+localhost で sshd を立ち上げていない場合は、上記のように接続を拒否されます。
 sshd を起動してから再度実行します。 ::
 
     >>> subprocess.call(["ssh", "localhost"])
@@ -24,7 +23,7 @@ sshd を起動してから再度実行します。 ::
     Last login: Mon Dec 12 23:28:03 2011 from localhost
     SK-MackBook-Pro:~ shigeru$
 
-sshd の引数でコマンドを渡すと、ログインした先で実行されます。 ::
+:command:`ssh` の引数でコマンドを渡すと、ログインした先で実行されます。 ::
 
     >>> subprocess.call(["ssh", "localhost", "uname", "-v"])
     Password:
@@ -65,7 +64,7 @@ SSH2 プロトコルを扱うモジュールとして `paramiko` があります
 
 :file:`cmdline-5.py`
 
-.. literalinclude:: ../src/cmdline-5.py
+.. literalinclude:: /../src/cmdline-5.py
    :encoding: utf-8
    :language: python
 

@@ -9,8 +9,6 @@ Python の学習
 テキストファイルに対する処理、シェルスクリプトに代わるものを Python で記述することにより、
 チーム開発の生産性を向上させます。
 
-目次:
-
 .. toctree::
    :maxdepth: 2
 
@@ -20,13 +18,7 @@ Python の学習
    basic-scripting
 
    csv/index
-
-   cmdline-1
-   cmdline-2
-   cmdline-3
-   cmdline-4
-   cmdline-5
-   cmdline-6
+   cmdline/index
 
 ..
    run-test

@@ -1,11 +1,11 @@
-======================
-コマンドライン操作 - 1
-======================
+========================
+ファイルの一覧を確認する
+========================
 `os` モジュールを使って、カレントディレクトリのファイルを確認します。
 
-* `os — Miscellaneous operating system interfaces`_
+* `15.1. os — Miscellaneous operating system interfaces`_
 
-.. _`os — Miscellaneous operating system interfaces`: http://docs.python.org/library/os.html
+.. _`15.1. os — Miscellaneous operating system interfaces`: http://docs.python.org/library/os.html
 
 ファイル一覧を取得する
 ======================
