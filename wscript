@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 APPNAME = 'python-shool-ja'
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 top = '.'
 out = '_build'
@@ -21,6 +21,12 @@ def build(bld):
     for node in nodes:
         bld(rule='pep8 ${TGT}', target=node)
         bld(rule='pyflakes ${TGT}', target=node)
+
+
+def doc(ctx):
+    wd = 'doc'
+    cmd = ['make', 'html']
+    ctx.exec_command(cmd, cwd=wd)
 
 
 def test(ctx):
