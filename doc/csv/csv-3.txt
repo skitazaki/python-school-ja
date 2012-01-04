@@ -1,5 +1,5 @@
 ==========================
-CSV ファイルの処理方法 - 3
+ユニコード文字列を考慮する
 ==========================
 Python の文字列には通常の文字列とユニコード文字列があります。
 ASCII だけを扱う場合には問題になりませんが、日本語を扱う場合には大きな関門となります。
@@ -31,7 +31,7 @@ Unicode と UTF-8 は違います。
 
 :file:`csv-3.py`
 
-.. literalinclude:: ../src/csv-3.py
+.. literalinclude:: /../src/csv-3.py
    :language: python
 
 日本語を含むテストデータも作成します。
@@ -39,7 +39,7 @@ Unicode と UTF-8 は違います。
 
 :file:`csv-3.csv`
 
-.. literalinclude:: ../etc/csv-3.csv
+.. literalinclude:: /../etc/csv-3.csv
 
 実行結果 ::
 
@@ -129,7 +129,7 @@ Python のパッケージは基本的にディレクトリ構造に一致しま�
 
 :file:`pyschool/cmdline.py`
 
-.. literalinclude:: ../src/pyschool/cmdline.py
+.. literalinclude:: /../src/pyschool/cmdline.py
 
 このファイルは次のように使います。 ::
 

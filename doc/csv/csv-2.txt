@@ -1,6 +1,6 @@
-==========================
-CSV ファイルの処理方法 - 2
-==========================
+====================
+標準モジュールを使う
+====================
 前の章のように自前で実装すると次の二点への対応が難しくなります。
 
 * エスケープ処理
@@ -17,20 +17,20 @@ CSV ファイルの処理方法 - 2
 .. _13.1. csv — CSV File Reading and Writing: http://docs.python.org/library/csv.html
 .. _csv – カンマ区切りのファイル: http://www.doughellmann.com/PyMOTW-ja/csv/
 
-標準 csv モジュール
-===================
+csv モジュール
+==============
 csv モジュールを使って、 :doc:`csv-1` と同様の処理を実装しましょう。
 
 :file:`csv-2.py`
 
-.. literalinclude:: ../src/csv-2.py
+.. literalinclude:: /../src/csv-2.py
    :language: python
 
 処理する CSV は少し変更します。
 
 :file:`csv-2.csv`
 
-.. literalinclude:: ../etc/csv-2.csv
+.. literalinclude:: /../etc/csv-2.csv
 
 実行結果 ::
 

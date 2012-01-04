@@ -1,11 +1,11 @@
-==========================
-CSV ファイルの処理方法 - 1
-==========================
+==================
+ファイルを読み込む
+==================
 カンマ区切りの :file:`csv-1.csv` を読み込んで、タブ区切りに変更するスクリプトを実装します。
 
 :file:`csv-1.csv`
 
-.. literalinclude:: ../etc/csv-1.csv
+.. literalinclude:: /../etc/csv-1.csv
 
 自力で実装する方法
 ==================
@@ -16,7 +16,7 @@ CSV ファイルの処理方法 - 1
 
 :file:`csv-1.py`
 
-.. literalinclude:: ../src/csv-1.py
+.. literalinclude:: /../src/csv-1.py
    :language: python
 
 実行結果 ::

@@ -1,6 +1,6 @@
-==========================
-CSV ファイルの処理方法 - 5
-==========================
+================================
+ファイル風オブジェクトを意識する
+================================
 データの並びをデータ自体に埋め込んで管理することもできます。
 データファイルの１行目に、それぞれのフィールドの意味を記述しておきます。
 データのポータビリティは高くなりますが、
@@ -19,14 +19,14 @@ CSV ファイルの処理方法 - 5
 
 :file:`csv-5.csv`
 
-.. literalinclude:: ../etc/csv-5.csv
+.. literalinclude:: /../etc/csv-5.csv
 
 次に、 ``UnicodeReader`` の ``next()`` を使ってヘッダー行を保存しておき、
 データを読み込む度に ``zip()`` で組み合わせて辞書形式に変換します。
 
 :file:`csv-5.py`
 
-.. literalinclude:: ../src/csv-5.py
+.. literalinclude:: /../src/csv-5.py
    :language: python
 
 差分 ::
@@ -54,7 +54,7 @@ DictReader を使う
 
 :file:`csv-5a.py`
 
-.. literalinclude:: ../src/csv-5a.py
+.. literalinclude:: /../src/csv-5a.py
    :language: python
 
 ヘッダー行を自動的に解釈してくれますので、場合によっては便利なモジュールだと言えます。
