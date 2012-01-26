@@ -1,0 +1,96 @@
+================
+Tips
+================
+
+モジュールの実行
+================
+
+* `ANS-prog: pythonの-m指定で便利なモジュール類`_ - freia.jp
+
+.. _`ANS-prog: pythonの-m指定で便利なモジュール類`: http://www.freia.jp/taka/blog/766/
+
+JSON の整形
+-----------
+:doc:`advanced-3` の「HTTP でダウンロード」で作成した :file:`downloader.py` を使って、
+Web サービスから JSON をダウンロードできます。
+しかし、Web サービスが出力する JSON は空白や改行などを含まないため、人が読むには適していません。
+いくつかのビューアーもありますが、Python のモジュールを利用して整形することもできます。
+
+*json.tool* というモジュールは実行可能なモジュールになっています。
+Python インタープリタの `-m` オプションに指定することで、
+モジュールを実行できます。
+
+JSON のダウンロード (Twitter で「Python」という単語を検索) ::
+
+    $ python downloader.py "http://search.twitter.com/search.json?q=Python"
+    INFO:root:Download: http://search.twitter.com/search.json?q=Python -> search.json
+
+JSON の整形 ::
+
+    $ python -m json.tool search.json >search-pretty.json
+
+整形結果の確認 ::
+
+    $ head search-pretty.json
+    {
+        "completed_in": 0.081,
+        "max_id": 162157219486502912,
+        "max_id_str": "162157219486502912",
+        "next_page": "?page=2&max_id=162157219486502912&q=Python",
+        "page": 1,
+        "query": "Python",
+        "refresh_url": "?since_id=162157219486502912&q=Python",
+        "results": [
+            {
+
+HTTP サーバの起動
+-----------------
+Python 2 系では `SimpleHTTPServer` というモジュールを実行すると、
+カレントディレクトリを HTTP サーバで公開できます。 ::
+
+    > python -m SimpleHTTPServer
+
+Python 3 系では `http.server` に変更されています。 ::
+
+    > python3 -m http.server
+
+アドホックなネットワーク環境でファイルを交換する場合や、
+JavaScript を実装する場合には便利なこともありますので、覚えておいてください。
+
+日本語を扱うときに便利なこと
+============================
+JSON に含まれる日本語をエスケープさせない
+-----------------------------------------
+
+* `python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする`_
+
+.. _python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする: http://iyukki.blog56.fc2.com/blog-entry-137.html
+
+:file:`json-dump.py`
+
+.. literalinclude:: /../src/json-dump.py
+   :language: python
+   :encoding: utf-8
+
+実行結果 ::
+
+    $ python json-dump.py
+    Wrote to "out.json".
+    $ cat out.json
+    {
+        "results": [
+            {
+                "latitude": 139.714941,
+                "name": "国立霞ヶ丘競技場",
+                "longitude": 35.67816,
+                "description": "naash.go.jp"
+            },
+            {
+                "latitude": 139.5272,
+                "name": "味の素スタジアム",
+                "longitude": 35.6646,
+                "description": "http://www.ajinomotostadium.com/\n元の名称: 東京スタジアム"
+            }
+        ]
+    }
+

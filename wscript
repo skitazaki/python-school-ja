@@ -29,6 +29,12 @@ def doc(ctx):
     ctx.exec_command(cmd, cwd=wd)
 
 
+def clean(ctx):
+    wd = 'doc'
+    cmd = ['make', 'clean']
+    ctx.exec_command(cmd, cwd=wd)
+
+
 def test(ctx):
     t = ctx.path.ant_glob('src/**/*.py')
     files = [f.abspath() for f in t]
