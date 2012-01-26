@@ -1,0 +1,10 @@
+==================
+基本的なスクリプト
+==================
+
+.. toctree::
+   :maxdepth: 2
+
+   toy-program
+   basic-scripting
+

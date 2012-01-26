@@ -46,7 +46,7 @@
 
 .. _`PEP 263`: http://www.python.org/dev/peps/pep-0263/
 
-.. literalinclude:: ../src/fizzbuzz.py
+.. literalinclude:: /../src/fizzbuzz.py
    :encoding: utf-8
    :language: python
    :lines: 3-94
