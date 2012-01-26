@@ -1,0 +1,158 @@
+==========================
+ユニコード文字列を考慮する
+==========================
+Python の文字列には通常の文字列とユニコード文字列があります。
+ASCII だけを扱う場合には問題になりませんが、日本語を扱う場合には大きな関門となります。
+
+内部的には Unicode で処理する習慣を身につけておきましょう。
+また、入力および出力のときにはエンコーディングを指定することも心掛けましょう。
+Unicode と UTF-8 は違います。
+違いが分からない場合は調べておいてください。
+
+* `Unicode`_ (wikipedia)
+* `国際化プログラミング(の前の知識)`_ (ありえるえりあ)
+
+.. _Unicode: http://ja.wikipedia.org/wiki/Unicode
+.. _国際化プログラミング(の前の知識): http://dev.ariel-networks.com/column/tech/i18n/
+
+日本語を含むデータの扱い方
+==========================
+`公式ドキュメント`_ の一番下に ``UnicodeReader`` と ``UnicodeWriter`` の実装が掲載されています。
+これを :file:`unicodecsv.py` として保存しておきます。
+
+.. _公式ドキュメント: http://docs.python.org/library/csv.html
+
+スクリプトから使う場合は次の１行を追加することで有効になります。 ::
+
+    import unicodecsv
+
+これを使って :file:`csv-2.py` を改修します。
+サンプルデータにも日本語を追加しておきます。
+
+:file:`csv-3.py`
+
+.. literalinclude:: /../src/csv-3.py
+   :language: python
+
+日本語を含むテストデータも作成します。
+エンコーディングは UTF-8 で保存してください。
+
+:file:`csv-3.csv`
+
+.. literalinclude:: /../etc/csv-3.csv
+
+実行結果 ::
+
+    > python csv-3.py csv-1.csv
+    2011-03-11      Earthquake
+    2011-06-06      World IPv6 Day
+    2011-11-11      Eleven Eleven
+    2011-12-10      total lunar eclipse     not solar eclipse
+
+    > python csv-3.py csv-2.csv
+    ISO8601 June, 1988
+    ISO8601:2000    December, 2000
+    Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
+
+    > python csv-3.py csv-3.csv
+    城端麦酒        www.jo-beer.com
+    ブルーマスター  www.brewmaster2002.com
+    栃木マイクロブルワリー  www.beatclub.jp/microb/
+    厚木ビール      www.atsugi.to
+    羽生の里        www.hana-beer.com
+    三井食品        www.mitsuifoods.co.jp
+    銀河高原ビール  www.gingakogenweb.com
+
+差分 ::
+
+    $ diff -U 1 csv-2.py csv-3.py
+    @@ -6,3 +6,3 @@
+     
+    -import csv
+    +import unicodecsv
+     import logging
+    @@ -41,3 +41,3 @@
+         with open(fname) as reader:
+    -        for row in csv.reader(reader):
+    +        for row in unicodecsv.UnicodeReader(reader):
+                 print '\t'.join(row)
+ 
+パッケージを作る
+================
+スクリプトをたくさん書いていくと、様々な場所に散り散りになってしまいます。
+また、全てをフラットに配置すると依存関係の把握が難しくなってしまいます。
+そこで、複数のスクリプトをパッケージとしてまとめます。
+
+Python のパッケージは基本的にディレクトリ構造に一致します。
+あるディレクトリを Python のパッケージとして有効にするためには、次のふたつの条件を満たす必要があります。
+
+* パッケージのトップディレクトリが ``sys.path`` に含まれる。
+* それぞれのディレクトリは :file:`__init__.py` を持つ。
+
+:file:`__init__.py` は特別な意味を持つファイルで、パッケージに関するメタ情報などを記述します。
+単なる Python ファイルですから、普通に Python スクリプトを記述しても構いません。
+中身は空っぽでも構いません。
+
+たとえば、上記の :file:`unicodecsv.py` を *pyschool* パッケージに入れると、次の構造になります。
+::
+
+    pyschool
+            __init__.py
+            unicodecsv.py
+
+スクリプトから使う場合は import 文を変更します。 ::
+
+    import pyschool.unicodecsv
+
+適切にパッケージを作成することで次のようなメリットがあります。
+
+* 関数やクラスを再利用できるようになる。
+* 全体の見通しが立ちやすくなる。
+* 部分的にテストできるようになる。
+
+.. note::
+
+    インポートするモジュールのパス解決
+
+    Python スクリプトは、それだけでモジュールとしてインポートできます。
+    インポートするディレクトリの指定方法はいくつかあります。
+
+    * 標準ライブラリ置き場 (virtualenv 環境の :file:`Lib` など)
+    * カレントディレクトリ
+    * 環境変数 ``PYTHONPATH`` で指定
+    * Python スクリプト内で ``sys.path`` に追加
+
+    実際には ``sys.path`` のリストが全てですが、その実現方法は色々ある、と覚えておいてください。
+
+最後に、引数処理のような共通コードはモジュール化しておきましょう。
+``parse_args()`` を :file:`pyschool/cmdline.py` に移動します。
+
+:file:`pyschool/cmdline.py`
+
+.. literalinclude:: /../src/pyschool/cmdline.py
+
+このファイルは次のように使います。 ::
+
+    >>> import pyschool.cmdline
+    >>> opts, args = pyschool.cmdline.parse_args()
+    >>> print opts, args
+    {'output': None, 'verbose': False, 'quiet': False} []
+
+*import* 文は、 *from* と合わせて使うこともできます。
+この記法を使うと、既存のコードをほとんど変更せずにモジュールを導入できます。 ::
+
+    >>> from pyschool.cmdline import parse_args
+    >>> opts, args = parse_args()
+    >>> print opts, args
+    {'output': None, 'verbose': False, 'quiet': False} []
+
+たとえば :file:`csv-3.py` の場合は、
+
+1. ``def parse_args`` の定義を取り除いて
+2. ``import optparse`` を取り除いて
+3. 上記の ``from pyschool.cmdline import parse_args`` を追加する
+
+この三点だけが必要になります。
+
+:file:`csv-1.py` と :file:`csv-2.py` も同様に変更できますので試してみてください。
+

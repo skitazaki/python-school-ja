@@ -1,0 +1,26 @@
+発展的なことがら
+================
+とりあえずこちらの英語の資料に目を通してみましょう。
+(スライドで160枚程度)
+
+* `Effective Python Programming`_ (PDF) / OSCON 2005 - uop.edu.jo
+
+.. _Effective Python Programming: http://www.uop.edu.jo/download/PdfCourses/python/effective_r27.pdf
+
+このセクションでは、次に学んだ方が良さそうなことを少しずつ紹介します。
+用語を覚えておくと、書籍などを読むときに理解の助けになるかもしれません。
+
+目次:
+
+.. toctree::
+   :maxdepth: 2
+
+   advanced-1
+   advanced-2
+   advanced-3
+   advanced-4
+   advanced-5
+
+..
+   advanced-6
+

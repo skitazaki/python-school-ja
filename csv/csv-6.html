@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>O/R マッパーを使ってデータベースを使う &mdash; Python School 1.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.2.0 documentation" href="../index.html" />
+    <link rel="up" title="CSV ファイルの処理方法" href="index.html" />
+    <link rel="next" title="コマンドライン操作" href="../cmdline/index.html" />
+    <link rel="prev" title="ファイル風オブジェクトを意識する" href="csv-5.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.2.0 documentation</span></a></h1>
+        <h2 class="heading"><span>O/R マッパーを使ってデータベースを使う</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="csv-5.html">ファイル風オブジェクトを意識する</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../cmdline/index.html">コマンドライン操作</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="o-r">
+<h1>O/R マッパーを使ってデータベースを使う<a class="headerlink" href="#o-r" title="Permalink to this headline">¶</a></h1>
+<p>CSV ファイルから読み込んだ情報をデータベースに保存します。</p>
+<p>データベースには SQLite を使い、O/R マッパーとして SQLAlchemy を使います。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.sqlite.org/">SQLite</a> - sqlite.org</li>
+<li><a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> - sqlalchemy.org</li>
+</ul>
+<div class="section" id="id1">
+<h2>SQLAlchemy の準備<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に <cite>SQLAlchemy</cite> を追加し、 <strong class="command">pip</strong> を実行します。</p>
+<div class="highlight-python"><pre>&gt; Scripts/activate.bat
+&gt; pip install -r requirements.txt</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に追加。</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">SQLAlchemy</span>
+</pre></div>
+</div>
+</div>
+<p>Python のインタラクティブシェルからモジュールを読み込めることを確認します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">help()</span></tt> 関数でモジュールのヘルプが表示されますので確認してみてください。</p>
+</div>
+<div class="section" id="id2">
+<h2>O/R マッパー経由でデータベースに保存<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>O/R マッパーを使うためにはいくつかの準備が必要になります。</p>
+<ul>
+<li><p class="first"><cite>sqlalchemy</cite> モジュールの読み込み</p>
+</li>
+<li><p class="first">データオブジェクトの定義</p>
+</li>
+<li><p class="first">データベースエンジンの作成 (SQLite の場合はファイル)</p>
+</li>
+<li><p class="first">オブジェクトからデータベースのテーブルを生成</p>
+</li>
+<li><dl class="first docutils">
+<dt>オブジェクトをデータベースに投入</dt>
+<dd><ul class="first last simple">
+<li>トランザクションを開始</li>
+<li>オブジェクトを生成 (必要な回数だけ繰り返し)</li>
+<li>トランザクションをコミット</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>以上をスクリプトにまとめると次のようになります。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-6.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] csv_file [sqlite_file]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+<span class="n">DEFAULT_SQLITE_FILE</span> <span class="o">=</span> <span class="s">&#39;:memory:&#39;</span>
+
+<span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">LeagueStats</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;league_stats&#39;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">team</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+    <span class="n">goaldiff</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;LeagueStats(&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">&#39;)&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">team</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">csv2sqlite</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Import a CSV format file to SQLite database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dsl</span> <span class="o">=</span> <span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">output</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">dsl</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="c"># Read a header line.</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">LeagueStats</span><span class="p">(</span><span class="n">team</span><span class="o">=</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;team&#39;</span><span class="p">],</span>
+                    <span class="n">rank</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;rank&#39;</span><span class="p">]),</span>
+                    <span class="n">point</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">]),</span>
+                    <span class="n">match</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;match&#39;</span><span class="p">]),</span>
+                    <span class="n">goaldiff</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;goaldiff&#39;</span><span class="p">]))</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">DEFAULT_SQLITE_FILE</span>
+    <span class="n">csv2sqlite</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>第一引数に CSV ファイルを渡します。
+第二引数がない場合はオンメモリで動作します。</p>
+<div class="highlight-python"><pre>&gt; python csv-6.py csv-5.csv</pre>
+</div>
+<p>第二引数で出力ファイル名を指定できます。</p>
+<div class="highlight-python"><pre>&gt; python csv-6.py csv-5.csv csv-6.sqlite</pre>
+</div>
+<p>SQLite のビューアーとしては Lita などが便利です。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.dehats.com/drupal/?q=node/58">Lita - SQLite Administration Tool</a></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
+ループ回数を取得するには <tt class="docutils literal"><span class="pre">enumerate()</span></tt> を使います。</p>
+<ul class="last simple">
+<li><a class="reference external" href="http://docs.python.org/library/functions.html#enumerate">enumerate</a> (公式ドキュメント)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>宿題<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>フィールドに条件を課す処理を比較しましょう。
+SQLite を参照する場合と、CSV を参照する場合を比べてみてください。</p>
+<p><a class="reference internal" href="csv-4.html"><em>組込み関数 (zip / dict) を使う</em></a> の「宿題」には挙動を切り替える問題があります。
+同様に、出力データフォーマットも切り替えてみましょう。</p>
+<ul class="simple">
+<li>CSV のデータを JSON で出力</li>
+<li>CSV のデータを任意の XML で出力</li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="csv-5.html">ファイル風オブジェクトを意識する</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../cmdline/index.html">コマンドライン操作</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

@@ -19,42 +19,15 @@ Python の学習
    toy-program
    basic-scripting
 
-   csv-1
-   csv-2
-   csv-3
-   csv-4
-   csv-5
-   csv-6
+   csv/index
+   cmdline/index
 
-   cmdline-1
-   cmdline-2
-   cmdline-3
-   cmdline-4
-   cmdline-5
-   cmdline-6
+   advanced/index
 
 ..
-   run-test
-   documents
-   projects
-   webapp-1
-   webapp-2
-   webapp-3
-   webapp-4
-   webapp-5
-   webapp-6
-   xml-1
-   xml-2
-   xml-3
-   xml-4
-   xml-5
-   xml-6
-   advanced-1
-   advanced-2
-   advanced-3
-   advanced-4
-   advanced-5
-   advanced-6
+   projects/index
+   xml/index
+   webapps/index
 
 
 なぜ Python か？

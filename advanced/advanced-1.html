@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>デコレータ &mdash; Python School 1.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.2.0 documentation" href="../index.html" />
+    <link rel="up" title="発展的なことがら" href="index.html" />
+    <link rel="next" title="モジュールのインポート方法いろいろ" href="advanced-2.html" />
+    <link rel="prev" title="発展的なことがら" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.2.0 documentation</span></a></h1>
+        <h2 class="heading"><span>デコレータ</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">発展的なことがら</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="advanced-2.html">モジュールのインポート方法いろいろ</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>デコレータ<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>関数などに機能を追加するシンタックスシュガーとして、デコレータがあります。
+シンタックスシュガー、あるいは糖衣構文という言葉が分からない場合は別途学習しておいてください。
+(Python に限った言葉ではなく、プログラミング一般で使われるため)</p>
+<ul class="simple">
+<li><span class="target" id="index-0"></span><a class="pep reference external" href="http://www.python.org/dev/peps/pep-0318"><strong>PEP 318</strong></a>: Decorators for Functions and Methods</li>
+</ul>
+<p>日本語での一通りの解説はこちらの記事を参照してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://morchin.sakura.ne.jp/effective_python/decorator.html">1 デコレータとは</a> / Effective Python</li>
+</ul>
+<div class="section" id="id2">
+<h2>組み込みデコレータ<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">&#64;classmethod</span></tt> と <tt class="docutils literal"><span class="pre">&#64;staticmethod</span></tt> という二つのデコレータは Python 2.2 以上で使えます。
+使い方はこちらのブログを確認してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://jutememo.blogspot.com/2008/09/python-classmethod-staticmethod.html">Python のクラスメソッド – デコレータ &#64;classmethod, &#64;staticmethod を使って</a></li>
+</ul>
+<p><tt class="file docutils literal"><span class="pre">decorator-sample.py</span></tt> として、これらを組み合わせて使ってみます。
+それぞれのメソッドの引数の違いに注意しましょう。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Greetings from classmethod.&quot;</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;on Class-B&quot;</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;on Class-C&quot;</span>
+
+
+<span class="n">B</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;Alice&quot;</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;Bob&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>$ python decorator-sample.py
+Greetings from classmethod.
+Hello Alice on Class-B
+Greetings from classmethod.
+Hello Bob on Class-C</pre>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>デコレータのいろいろ<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>いくつかの参考リンクを列挙しておきます。
+デコレータについて更なる学習を進めるならば目を通しておきましょう。</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://wiki.python.org/moin/PythonDecoratorLibrary">Python Decorator Library</a>  - wiki.python.org:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">様々なデコレータの例が掲載されています。
+自分で実装するときには目を通してみるとよいでしょう。</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://docs.python.org/library/functools.html">9.8. functools — Higher order functions and operations on callable objects</a> (公式ドキュメント):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">自分で実装するときは、 <em>functools</em> モジュールの <tt class="docutils literal"><span class="pre">wraps</span></tt> デコレータを使うようにしましょう。
+<em>functools</em> モジュールは Python 2.5 から利用できます。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://www.saltycrane.com/blog/2010/11/fabric-post-run-processing-python-decorator/">Fabric post-run processing Python decorator</a> - saltycrane.com:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><em>Fabric</em> のタスクに追加処理を与えるためにもデコレータは有効です。
+<em>Fabric</em> に関しては <a class="reference internal" href="../cmdline/cmdline-6.html"><em>fabric を使う</em></a> を読んでみてください。</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://www.quora.com/What-are-common-uses-of-Python-decorators">What are common uses of Python decorators?</a> - quora.com:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">よくある使われ方は Quora などの Q&amp;A を確認してみましょう。
+フィボナッチ数列やメモ化 (memoize) を知らない場合は自分で調べておいてください。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://wiki.python.org/moin/PythonDecorators">the history of the process of adding decorators to Python</a> - wiki.python.org:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">デコレータの構文が現在のものに決まった経緯は Wiki にまとめられています。
+暇なときに読んでみると良いかもしれません。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">発展的なことがら</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="advanced-2.html">モジュールのインポート方法いろいろ</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

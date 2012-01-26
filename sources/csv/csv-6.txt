@@ -1,0 +1,88 @@
+======================================
+O/R マッパーを使ってデータベースを使う
+======================================
+CSV ファイルから読み込んだ情報をデータベースに保存します。
+
+データベースには SQLite を使い、O/R マッパーとして SQLAlchemy を使います。
+
+* `SQLite`_ - sqlite.org
+* `SQLAlchemy`_ - sqlalchemy.org
+
+.. _SQLite: http://www.sqlite.org/
+.. _SQLAlchemy: http://www.sqlalchemy.org/
+
+SQLAlchemy の準備
+=================
+:file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。 ::
+
+    > Scripts/activate.bat
+    > pip install -r requirements.txt
+
+.. note::
+
+    :file:`requirements.txt` に追加。 ::
+
+        SQLAlchemy
+
+Python のインタラクティブシェルからモジュールを読み込めることを確認します。 ::
+
+    >>> import sqlalchemy
+    >>> help(sqlalchemy)
+
+``help()`` 関数でモジュールのヘルプが表示されますので確認してみてください。
+
+O/R マッパー経由でデータベースに保存
+====================================
+O/R マッパーを使うためにはいくつかの準備が必要になります。
+
+* `sqlalchemy` モジュールの読み込み
+* データオブジェクトの定義
+* データベースエンジンの作成 (SQLite の場合はファイル)
+* オブジェクトからデータベースのテーブルを生成
+* オブジェクトをデータベースに投入
+    * トランザクションを開始
+    * オブジェクトを生成 (必要な回数だけ繰り返し)
+    * トランザクションをコミット
+
+以上をスクリプトにまとめると次のようになります。
+
+:file:`csv-6.py`
+
+.. literalinclude:: /../src/csv-6.py
+   :language: python
+
+第一引数に CSV ファイルを渡します。
+第二引数がない場合はオンメモリで動作します。 ::
+
+    > python csv-6.py csv-5.csv
+
+第二引数で出力ファイル名を指定できます。 ::
+
+    > python csv-6.py csv-5.csv csv-6.sqlite
+
+SQLite のビューアーとしては Lita などが便利です。
+
+* `Lita - SQLite Administration Tool`_
+
+.. _`Lita - SQLite Administration Tool`: http://www.dehats.com/drupal/?q=node/58
+
+.. note::
+
+    トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+    マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
+    ループ回数を取得するには ``enumerate()`` を使います。
+
+    * `enumerate`_ (公式ドキュメント)
+
+.. _enumerate: http://docs.python.org/library/functions.html#enumerate
+
+宿題
+====
+フィールドに条件を課す処理を比較しましょう。
+SQLite を参照する場合と、CSV を参照する場合を比べてみてください。
+
+:doc:`csv-4` の「宿題」には挙動を切り替える問題があります。
+同様に、出力データフォーマットも切り替えてみましょう。
+
+* CSV のデータを JSON で出力
+* CSV のデータを任意の XML で出力

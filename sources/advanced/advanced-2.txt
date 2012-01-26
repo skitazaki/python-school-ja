@@ -1,0 +1,230 @@
+==================================
+モジュールのインポート方法いろいろ
+==================================
+モジュールのインポートには ``import`` 文を使いますが、
+実行環境によってインポート可能なモジュールが異なる場合もあります。
+この問題に対処するために、 try-catch を使うこともあります。
+
+標準モジュールのインポート
+==========================
+標準モジュールのインポートはこれまでも見てきた通りです。
+インタープリタを起動してから即座にインポートできます。 ::
+
+    >>> import unittest
+    >>> type(unittest)
+    <type 'module'>
+
+``type()`` は組み込み関数で、引数の「型」を返します。
+
+インポートしたモジュールオブジェクトからは、 ``dir()`` 関数でメソッド一覧を取得できます。 ::
+
+    >>> availables = dir(unittest)
+    >>> row = []
+    >>> for m in availables:
+    ...     row.append(m)
+    ...     if len(row) == 4:
+    ...         print "%20s%20s%20s%20s" % tuple(row)
+    ...         row = []
+    ...
+           BaseTestSuite    FunctionTestCase            SkipTest            TestCase
+              TestLoader         TestProgram          TestResult           TestSuite
+          TextTestResult      TextTestRunner     _TextTestResult             __all__
+            __builtins__             __doc__            __file__            __name__
+             __package__            __path__          __unittest                case
+       defaultTestLoader     expectedFailure       findTestCases    getTestCaseNames
+          installHandler              loader                main           makeSuite
+          registerResult       removeHandler        removeResult              result
+                  runner             signals                skip              skipIf
+    >>> len(row)
+    3
+    >>> print "%20s%20s%20s" % tuple(row)
+              skipUnless               suite                util
+
+サードパーティモジュールのインポート
+====================================
+:command:`easy_install` あるいは :command:`pip` でインストールしたモジュールも同様に読み込めます。
+API ドキュメントがソースに記述されている場合には、 ``help()`` 関数で表示できます。 ::
+
+    >>> import docutils
+    >>> help(docutils)
+
+    (スクリーンビューアーに切り替わる)
+
+    Help on package docutils:
+
+    NAME
+        docutils - This is the Docutils (Python Documentation Utilities) package.
+
+    FILE
+        /Users/shigeru/projects/python-school-ja/lib/python2.7/site-packages/docutils/__init__.py
+
+    DESCRIPTION
+        Package Structure
+        =================
+
+    (ヘルプメッセージが続く...)
+
+モジュールを別名でインポートしたい場合には ``as`` を使います。 ::
+
+    >>> import json as simplejson
+    >>> json
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    NameError: name 'json' is not defined
+    >>> simplejson
+    <module 'json' from '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.pyc'>
+
+こうすることで、 *simplejson* モジュールをベースに書かれたスクリプトを移行できます。
+
+自作ライブラリのインポート
+==========================
+自分で記述したスクリプトをインポートして再利用できます。
+パターンとしては三つあり、普通は二つ目か三つ目を使います。
+
+1. 実行時のディレクトリにスクリプトを置くだけ
+2. ディレクトリを用意して、そこに階層化して配置する
+3. :file:`setup.py` を使ってインストールする
+
+実行時のディレクトリにスクリプトを置くだけ
+------------------------------------------
+:file:`cmdline.py` というファイルに共通処理を記述し、
+:file:`mylib-sample.py` というスクリプトから使う場合は次のようになります。
+
+:file:`cmdline.py`
+
+.. literalinclude:: /../src/pyschool/cmdline.py
+
+:file:`mylib-sample.py`
+
+.. literalinclude:: /../src/mylib-sample.py
+
+実行結果 ::
+
+    $ python mylib-sample.py
+
+    ----- cmdline module -----
+
+    ['__builtins__', '__doc__', '__file__', '__name__', '__package__', 'logging', 'optparse', 'parse_args']
+
+    ----- parse_args() document -----
+
+    Parse arguments and sets up logging verbosity.
+
+        :rtype: normal options and arguments as tuple.
+
+ディレクトリを用意して、そこに階層化して配置する
+------------------------------------------------
+上記の方法だと、標準モジュールやその他のモジュールと名前がバッティングしてしまう可能性があります。
+また、機能の単位やモジュール同士の依存関係などが全く分かりません。
+
+そこで、通常は階層構造を持たせて管理することになります。
+モジュールの階層は基本的にはディレクトリの階層に一致しますが、
+それぞれのディレクトリには :file:`__init__.py` という特殊ファイルが
+配置されていなければなりません。
+:file:`__init__.py` は空のファイルでも構いませんし、
+そこに Python スクリプトを記述しても構いません。
+
+前述の :file:`cmdline.py` を *pyschool* というディレクトリに置き、
+*pyschool* ディレクトリに空の :file:`__init__.py` ファイルを置きます。 ::
+
+    $ tree pyschool/
+    pyschool/
+    ├── __init__.py
+    └── cmdline.py
+
+モジュールの情報を確認してみます。 ::
+
+    >>> import pyschool.cmdline
+    >>> help(pyschool.cmdline)
+    Help on module pyschool.cmdline in pyschool:
+
+    NAME
+        pyschool.cmdline - Simple Command Line Utility.
+
+    FILE
+        /Users/shigeru/projects/python-school-ja/src/pyschool/cmdline.py
+
+    FUNCTIONS
+        parse_args(doc=None)
+            Parse arguments and sets up logging verbosity.
+
+            :rtype: normal options and arguments as tuple.
+
+
+    >>> dir(pyschool.cmdline)
+    ['__builtins__', '__doc__', '__file__', '__name__', '__package__', 'logging', 'optparse', 'parse_args']
+
+階層が深くなっていくと、いつもパッケージ名を付けるのは冗長です。
+そこで、 ``from`` を使ってインポートすることもあります。
+たとえば、 ``pyschool.cmdline.parse_args()`` の場合は次のようにします。 ::
+
+    >>> from pyschool.cmdline import parse_args
+    >>> print parse_args.__module__, parse_args.__name__, parse_args.func_name
+    pyschool.cmdline parse_args parse_args
+
+あるパッケージからすべての機能をインポートすることも可能です。
+この場合、"*" を使います。
+しかし、「すべて」が何を意味するかは :file:`__init__.py` の ``__all__`` 変数によって変わってきます。
+詳しくは公式チュートリアルを参照してください。
+
+* `6.4. Packages`_ (The Python Tutorial)
+
+.. _6.4. Packages: http://docs.python.org/tutorial/modules.html#packages
+
+:file:`setup.py` を使ってインストールする
+-----------------------------------------
+:file:`setup.py` を使うと、手元の環境にインストールして使えるようになります。
+インストールしておくと、環境変数を設定しなくても、どのディレクトリでも使えますから便利です。
+
+詳しくはこちらのガイドを読んでください。
+
+* `Python のパッケージ化に関するガイド`_ - IBM developerWorks
+
+.. _Python のパッケージ化に関するガイド: http://www.ibm.com/developerworks/jp/opensource/library/os-pythonpackaging/
+
+Python のバージョン違いを考慮したインポート
+===========================================
+`urlparse` モジュールに ``parse_qs()`` という関数が定義されています。
+URL のクエリストリング ("?" の後ろの部分) を解析してくれる関数です。
+
+* http://docs.python.org/library/urlparse.html#urlparse.parse_qs
+
+ドキュメントには次のように記述されています。
+
+    New in version 2.6: Copied from the cgi module.
+
+    日本語: バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
+
+`cgi` モジュールの ``parse_qs()`` ドキュメントには次のように記述されています。
+
+    This function is deprecated in this module.
+    Use urlparse.parse_qs() instead. It is maintained here only for backward compatiblity.
+
+    日本語: このモジュールにおけるこの関数は非推奨です。
+    urlparse.parse_qs() を代わりに使ってください。
+    ここでの記述は後方互換性のためだけに残されています。
+
+ということで、Python 2.4 と Python 2.7 の両方で動作するスクリプトを記述するためには、
+ちょっとした気遣いが必要になります。
+
+モジュールをインポートできない場合、 ``ImportError`` という例外が発生します。
+そこで、この例外を捕まえてあげることで、利用可能なモジュールを選択的に読み込むことが可能です。
+スクリプトにすると次のようになります。
+::
+
+    try:
+        from urlparse import parse_qs
+    except ImportError:
+        from cgi import parse_qs
+
+``ImportError`` によって利用するモジュールを切り替える書き方は、
+ライブラリのコードには散見されます。
+
+実行時に最適な JSON ライブラリを選択してくれる *anyjson* のソースコードなどを読んでみると良いでしょう。
+
+* `anyjson 0.3.1`_ - pypi.python.org
+* `anyjson/__init__.py`_ - bitbucket.org 
+
+.. _anyjson 0.3.1: http://pypi.python.org/pypi/anyjson/0.3.1
+.. _`anyjson/__init__.py`: https://bitbucket.org/runeh/anyjson/src/4e162c45cc7c/anyjson/__init__.py
+

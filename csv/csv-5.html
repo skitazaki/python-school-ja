@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ファイル風オブジェクトを意識する &mdash; Python School 1.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.2.0 documentation" href="../index.html" />
+    <link rel="up" title="CSV ファイルの処理方法" href="index.html" />
+    <link rel="next" title="O/R マッパーを使ってデータベースを使う" href="csv-6.html" />
+    <link rel="prev" title="組込み関数 (zip / dict) を使う" href="csv-4.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.2.0 documentation</span></a></h1>
+        <h2 class="heading"><span>ファイル風オブジェクトを意識する</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="csv-4.html">組込み関数 (zip / dict) を使う</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="csv-6.html">O/R マッパーを使ってデータベースを使う</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>ファイル風オブジェクトを意識する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>データの並びをデータ自体に埋め込んで管理することもできます。
+データファイルの１行目に、それぞれのフィールドの意味を記述しておきます。
+データのポータビリティは高くなりますが、
+プログラムから処理する場合には特殊処理が必要になります。</p>
+<div class="section" id="id2">
+<h2>先頭ヘッダーを使う場合<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>ファイル風オブジェクトの <tt class="docutils literal"><span class="pre">next()</span></tt> メソッドを使います。
+「ファイル風オブジェクト」とは Java の入出力ストリームみたいなものだと考えておいてください。
+繰り返し処理を抽象化しておくことで、ファイルから読み込む場合も文字列を読み込む場合も、
+同じインターフェイスを利用できます。
+文字列をファイル風オブジェクトとして使うには <tt class="docutils literal"><span class="pre">StringIO</span></tt> モジュールを使います。
+(C 拡張で実装された <tt class="docutils literal"><span class="pre">cStringIO</span></tt> モジュールもありますが、Unicode の扱いが異なりますので注意しましょう。)</p>
+<p>まずは CSV ファイルの先頭行にフィールド名を記述しておきます。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-5.csv</span></tt></p>
+<div class="highlight-python"><pre>rank,team,point,match,goaldiff
+1,Ｆ東京,77,38,+45
+2,鳥栖,69,38,+34
+3,札幌,68,38,+17
+4,徳島,65,38,+13
+5,東京Ｖ,59,38,+24
+</pre>
+</div>
+<p>次に、 <tt class="docutils literal"><span class="pre">UnicodeReader</span></tt> の <tt class="docutils literal"><span class="pre">next()</span></tt> を使ってヘッダー行を保存しておき、
+データを読み込む度に <tt class="docutils literal"><span class="pre">zip()</span></tt> で組み合わせて辞書形式に変換します。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-5.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="c"># Read a header line.</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
+            <span class="k">print</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;team&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;match&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;goaldiff&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
+    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>差分</p>
+<div class="highlight-python"><pre>$ diff -U 1 csv-4.py csv-5.py
+@@ -12,3 +12,2 @@
+ DEFAULT_CSV_FILE = 'sample.csv'
+-LEAGUE_STATS = ('rank', 'team', 'point', 'match', 'goaldiff')
+
+@@ -19,4 +18,7 @@
+     with open(fname) as reader:
+-        for row in UnicodeReader(reader):
+-            record = dict(zip(LEAGUE_STATS, row))
++        stream = UnicodeReader(reader)
++        # Read a header line.
++        fields = stream.next()
++        for row in stream:
++            record = dict(zip(fields, row))
+             print record['rank'] + '\t' + \</pre>
+</div>
+</div>
+<div class="section" id="dictreader">
+<h2>DictReader を使う<a class="headerlink" href="#dictreader" title="Permalink to this headline">¶</a></h2>
+<p>標準 csv モジュールには <tt class="docutils literal"><span class="pre">DictReader</span></tt> クラスがあります。
+ユニコード対応は一度切り落として、このクラスを使って再実装してみましょう。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-5a.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">csv</span> <span class="kn">import</span> <span class="n">DictReader</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">DictReader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="c"># XXX: Convert encodings.</span>
+            <span class="k">print</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;team&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;match&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
+                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;goaldiff&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
+    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>ヘッダー行を自動的に解釈してくれますので、場合によっては便利なモジュールだと言えます。
+全てにおいて万能な実装はありませんので、ケースバイケースで必要な機能を取捨選択できるようになりましょう。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="csv-4.html">組込み関数 (zip / dict) を使う</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="csv-6.html">O/R マッパーを使ってデータベースを使う</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
