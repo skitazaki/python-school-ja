@@ -11,19 +11,18 @@ Setup Python environment with `virtualenv`. ::
 
 Optional::
 
-    $ pip install -e git+git://github.com/michaeljones/sphinx-to-github.git#egg=sphinx-to-github
+    $ curl http://waf.googlecode.com/files/waf-1.6.8 >bin/waf
+    $ chmod +x bin/waf
 
 Optional::
 
-    $ curl http://waf.googlecode.com/files/waf-1.6.8 >bin/waf
-    $ chmod +x bin/waf
+    $ pip install -e git+git://github.com/michaeljones/sphinx-to-github.git#egg=sphinx-to-github
 
 Build
 -----
 Compile reST documents. ::
 
-    $ cd doc
-    $ make html
+    $ waf doc
 
 Read
 ----
