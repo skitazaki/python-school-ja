@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>設定情報を管理する &mdash; Python School 1.2.0 documentation</title>
+    <title>設定情報を管理する &mdash; Python School 1.2.1 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.0',
+        VERSION:     '1.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,14 +27,14 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Python School 1.2.0 documentation" href="../index.html" />
+    <link rel="top" title="Python School 1.2.1 documentation" href="../index.html" />
     <link rel="up" title="コマンドライン操作" href="index.html" />
     <link rel="next" title="シェルコマンドを実行する" href="cmdline-4.html" />
     <link rel="prev" title="ファイルシステムの階層を辿る" href="cmdline-2.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.2.0 documentation</span></a></h1>
+          <span>Python School 1.2.1 documentation</span></a></h1>
         <h2 class="heading"><span>設定情報を管理する</span></h2>
       </div>
       <div class="topnav">
@@ -57,7 +57,7 @@
 ここでは、環境変数の利用と、設定ファイルの利用を紹介します。</p>
 <p>モジュールが環境変数を参照することもあります。
 よく使うモジュールでは <cite>urllib2</cite> が挙げられます。
-プロキシを使った環境がある場合は、実際に動作を確認してみましょう。</p>
+プロキシを使った環境では、環境変数 <tt class="docutils literal"><span class="pre">http_proxy</span></tt> に依存します。</p>
 <div class="section" id="id2">
 <h2>環境変数の扱い<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>os.environ で環境変数を設定、参照できます。</p>
@@ -163,91 +163,6 @@ True
                                 'propagate': True}},
  'version': 1}</pre>
 </div>
-</div>
-<div class="section" id="http">
-<h2>HTTP でダウンロード<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h2>
-<p>標準ライブラリには <tt class="docutils literal"><span class="pre">urllib</span></tt> と <tt class="docutils literal"><span class="pre">urllib2</span></tt> があります。
-モジュール名に数字が付いていたり、Python 3 系では統合されてり、
-この辺りの経緯は色々とややこしいので、Python に詳しい人に口頭で確認してください。
-このため、ブログ記事などは参照するときは、Python のどのバージョンを対象にしているかを <em>必ず</em> 確認してください。</p>
-<p>標準ライブラリ</p>
-<ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/urllib.html">urllib — Open arbitrary resources by URL</a> - (公式ドキュメント)</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>似た名称のライブラリとして <cite>httplib</cite> があります。これは使いません。</p>
-<p><a class="reference external" href="http://www.python.jp/doc/2.4/lib/module-httplib.html">httplib &#8211; HTTP プロトコルクライアント</a></p>
-<blockquote class="last">
-<div>通常、このモジュールは直接使いません</div></blockquote>
-</div>
-<p>引数で渡された URL のコンテンツをダウンロードする処理は次のように記述できます。</p>
-<p><tt class="file docutils literal"><span class="pre">downloader.py</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
-
-<span class="sd">&quot;&quot;&quot;%prog url [, url [, ... ]]</span>
-
-<span class="sd">Download contents from given URL list.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urlparse</span>
-
-<span class="c"># Check the document about version differences.</span>
-<span class="c"># http://docs.python.org/library/urlparse.html#urlparse.parse_qs</span>
-<span class="c">#     New in version 2.6: Copied from the cgi module.</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">cgi</span> <span class="kn">import</span> <span class="n">parse_qs</span>
-
-<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
-
-
-<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="n">o</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="c"># Check the document for return value attributes.</span>
-    <span class="c"># http://docs.python.org/library/urlparse.html#urlparse.urlparse</span>
-    <span class="c"># &quot;index 2&quot; means &quot;path&quot; attribute, Hierarchical path.</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> already exists, overwrite it.&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Download: </span><span class="si">%s</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
-        <span class="c"># Dirty code. This replacement should be in `parse_args()`.</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;%prog&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">__file__</span><span class="p">)))</span>
-    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-
-<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
-</pre></div>
-</div>
-<p><cite>urllib2</cite> を使うときは、環境変数 <em>http_proxy</em> でプロキシサーバを設定できます。
-環境変数の確認方法は上述のスクリプトを参照してください。
-環境変数の設定方法は OS によって異なりますので、そのお作法に従ってください。</p>
-<p>プロキシは自前でも設定できます。
-公式ドキュメントにサンプルコードが掲載されていますので、一通り眺めてみると良いでしょう。</p>
-<p>通信部分を柔軟に扱えるようにしたサードパーティーライブラリもあります。
-必要に応じて利用すると便利ですが、様々なマシンで動かすためにはモジュールのポータビリティに注意してください。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://code.google.com/p/httplib2/">httplib2</a></li>
-<li><a class="reference external" href="http://pypi.python.org/pypi/requests">requests</a></li>
-</ul>
 </div>
 </div>
 

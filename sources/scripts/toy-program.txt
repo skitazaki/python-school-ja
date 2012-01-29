@@ -1,0 +1,66 @@
+=========================
+トイプログラム - FizzBuzz
+=========================
+お遊びがてら FizzBuzz_ を解きます。
+
+.. _FizzBuzz: http://ja.wikipedia.org/wiki/Fizz_Buzz
+
+実行例
+======
+次のような結果を出力するスクリプトを書いてみましょう。
+::
+
+    > python fizzbuzz.py 16
+    1
+    2
+    Fizz
+    4
+    Buzz
+    Fizz
+    7
+    8
+    Fizz
+    Buzz
+    11
+    Fizz
+    13
+    14
+    FizzBuzz
+    16
+
+スクリプト例
+============
+例として３つの実装を示します。
+以下のことを身につけましょう。
+
+* 関数定義、main 関数
+* 引数処理、入力チェック
+* 組み込み関数: range, zip, enumerate
+* 後置 IF 文
+* ジェネレーター (yield)
+* ラムダ式
+* リスト操作: map / filter
+* 型 (type) の利用、リストとタプル
+* テストの作成、assert の利用
+* shebang の記述、エンコーディングの指定 (`PEP 263`_)
+
+.. _`PEP 263`: http://www.python.org/dev/peps/pep-0263/
+
+.. literalinclude:: /../src/fizzbuzz.py
+   :encoding: utf-8
+   :language: python
+   :lines: 3-94
+
+宿題
+====
+引数やオプションを追加して、自分で書いたスクリプトもしくは上記のスクリプトを改造しましょう。
+
+1. 特定の範囲だけを出力する。100から200など。
+2. Linux 上の bash で実行したときに出力に色を付ける。"Fizz"=青、"Buzz"=赤、"FizzBuzz"=黄。
+3. 標準出力を横取りして出力結果を assert する。
+4. 通常の実行かテストの実行かを切り替える。
+5. プロファイリングする。  (`profile, cProfile, pstats – Python プログラムのパフォーマンス解析`_)
+
+.. _`profile, cProfile, pstats – Python プログラムのパフォーマンス解析`: http://www.doughellmann.com/PyMOTW-ja/profile/
+
+ワンライナーや剰余利用禁止などは Google で検索するとたくさん出てきます。

@@ -16,12 +16,9 @@ Python の学習
 
    getting-started
    basic-syntax
-   toy-program
-   basic-scripting
-
+   scripts/index
    csv/index
    cmdline/index
-
    advanced/index
 
 ..

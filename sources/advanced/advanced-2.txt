@@ -189,18 +189,18 @@ URL のクエリストリング ("?" の後ろの部分) を解析してくれ�
 
 * http://docs.python.org/library/urlparse.html#urlparse.parse_qs
 
-ドキュメントには次のように記述されています。
+ドキュメントには次のように記述されています。 ::
 
     New in version 2.6: Copied from the cgi module.
 
-    日本語: バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
+    [日本語] バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
 
-`cgi` モジュールの ``parse_qs()`` ドキュメントには次のように記述されています。
+`cgi` モジュールの ``parse_qs()`` ドキュメントには次のように記述されています。 ::
 
     This function is deprecated in this module.
     Use urlparse.parse_qs() instead. It is maintained here only for backward compatiblity.
 
-    日本語: このモジュールにおけるこの関数は非推奨です。
+    [日本語] このモジュールにおけるこの関数は非推奨です。
     urlparse.parse_qs() を代わりに使ってください。
     ここでの記述は後方互換性のためだけに残されています。
 
@@ -209,8 +209,7 @@ URL のクエリストリング ("?" の後ろの部分) を解析してくれ�
 
 モジュールをインポートできない場合、 ``ImportError`` という例外が発生します。
 そこで、この例外を捕まえてあげることで、利用可能なモジュールを選択的に読み込むことが可能です。
-スクリプトにすると次のようになります。
-::
+スクリプトにすると次のようになります。 ::
 
     try:
         from urlparse import parse_qs

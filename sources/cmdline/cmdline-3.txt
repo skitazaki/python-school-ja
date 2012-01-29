@@ -6,7 +6,7 @@
 
 モジュールが環境変数を参照することもあります。
 よく使うモジュールでは `urllib2` が挙げられます。
-プロキシを使った環境がある場合は、実際に動作を確認してみましょう。
+プロキシを使った環境では、環境変数 ``http_proxy`` に依存します。
 
 環境変数の扱い
 ==============
@@ -85,48 +85,4 @@ os.environ で環境変数を設定、参照できます。
                                     'propagate': True}},
      'version': 1}
 
-HTTP でダウンロード
-===================
-標準ライブラリには ``urllib`` と ``urllib2`` があります。
-モジュール名に数字が付いていたり、Python 3 系では統合されてり、
-この辺りの経緯は色々とややこしいので、Python に詳しい人に口頭で確認してください。
-このため、ブログ記事などは参照するときは、Python のどのバージョンを対象にしているかを *必ず* 確認してください。
-
-標準ライブラリ
-
-* `urllib — Open arbitrary resources by URL`_ - (公式ドキュメント)
-
-.. note::
-
-    似た名称のライブラリとして `httplib` があります。これは使いません。
-
-    `httplib -- HTTP プロトコルクライアント`_
-
-        通常、このモジュールは直接使いません
-
-引数で渡された URL のコンテンツをダウンロードする処理は次のように記述できます。
-
-:file:`downloader.py`
-
-.. literalinclude:: /../src/downloader.py
-   :encoding: utf-8
-   :language: python
-
-`urllib2` を使うときは、環境変数 *http_proxy* でプロキシサーバを設定できます。
-環境変数の確認方法は上述のスクリプトを参照してください。
-環境変数の設定方法は OS によって異なりますので、そのお作法に従ってください。
-
-プロキシは自前でも設定できます。
-公式ドキュメントにサンプルコードが掲載されていますので、一通り眺めてみると良いでしょう。
-
-通信部分を柔軟に扱えるようにしたサードパーティーライブラリもあります。
-必要に応じて利用すると便利ですが、様々なマシンで動かすためにはモジュールのポータビリティに注意してください。
-
-* `httplib2`_
-* `requests`_
-
-.. _urllib — Open arbitrary resources by URL: http://docs.python.org/library/urllib.html
-.. _httplib -- HTTP プロトコルクライアント: http://www.python.jp/doc/2.4/lib/module-httplib.html
-.. _httplib2: http://code.google.com/p/httplib2/
-.. _requests: http://pypi.python.org/pypi/requests
 
