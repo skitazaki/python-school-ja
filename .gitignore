@@ -4,3 +4,7 @@ bin/
 include/
 man/
 .lock-*
+
+doc/
+src/
+etc/
