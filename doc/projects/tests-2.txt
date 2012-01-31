@@ -1,0 +1,94 @@
+===================
+Nose を使ったテスト
+===================
+個別のテストファイルに ``if __name__ == '__main__':`` を記述するのは煩雑なので、
+テストの実行には `nose`_ というモジュールを使います。
+
+.. _nose: http://readthedocs.org/docs/nose/en/latest/
+
+Nose のインストール
+===================
+:file:`requirements.txt` に *nose* の記述を追加して、 :command:`pip` を使ってインストールします。
+インストールできると、 :command:`nosetests` が使えるようになります。
+
+.. note::
+
+    :file:`requirements.txt` ::
+
+        nose
+
+::
+
+    $ pip install -r requirements.txt
+    $ nosetests -V
+    nosetests version 1.1.2
+
+``--help`` オプションを付けて実行すると利用可能なオプションを一覧で確認できます。
+
+簡単な実行方法
+==============
+:command:`nosetests` は `test` から始まる関数を自動で認識してくれます。
+:doc:`tests-1` で記述したスクリプトにはテストが含まれていますので、まずは確認してみます。 ::
+
+    $ nosetests --collect-only -v
+    test (fibonacci_test.FibonacciTest) ... ok
+    test (fibonacci_test2.FibonacciTest) ... ok
+    test_invalid_argument (fibonacci_test2.FibonacciTest) ... ok
+    test (fibonacci_test3.FibonacciTest) ... ok
+    test_invalid_argument (fibonacci_test3.FibonacciTest) ... ok
+    test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest) ... ok
+    fibonacci_test3.test_undefined ... ok
+
+    ----------------------------------------------------------------------
+    Ran 7 tests in 0.016s
+
+    OK
+
+複数のスクリプトからテストケースを収集できていることが分かります。
+実際に実行してみます。 ::
+
+    $ nosetests -v 2>tests.txt
+
+    $ head -n 10 tests.txt
+    test (fibonacci_test.FibonacciTest) ... ok
+    test (fibonacci_test2.FibonacciTest) ... ok
+    test_invalid_argument (fibonacci_test2.FibonacciTest) ... ok
+    test (fibonacci_test3.FibonacciTest) ... ok
+    test_invalid_argument (fibonacci_test3.FibonacciTest) ... ok
+    test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest) ... ERROR
+    fibonacci_test3.test_undefined ... ERROR
+
+    ======================================================================
+    ERROR: test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest)
+
+    $ tail -n 7 tests.txt
+        self.test(*self.arg)
+    TypeError: test_undefined() takes exactly 1 argument (0 given)
+
+    ----------------------------------------------------------------------
+    Ran 7 tests in 0.027s
+
+    FAILED (errors=2)
+
+確かにエラーになります。
+
+レポーティング
+==============
+継続的にテストを実行させる場合、それぞれの実行結果をどのように保存すべきを考える必要があります。
+多くの場合は Jenkins などの CI ツールでジョブを自動化することになるでしょう。
+たいていのツールは xUnit のレポートを表示できます。
+そこで、 :command:`nosetests` の方でも XML 形式のレポートを出力できるようになっています。
+
+レポートを出力し、XML を整形して表示 ::
+
+    $ nosetests --with-xunit
+
+    $ xmllint --format nosetests.xml |head -n 5
+    <?xml version="1.0" encoding="UTF-8"?>
+    <testsuite name="nosetests" tests="7" errors="2" failures="0" skip="0">
+      <testcase classname="fibonacci_test.FibonacciTest" name="test" time="0.001"/>
+      <testcase classname="fibonacci_test2.FibonacciTest" name="test" time="0.001"/>
+      <testcase classname="fibonacci_test2.FibonacciTest" name="test_invalid_argument" time="0.000"/>
+
+これらを繋ぎ込むことで、テスト結果を確認しながら実装を進めていくことが可能になります。
+

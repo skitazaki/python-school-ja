@@ -1,0 +1,253 @@
+============================
+標準モジュールを使ったテスト
+============================
+Python の標準モジュールには有名なテスト実行方法が２つあります。
+どちらも Doug Hellmann の PyMOTW で説明されています。 (英語)
+
+* `unittest – Automated testing framework`_
+* `doctest – Testing through documentation`_
+
+*unittest* は `xUnit`_ の Python 実装です。
+*doctest* はコメントに記述されたコード片をテストしてくれるモジュールで、Python 独特の機能です。
+
+.. _doctest – Testing through documentation: http://www.doughellmann.com/PyMOTW/doctest/
+.. _unittest – Automated testing framework: http://www.doughellmann.com/PyMOTW/unittest/
+.. _xUnit: http://en.wikipedia.org/wiki/XUnit
+
+unittest の実行方法
+===================
+まずはテスト対象となるスクリプトを記述します。
+フィボナッチ数を求めてみましょう。
+
+* `フィボナッチ数`_ - wikipedia.org
+
+.. _フィボナッチ数: http://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A3%E3%83%9C%E3%83%8A%E3%83%83%E3%83%81%E6%95%B0
+
+:file:`fibonacci.py`
+
+.. literalinclude:: /../src/fibonacci.py
+   :language: python
+   :encoding: utf-8
+
+実行結果 ::
+
+    $ python fibonacci.py
+       0 --fib-->    0
+       1 --fib-->    1
+       2 --fib-->    1
+       3 --fib-->    2
+       4 --fib-->    3
+       5 --fib-->    5
+       6 --fib-->    8
+       7 --fib-->   13
+       8 --fib-->   21
+       9 --fib-->   34
+      10 --fib-->   55
+      11 --fib-->   89
+      12 --fib-->  144
+
+これに対するテストスクリプトを :file:`fibonacci_test.py` として作成します。
+
+.. literalinclude:: /../src/fibonacci_test.py
+   :language: python
+   :encoding: utf-8
+
+.. note::
+
+    スクリプトを直接実行したときにテストが実行されるようにします。 ::
+
+        if __name__ == '__main__':
+            unittest.main()
+
+実行結果 (通常実行と ``-v`` オプション付き実行) ::
+
+    $ python fibonacci_test.py
+    .
+    ----------------------------------------------------------------------
+    Ran 1 test in 0.001s
+
+    OK
+
+    $ python fibonacci_test.py -v
+    test (__main__.FibonacciTest) ... ok
+
+    ----------------------------------------------------------------------
+    Ran 1 test in 0.001s
+
+    OK
+
+次に、引数チェックのテストを導入します。
+
+:file:`fibonacci_test2.py` (メソッドのみ抜粋)
+
+.. literalinclude:: /../src/fibonacci_test2.py
+   :language: python
+   :encoding: utf-8
+   :lines: 26-39
+
+実行結果 ::
+
+    $ python fibonacci_test2.py -v
+    test (__main__.FibonacciTest) ... ok
+    test_invalid_argument (__main__.FibonacciTest) ... ok
+
+    ----------------------------------------------------------------------
+    Ran 2 tests in 0.001s
+
+    OK
+
+小数点を含む数字や文字列を渡した場合には例外が投げられており、
+その場合にはテストがパスするようになっています。
+
+では、負の数を与えた場合はどうでしょうか？
+
+:file:`fibonacci_test3.py` (テスト関数のみ抜粋)
+
+.. literalinclude:: /../src/fibonacci_test3.py
+   :language: python
+   :encoding: utf-8
+   :lines: 40-44
+
+.. note::
+
+    Python 2 系ではメソッド名に日本語を使えませんが、
+    ``setattr()`` で割り当ててあげることはできます。
+    テストケースを日本語で管理したい場合には便利かもしれません。
+    (基本的には英語で記述すべきですが)
+
+実行結果 ::
+
+    $ python fibonacci_test3.py -v 2>test-error.txt
+
+    $ head -n 10 test-error.txt
+    test (__main__.FibonacciTest) ... ok
+    test_invalid_argument (__main__.FibonacciTest) ... ok
+    test_引数が日本語の場合は？ (__main__.FibonacciTest) ... ERROR
+
+    ======================================================================
+    ERROR: test_引数が日本語の場合は？ (__main__.FibonacciTest)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "src/fibonacci_test3.py", line 42, in test_undefined
+        fib(-1)
+
+    $ tail -n 7 test-error.txt
+        assert type(n) == int
+    RuntimeError: maximum recursion depth exceeded while calling a Python object
+
+    ----------------------------------------------------------------------
+    Ran 3 tests in 0.016s
+
+    FAILED (errors=1)
+
+負の数から開始してしまうと再帰の行き着く先がありませんので無限ループになってしまいます。
+適切に :file:`fibonacci.py` を改修してください。
+
+こうしてテストと実装を繰り返すことで境界値条件が明確になり、変更の影響範囲を絞ることが可能になります。
+
+doctest の実行方法
+==================
+doctest はテストケースをスクリプトに直接記述します。
+まずはテスト対象となるスクリプトを記述します。
+*datetime* モジュールを使って日付の文字列を変換してみましょう。
+
+* `8.1. datetime — Basic date and time types`_ - docs.python.org
+
+.. _8.1. datetime — Basic date and time types: http://docs.python.org/library/datetime.html
+
+以下のふたつの文字列を *datetime* オブジェクトに変換し、差分を計算してみます。
+
+* 2012-01-14 07:56:02
+* 2012-01-14 04:46:30 +0900
+
+:file:`datestring_convert.py`
+
+.. literalinclude:: /../src/datestring_convert.py
+   :language: python
+   :encoding: utf-8
+
+実行結果 ::
+
+    $ python datestring_convert.py
+    2012-01-14 07:56:02 ==> 2012-01-14 04:46:30 +0900
+    DIFF: days=0, seconds=11372
+
+次に、 ``if __name__ == '__main__':`` の部分をインタープリタで実行します。
+スクリプトを読み込めるように、スクリプトと同じディレクトリに移動してから
+:command:`python` を起動します。
+(環境変数 ``PYTHONPATH`` かモジュール検索パス *sys.path* を調整しても構いません。) ::
+
+    >>> from datestring_convert import datestring_convert
+    >>> TEST_1 = "2012-01-14 07:56:02"
+    >>> TEST_2 = "2012-01-14 04:46:30 +0900"
+    >>> d1 = datestring_convert(TEST_1)
+    >>> d2 = datestring_convert(TEST_2)
+    >>> diff = d1 - d2
+    >>> print "%s ==> %s" % (TEST_1, TEST_2)
+    2012-01-14 07:56:02 ==> 2012-01-14 04:46:30 +0900
+    >>> print "DIFF: days=%d, seconds=%d" % (diff.days, diff.seconds)
+    DIFF: days=0, seconds=11372
+
+正常に実行できることを確認できたら、メソッドのコメントに *そのまま* 貼り付けます。
+(``>>>`` プロンプトも含めて「そのまま」です)
+
+:file:`datestring_convert_with_test.py`
+
+.. literalinclude:: /../src/datestring_convert_with_test.py
+   :language: python
+   :encoding: utf-8
+
+Python の *doctest* モジュールにスクリプトを渡してみます。 ::
+
+    $ python -m doctest datestring_convert_with_test.py
+
+何も表示されずに終了しました。
+テストが正常に実行され、すべてのテストがパスしたのです。
+
+試しに、テスト文字列を変更して試してみてください。
+(コメントにある TEST_1 変数の値を変えてみます。) ::
+
+    $ python -m doctest datestring_convert_with_test.py
+    **********************************************************************
+    File "datestring_convert_with_test.py", line 16, in datestring_convert_with_test.datestring_convert
+    Failed example:
+        print "%s ==> %s" % (TEST_1, TEST_2)
+    Expected:
+        2012-01-14 07:56:02 ==> 2012-01-14 04:46:30 +0900
+    Got:
+        2012-01-14 07:56:01 ==> 2012-01-14 04:46:30 +0900
+    **********************************************************************
+    File "datestring_convert_with_test.py", line 18, in datestring_convert_with_test.datestring_convert
+    Failed example:
+        print "DIFF: days=%d, seconds=%d" % (diff.days, diff.seconds)
+    Expected:
+        DIFF: days=0, seconds=11372
+    Got:
+        DIFF: days=0, seconds=11371
+    **********************************************************************
+    1 items had failures:
+       2 of   8 in datestring_convert_with_test.datestring_convert
+    ***Test Failed*** 2 failures.
+
+テストが失敗していることが分かります。
+doctest モジュールはコメントの文字列を解析して、
+インタープリタへの入力と出力を比較してくれるのです。
+上記の手順のように、インタープリタで実行した結果をそのままテストとして保存できますので、
+比較的簡単に導入できるでしょう。
+
+.. note::
+
+    スクリプトを直接実行したときにもテストが実行されるようにできます。 ::
+
+        if __name__ == '__main__':
+            import doctest
+            doctest.testmod()
+
+    doctest モジュールを実行した場合の詳細なログが欲しい場合は ``-v`` オプションを付けます。 ::
+
+        $ python -m doctest -v datestring_convert_with_test.py
+
+文字列を日付型に変換するためには ``strptime()`` も使えます。
+テストケースはそのままで、実装を変更してみてください。
+テストを記述しておくことによって外部仕様はそのままに、内部仕様を変更していくことが可能になります。
+
