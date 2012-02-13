@@ -7,6 +7,8 @@ Python でシェルのラッパースクリプトを記述できるようにな�
 
 .. _Using Python to create UNIX command line tools: http://www.ibm.com/developerworks/aix/library/au-pythocli/
 
+ここでは以下のトピックを扱います。
+
 .. toctree::
    :maxdepth: 2
 
