@@ -6,3 +6,4 @@ include
 man
 lib
 sphinx-to-github
+*.zip
