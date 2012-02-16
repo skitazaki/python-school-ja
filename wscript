@@ -42,9 +42,9 @@ def test(ctx):
 
 
 def dist(ctx):
-    #ctx.algo = 'zip' 
-    ctx.excl  = ' **/.waf-1* **/*~ **/*.pyc **/*.swp **/.lock-w*' 
-    ctx.files = ctx.path.ant_glob(['src/*', 'doc/*']) 
+    ctx.algo = 'zip'
+    ctx.files = ctx.path.ant_glob(['doc/_build/html/**/*'])
+    ctx.base_path = ctx.path.find_dir('doc/_build/html')
 
 
 def pages(ctx):
