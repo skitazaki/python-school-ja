@@ -1,0 +1,187 @@
+==================
+Web ブラウザに表示
+==================
+ここまでは裏側の設定に終始してきました。
+ここでは、HTTP のリクエストを受け取り、レスポンスを返す流れを学習します。
+
+トップページを表示する
+======================
+ブラウザからどのようにしてアプリケーションにアクセスできると嬉しいでしょうか？
+トップページの URL は？ データの一覧を表示する URL は？ 設定を変更する URL は？
+
+これらの情報は :file:`urls.py` に記載します。
+たとえば、 http://localhost:8000/logviewer でトップページを表示するためには、
+次のように記述します。 ::
+
+    from django.conf.urls.defaults import patterns, include, url
+
+    # Uncomment the next two lines to enable the admin:
+    from django.contrib import admin
+    admin.autodiscover()
+
+    urlpatterns = patterns('',
+        # Examples:
+        # url(r'^$', 'sandbox.views.home', name='home'),
+        # url(r'^sandbox/', include('sandbox.foo.urls')),
+        url(r'^logviewer$', 'logviewer.views.home'),  # <-- ここを追加
+
+        # Uncomment the admin/doc line below to enable admin documentation:
+        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+        # Uncomment the next line to enable the admin:
+        url(r'^admin/', include(admin.site.urls)),
+    )
+
+次に、 :file:`logviewer/views.py` に次のように記述します。 ::
+
+    from django.http import HttpResponse
+
+    def home(request):
+        return HttpResponse("Hello, world.")
+
+そして、  :file:`manage.py` で *runserver* を実行します。 ::
+
+    > python manage.py runserver
+    Validating models...
+
+    0 errors found
+    Django version 1.3, using settings 'sandbox.settings'
+    Development server is running at http://127.0.0.1:8000/
+    Quit the server with CTRL-BREAK.
+
+http://localhost:8000/logviewer にアクセスすると、
+"Hello, world." という文字列が表示されます。
+
+:file:`logviewer.views.py` で定義する関数の戻り値が HTTP のレスポンスになり、
+``HttpResponse`` に与える文字列が表示されることを確認しました。
+
+HTML を表示する
+---------------
+``HttpResponse`` に文字列として HTML を渡すと、表示されるページは HTML になります。
+``home()`` 関数を次のように修正してみましょう。 ::
+
+    def home(request):
+        return HttpResponse("""<html>
+            <head><title>SVN Log Viewer</title></head>
+            <body><h1>Hello, world.</h1></body></html>""")
+
+ブラウザの画面を再読み込みすると、変更が反映されるはずです。
+
+しかし、このまま HTML を書き進めていくと、ソースの記述が大変です。
+Python のソースコードの中に HTML を記述するため、
+全体として非常に見通しが悪くなってしまいます。
+
+そこで、HTML の記述は外部ファイルに分離します。
+
+テンプレートファイルを使う
+==========================
+Django はテンプレートエンジンも持っています。
+まずは :file:`settings.py` で ``TEMPLATE_DIRS`` にテンプレートのパスを設定します。 ::
+
+    TEMPLATE_DIRS = (
+        # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+        # Always use forward slashes, even on Windows.
+        # Don't forget to use absolute paths, not relative paths.
+        "D:/sandbox/webapp-tools/sandbox/templates"
+    )
+
+英語のコメントでも説明されていますが、Windows でもパス区切り文字にはスラッシュを使います。
+
+次に、テンプレートディレクトリ (ここでは ``"D:/sandbox/webapp-tools/sandbox/templates"`` とします) を作成し、 :file:`index.html` を置きます。
+
+.. code-block:: html
+
+    <html>
+      <head>
+        <title>SVN Log Viewer</title>
+      </head>
+      <body>
+        <h1>Hello, world.</h1>
+      </body>
+    </html>
+
+このテンプレートファイルを読み込むように、 :file:`logviewer/views.py` を編集します。 ::
+
+    from django.http import HttpResponse
+    from django.template import Context, loader
+
+
+    def home(request):
+        t = loader.get_template('index.html')
+        c = Context()
+        return HttpResponse(t.render(c))
+
+パラメータを与える
+------------------
+表示を動的に変更するために、テンプレートエンジンにパラメータを与えることもできます。
+まず、テンプレートファイル (:file:`index.html`) を次のように書き換えます。
+
+.. code-block:: html
+
+    <html>
+      <head>
+        <title>SVN Log Viewer</title>
+      </head>
+      <body>
+        <h1>Hello, world.</h1>
+        <!-- ユーザー名を動的に表示させる。 -->
+        <p>{{ username }}</p>
+      </body>
+    </html>
+
+.. warning::
+
+    うまく表示できない場合は、テンプレートファイルのエンコーディングが UTF-8 であることを確認してください。
+
+次に、 :file:`logviewer/views.py` でコンテキスト (``Context``) にパラメータを設定します。 ::
+
+    from django.http import HttpResponse
+    from django.template import Context, loader
+
+
+    def home(request):
+        t = loader.get_template('index.html')
+        c = Context({'username': "shigeru-kitazaki"})
+        return HttpResponse(t.render(c))
+
+コンテキストパラメータには単なる文字列だけでなく、オブジェクトやリスト、Django のモデルなども渡すことが可能です。
+
+モデルオブジェクトを渡す
+========================
+データベースから検索した結果をコンテキストパラメータに設定することで、簡単にモデルとビューを接続できます。
+
+モデルの API を使って ID が「1」であるオブジェクトを取得し、
+テンプレートエンジンに渡してみます。
+
+テンプレートファイル (:file:`index.html`) を次のように書き換えます。
+
+.. code-block:: html
+
+    <html>
+      <head>
+        <title>SVN Log Viewer</title>
+      </head>
+      <body>
+        <h1>Changeset ID=1</h1>
+        <p>リビジョン: {{ changeset.revision }}</p>
+        <p>コミッター: {{ changeset.committer }}</p>
+        <p>日付: {{ changeset.commit_date }}</p>
+      </body>
+    </html>
+
+:file:`logviewer/views.py` は次のようになります。 ::
+
+    from django.http import HttpResponse
+    from django.template import Context, loader
+    from logviewer.models import Changeset
+
+
+    def home(request):
+        changeset = Changeset.objects.get(pk=1)
+        t = loader.get_template('index.html')
+        c = Context({'changeset': changeset})
+        return HttpResponse(t.render(c))
+
+Webブラウザに表示させると、以下のようになるでしょう。
+
+.. image:: django-mvc.png

@@ -1,0 +1,176 @@
+======================
+アプリケーションの作成
+======================
+Django では「プロジェクト」の中に複数の「アプリケーション」を持つことが可能です。
+「アプリケーション」として最も汎用的なものは管理画面であり、これは Django にバンドルされています。
+
+「アプリケーション」は「プロジェクト」と疎結合に実装することも可能で、
+うまく実装すると、複数のプロジェクトに同じアプリケーションを組み込めます。
+たとえば、プロジェクトとアプリケーションが３つずつあったときに、次のように構成できます。
+
+.. list-table::
+   :header-rows: 1
+
+   * - プロジェクト
+     - アプリケーション
+   * - プロジェクト A
+     - アプリケーション A
+   * - 
+     - アプリケーション B
+   * - 
+     - アプリケーション C
+   * - プロジェクト B
+     - アプリケーション A
+   * - 
+     - アプリケーション B
+   * - プロジェクト C
+     - アプリケーション A
+   * - 
+     - アプリケーション C
+
+何をつくる？
+============
+Subversion のログのビューアーを実装してみます。
+アプリケーション名は *logviewer* としておきます。
+
+Subversion のログは TortoiseSVN で簡単かつ分かりやすく閲覧できますので、
+機能としては似たもの (というか、劣化版) にします。
+Webアプリケーションならば Trac や Redmine のタイムラインがこの機能を提供してくれます。
+
+アプリケーションを作成する
+==========================
+:file:`manage.py` を使ってアプリケーションを作成します。
+virtualenv 環境を有効にしてからコマンドを実行しましょう。 ::
+
+    > Scripts\activate
+    > cd sandbox
+    > python manage.py startapp logviewer
+
+アプリケーション用のフォルダが作成され、いくつかのファイルも生成されます。
+プロジェクトの全体は次のようになります。 ::
+
+    > tree /A /F
+    D:.
+    |   manage.py
+    |   sandbox.sqlite
+    |   settings.py
+    |   settings.pyc
+    |   urls.py
+    |   urls.pyc
+    |   __init__.py
+    |   __init__.pyc
+    |
+    \---logviewer
+            models.py
+            tests.py
+            views.py
+            __init__.py
+
+今はアプリケーションを「作成」しただけですので、
+次にアプリケーションをプロジェクトに「登録」します。
+:file:`settings.py` の *INSTALLED_APPS* に追加しましょう。
+管理画面を有効にしたときに編集した部分です。 ::
+
+    INSTALLED_APPS = (
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.sites',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        # Uncomment the next line to enable the admin:
+        'django.contrib.admin',
+        # Uncomment the next line to enable admin documentation:
+        # 'django.contrib.admindocs',
+        'logviewer'  # <-- ここを追加
+    )
+
+アプリケーションのデータモデルを定義する
+========================================
+Subversion などのバージョン管理システムは「チェンジセット」という単位で変更点を記録します。
+英語で書くと "changeset" なので、このデータモデルを定義しましょう。
+データモデルは :file:`logviewer/models.py` に記述します。
+
+:file:`logviewer/models.py` ::
+
+    from django.db import models
+
+    class Changeset(models.Model):
+        revision = models.IntegerField()
+        committer = models.CharField(max_length=200)
+        commit_date = models.DateTimeField()
+
+クラスがデータベースのテーブル、プロパティがテーブルのカラムに相当します。
+RDBMS のイメージとしては、Changeset というテーブルがあり、そこには次の３つのカラムがあります。
+
+* revision: 変更点のリビジョン番号。整数型。
+* committer: 変更をコミットしたユーザー名。文字列型で、最大200文字。
+* commit_date: 変更がコミットされた日付と時刻。時間用フィールドで、データベースの種類によって実装は異なる。
+
+XxxField というものは他にもいくつか用意されています。
+詳しくは `Django の公式ドキュメント`_ を参照してください。
+
+.. _Django の公式ドキュメント: https://docs.djangoproject.com/en/dev/ref/models/fields/
+
+データベースに反映させる
+========================
+:file:`logviewer/models.py` を変更したら、Django の管理スクリプトで変更を反映させます。
+まずは、どのような SQL が実行されるのかを確認しましょう。 ::
+
+    > python manage.py sql logviewer
+    BEGIN;
+    CREATE TABLE "logviewer_changeset" (
+        "id" integer NOT NULL PRIMARY KEY,
+        "revision" integer NOT NULL,
+        "committer" varchar(200) NOT NULL,
+        "commit_date" datetime NOT NULL
+    )
+    ;
+    COMMIT;
+
+Django が *id* というカラムを追加していますが、おおよそは予想通りの SQL ではないでしょうか。
+そもそも SQL の意味が分からない、という場合は別途学習してください。
+名前付けのルールなどは公式チュートリアルに記載されています。
+
+次に、実際にデータベースに反映させます。 ::
+
+    > python manage.py syncdb
+
+SQLite のビューアー (ここでは `Lita - SQLite Administration Tool <http://www.dehats.com/drupal/?q=node/58>`_ を使用)
+で :file:`sandbox.sqlite` を確認してみると、
+*logviewer_changeset* というテーブルが作成されています。
+
+.. figure:: django-table-created.png
+
+.. note::
+    スキーマを変更するには、データベースから該当のテーブルを削除して、
+    再度 syncdb を実行してください。 (ちょっとメンドクサイ...)
+
+管理画面から操作する
+====================
+各アプリケーションで定義したデータモデルは、管理画面から操作可能にもできます。
+:file:`logviewer/admin.py` というファイルを *新規作成* しましょう。
+(:file:`models.py` と同じフォルダ)
+
+:file:`logviewer/admin.py` ::
+
+    from logviewer.models import Changeset
+    from django.contrib import admin
+
+    admin.site.register(Changeset)
+
+テストサーバを起動 (:file:`manage.py` で *runserver* を実行) して、 `管理画面 <http://localhost:8000/admin>`_ にログインしてみます。
+新しいデータが定義されているでしょう。
+
+.. figure:: django-admin-top.png
+
+"Logviewer" の部分に "Changesets" があります。
+"Add" をクリックすると、データを追加する画面に切り替わります。
+
+.. figure:: django-admin-models-new.png
+
+必要な情報を入力して "Save" ボタンをクリックすると、データを登録できます。
+登録したデータは :file:`sandbox.sqlite` に反映されますので、別のビューアーでも確認できます。
+
+データモデルを新規に実装し、それを管理画面でも操作したい場合には、
+``admin.site.register`` の部分を編集してください。
