@@ -1,0 +1,134 @@
+====================
+ビューのカスタマイズ
+====================
+ビュー (表示部分) をもう少しカスタマイズしていきます。
+
+制御構文を使う
+==============
+テンプレートの中では「条件分岐」と「繰り返し」を実現できます。
+
+``{%`` と ``%}`` で囲んでブロックを作成します。
+
+IF文による条件分岐
+
+    .. code-block:: html
+
+        <html>
+          <head>
+            <title>SVN Log Viewer</title>
+          </head>
+          <body>
+            {% if username %}
+            Welcome {{ username }}, <a href="#/logout">Logout</a>
+            {% else %}
+            <a href="#/login">Login</a>
+            {% endif %}
+          </body>
+        </html>
+
+FOR文による繰り返し
+
+    .. code-block:: html
+
+        <html>
+          <head>
+            <title>SVN Log Viewer</title>
+          </head>
+          <body>
+            {% for changeset in changesets %}
+            <div>
+              <h1>Changeset ID={{ changeset.id }}</h1>
+              <p>リビジョン: {{ changeset.revision }}</p>
+              <p>コミッター: {{ changeset.committer }}</p>
+              <p>日付: {{ changeset.commit_date }}</p>
+            </div>
+            {% endfor %}
+          </body>
+        </html>
+
+それぞれの場合で、Python のビューから変数を渡してあげる必要があります。
+:file:`logview/view.py` の ``home()`` を関数を次のように変更します。 ::
+
+    def home(request):
+        changesets = Changeset.objects.all()
+        t = loader.get_template('index.html')
+        c = Context({'changesets': changesets})
+        return HttpResponse(t.render(c))
+
+テンプレートの継承を使う
+========================
+複数の HTML ページを作成するときは、ヘッダーやフッターなどは共通であることが多いでしょう。
+Django のテンプレートシステムでは、テンプレートを継承させることで共通処理を局所化できます。
+
+基本となる HTML ファイル (:file:`base.html`) と、コンテンツとなる HTML ファイル (:file:`index.html`) を用意します。
+いずれのファイルもエンコーディングは UTF-8 で保存しましょう。
+
+:file:`base.html`
+
+    .. code-block:: html
+
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>SVN Log Viewer</title>
+          </head>
+
+          <body>
+            {% if username %}
+            Welcome {{ username }}, <a href="#/logout" class="btn">Logout</a>
+            {% else %}
+            <a href="#/login" class="btn">Login</a>
+            {% endif %}
+            {% block contents %}{% endblock %}
+          </body>
+        </html>
+
+:file:`index.html`
+
+    .. code-block:: html
+
+        {% extends "base.html" %}
+
+        {% block contents %}
+        {% for changeset in changesets %}
+        <div class="row">
+          <h1>Changeset ID={{ changeset.id }}</h1>
+          <p>リビジョン: {{ changeset.revision }}</p>
+          <p>コミッター: {{ changeset.committer }}</p>
+          <p>日付: {{ changeset.commit_date }}</p>
+        </div>
+        {% endfor %}
+        {% endblock %}
+
+この記述で :file:`index.html` をレンダリングすると、
+下記のように出力がマージされるイメージです。
+
+.. code-block:: html
+
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>SVN Log Viewer</title>
+      </head>
+
+      <body>
+        {% if username %}
+        Welcome {{ username }}, <a href="#/logout" class="btn">Logout</a>
+        {% else %}
+        <a href="#/login" class="btn">Login</a>
+        {% endif %}
+        {% for changeset in changesets %}
+        <div class="row">
+          <h1>Changeset ID={{ changeset.id }}</h1>
+          <p>リビジョン: {{ changeset.revision }}</p>
+          <p>コミッター: {{ changeset.committer }}</p>
+          <p>日付: {{ changeset.commit_date }}</p>
+        </div>
+        {% endfor %}
+      </body>
+    </html>
+
+複数のページで JavaScript や CSS を共有する Web アプリケーションでは、
+このように記述しておくことで簡単にファイルへのパスを管理できます。

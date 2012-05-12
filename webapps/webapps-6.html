@@ -1,0 +1,147 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>アプリケーションの配置 &mdash; Python School 1.3.0rc documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.3.0rc documentation" href="../index.html" />
+    <link rel="up" title="Webアプリケーションの実装" href="index.html" />
+    <link rel="next" title="発展的なことがら" href="../advanced/index.html" />
+    <link rel="prev" title="ビューのカスタマイズ" href="webapps-5.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.3.0rc documentation</span></a></h1>
+        <h2 class="heading"><span>アプリケーションの配置</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-5.html">ビューのカスタマイズ</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../advanced/index.html">発展的なことがら</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>アプリケーションの配置<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>実際に Web アプリケーションを配置する方法を紹介します。
+配置方法はたくさんありますので、導入しやすさやメンテナンス性などを考慮しておきましょう。
+ここでは Java の Web アプリケーションコンテナとして有名な Tomcat などで利用される AJP を使ってみます。</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">WSGI や FastCGI が一般的ですが、色々な配置方法が可能、という紹介のために AJP を使っています。
+Apache+Tomcat で Web アプリケーションを作成した経験のある人にとっては設定が簡単であることもひとつの理由です。</p>
+</div>
+<div class="section" id="web">
+<h2>Webアプリケーションの基本<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<img alt="../images/web-application.png" src="../images/web-application.png" />
+</div>
+<p>チューニングのポイントはたくさんありますが、
+まずは「静的コンテンツと動的コンテンツを分ける」ことを身につけましょう。
+あとはインターネット上を検索しながら知識を吸収してください。</p>
+</div>
+<div class="section" id="apache">
+<h2>Apache の後ろに置く<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">予め、ソースコード一式をサーバに配置し、virtualenv の環境を整えてください。</p>
+</div>
+<p><a class="reference external" href="http://trac.saddi.com/flup">flup</a> というモジュールを使って AJP 互換で動作させます。
+まずは <strong class="command">pip</strong> を使ってインストールします。</p>
+<div class="highlight-python"><pre>$ cat &lt;&lt;EOF &gt;&gt;requirements.txt
+&gt; Django=1.3.1
+&gt; flup==1.0.2
+&gt; EOF
+$ pip install -r requirements.txt</pre>
+</div>
+<div class="highlight-python"><pre>$ python manage.py runfcgi protocol=ajp host=127.0.0.1 port=3000</pre>
+</div>
+<p>次に、Webサーバでプロキシを設定します。</p>
+<p>Apache の場合は <em>/usr/local/apache2/conf/extra/httpd-proxy.conf</em> に次のような記述を追加します。</p>
+<div class="highlight-python"><pre>&lt;Location /logview&gt;
+    ProxyPass   ajp://localhost:3000/logview
+&lt;/Location&gt;</pre>
+</div>
+<p>適切に設定できると、以下の画面を表示できます。</p>
+<div class="figure">
+<img alt="../images/django-logview.png" src="../images/django-logview.png" />
+</div>
+</div>
+<div class="section" id="id2">
+<h2>飛ばしてきたこと<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>ここまでで簡単な Web アプリケーションを実装できるようになったと思います。
+しかし、まだまだ実装すべきこともあります。
+例としては次の項目が挙げられます。</p>
+<ul class="simple">
+<li>クエリの構築、モデル同士のリレーション</li>
+<li>認証機構、ユーザー管理</li>
+<li>フォームデータの送信、モデルフォーム</li>
+<li>静的コンテンツの管理方法</li>
+<li>テンプレートタグ、フィルター</li>
+<li>ジェネリックビュー</li>
+<li>キャッシュの使い方</li>
+<li>Ajax 処理</li>
+<li>国際化機構 (i18n)</li>
+<li>マネージメントスクリプト</li>
+<li>開発用と本番用でのデータベースの切り替え</li>
+</ul>
+<p>これらのことを自分で調べ、アプリケーションに組み込んでいってください。</p>
+<p>また、既存のサンプルプロジェクトや、プロジェクトの雛型も参考になるでしょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://pinaxproject.com/">Pinax</a></li>
+<li><a class="reference external" href="https://github.com/dotcloud/geodjango-on-dotcloud">GeoDjango</a></li>
+<li><a class="reference external" href="https://github.com/omab/django-social-auth">Django Social Auth</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-5.html">ビューのカスタマイズ</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../advanced/index.html">発展的なことがら</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

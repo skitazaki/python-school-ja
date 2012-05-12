@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ビューのカスタマイズ &mdash; Python School 1.3.0rc documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.3.0rc documentation" href="../index.html" />
+    <link rel="up" title="Webアプリケーションの実装" href="index.html" />
+    <link rel="next" title="アプリケーションの配置" href="webapps-6.html" />
+    <link rel="prev" title="Web ブラウザに表示" href="webapps-4.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.3.0rc documentation</span></a></h1>
+        <h2 class="heading"><span>ビューのカスタマイズ</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-4.html">Web ブラウザに表示</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="webapps-6.html">アプリケーションの配置</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>ビューのカスタマイズ<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>ビュー (表示部分) をもう少しカスタマイズしていきます。</p>
+<div class="section" id="id2">
+<h2>制御構文を使う<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>テンプレートの中では「条件分岐」と「繰り返し」を実現できます。</p>
+<p><tt class="docutils literal"><span class="pre">{%</span></tt> と <tt class="docutils literal"><span class="pre">%}</span></tt> で囲んでブロックを作成します。</p>
+<p>IF文による条件分岐</p>
+<blockquote>
+<div><div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SVN Log Viewer<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    {% if username %}
+    Welcome {{ username }}, <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/logout&quot;</span><span class="nt">&gt;</span>Logout<span class="nt">&lt;/a&gt;</span>
+    {% else %}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/login&quot;</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+    {% endif %}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>FOR文による繰り返し</p>
+<blockquote>
+<div><div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SVN Log Viewer<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    {% for changeset in changesets %}
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;h1&gt;</span>Changeset ID={{ changeset.id }}<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;p&gt;</span>リビジョン: {{ changeset.revision }}<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>コミッター: {{ changeset.committer }}<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>日付: {{ changeset.commit_date }}<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    {% endfor %}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>それぞれの場合で、Python のビューから変数を渡してあげる必要があります。
+<tt class="file docutils literal"><span class="pre">logview/view.py</span></tt> の <tt class="docutils literal"><span class="pre">home()</span></tt> を関数を次のように変更します。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">changesets</span> <span class="o">=</span> <span class="n">Changeset</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">&#39;index.html&#39;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Context</span><span class="p">({</span><span class="s">&#39;changesets&#39;</span><span class="p">:</span> <span class="n">changesets</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>テンプレートの継承を使う<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>複数の HTML ページを作成するときは、ヘッダーやフッターなどは共通であることが多いでしょう。
+Django のテンプレートシステムでは、テンプレートを継承させることで共通処理を局所化できます。</p>
+<p>基本となる HTML ファイル (<tt class="file docutils literal"><span class="pre">base.html</span></tt>) と、コンテンツとなる HTML ファイル (<tt class="file docutils literal"><span class="pre">index.html</span></tt>) を用意します。
+いずれのファイルもエンコーディングは UTF-8 で保存しましょう。</p>
+<p><tt class="file docutils literal"><span class="pre">base.html</span></tt></p>
+<blockquote>
+<div><div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SVN Log Viewer<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+    {% if username %}
+    Welcome {{ username }}, <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/logout&quot;</span> <span class="na">class=</span><span class="s">&quot;btn&quot;</span><span class="nt">&gt;</span>Logout<span class="nt">&lt;/a&gt;</span>
+    {% else %}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/login&quot;</span> <span class="na">class=</span><span class="s">&quot;btn&quot;</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+    {% endif %}
+    {% block contents %}{% endblock %}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><tt class="file docutils literal"><span class="pre">index.html</span></tt></p>
+<blockquote>
+<div><div class="highlight-html"><div class="highlight"><pre>{% extends &quot;base.html&quot; %}
+
+{% block contents %}
+{% for changeset in changesets %}
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Changeset ID={{ changeset.id }}<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>リビジョン: {{ changeset.revision }}<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>コミッター: {{ changeset.committer }}<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>日付: {{ changeset.commit_date }}<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+{% endfor %}
+{% endblock %}
+</pre></div>
+</div>
+</div></blockquote>
+<p>この記述で <tt class="file docutils literal"><span class="pre">index.html</span></tt> をレンダリングすると、
+下記のように出力がマージされるイメージです。</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SVN Log Viewer<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+    {% if username %}
+    Welcome {{ username }}, <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/logout&quot;</span> <span class="na">class=</span><span class="s">&quot;btn&quot;</span><span class="nt">&gt;</span>Logout<span class="nt">&lt;/a&gt;</span>
+    {% else %}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/login&quot;</span> <span class="na">class=</span><span class="s">&quot;btn&quot;</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+    {% endif %}
+    {% for changeset in changesets %}
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h1&gt;</span>Changeset ID={{ changeset.id }}<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;p&gt;</span>リビジョン: {{ changeset.revision }}<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>コミッター: {{ changeset.committer }}<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>日付: {{ changeset.commit_date }}<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    {% endfor %}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+<p>複数のページで JavaScript や CSS を共有する Web アプリケーションでは、
+このように記述しておくことで簡単にファイルへのパスを管理できます。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-4.html">Web ブラウザに表示</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="webapps-6.html">アプリケーションの配置</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

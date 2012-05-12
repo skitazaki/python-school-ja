@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>アプリケーションの作成 &mdash; Python School 1.3.0rc documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.3.0rc documentation" href="../index.html" />
+    <link rel="up" title="Webアプリケーションの実装" href="index.html" />
+    <link rel="next" title="データの管理" href="webapps-3.html" />
+    <link rel="prev" title="Django の環境構築" href="webapps-1.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.3.0rc documentation</span></a></h1>
+        <h2 class="heading"><span>アプリケーションの作成</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-1.html">Django の環境構築</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="webapps-3.html">データの管理</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>アプリケーションの作成<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Django では「プロジェクト」の中に複数の「アプリケーション」を持つことが可能です。
+「アプリケーション」として最も汎用的なものは管理画面であり、これは Django にバンドルされています。</p>
+<p>「アプリケーション」は「プロジェクト」と疎結合に実装することも可能で、
+うまく実装すると、複数のプロジェクトに同じアプリケーションを組み込めます。
+たとえば、プロジェクトとアプリケーションが３つずつあったときに、次のように構成できます。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">プロジェクト</th>
+<th class="head">アプリケーション</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>プロジェクト A</td>
+<td>アプリケーション A</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>アプリケーション B</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>アプリケーション C</td>
+</tr>
+<tr class="row-odd"><td>プロジェクト B</td>
+<td>アプリケーション A</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>アプリケーション B</td>
+</tr>
+<tr class="row-odd"><td>プロジェクト C</td>
+<td>アプリケーション A</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>アプリケーション C</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id2">
+<h2>何をつくる？<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Subversion のログのビューアーを実装してみます。
+アプリケーション名は <em>logviewer</em> としておきます。</p>
+<p>Subversion のログは TortoiseSVN で簡単かつ分かりやすく閲覧できますので、
+機能としては似たもの (というか、劣化版) にします。
+Webアプリケーションならば Trac や Redmine のタイムラインがこの機能を提供してくれます。</p>
+</div>
+<div class="section" id="id3">
+<h2>アプリケーションを作成する<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p><tt class="file docutils literal"><span class="pre">manage.py</span></tt> を使ってアプリケーションを作成します。
+virtualenv 環境を有効にしてからコマンドを実行しましょう。</p>
+<div class="highlight-python"><pre>&gt; Scripts\activate
+&gt; cd sandbox
+&gt; python manage.py startapp logviewer</pre>
+</div>
+<p>アプリケーション用のフォルダが作成され、いくつかのファイルも生成されます。
+プロジェクトの全体は次のようになります。</p>
+<div class="highlight-python"><pre>&gt; tree /A /F
+D:.
+|   manage.py
+|   sandbox.sqlite
+|   settings.py
+|   settings.pyc
+|   urls.py
+|   urls.pyc
+|   __init__.py
+|   __init__.pyc
+|
+\---logviewer
+        models.py
+        tests.py
+        views.py
+        __init__.py</pre>
+</div>
+<p>今はアプリケーションを「作成」しただけですので、
+次にアプリケーションをプロジェクトに「登録」します。
+<tt class="file docutils literal"><span class="pre">settings.py</span></tt> の <em>INSTALLED_APPS</em> に追加しましょう。
+管理画面を有効にしたときに編集した部分です。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sites&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable the admin:</span>
+    <span class="s">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="c"># Uncomment the next line to enable admin documentation:</span>
+    <span class="c"># &#39;django.contrib.admindocs&#39;,</span>
+    <span class="s">&#39;logviewer&#39;</span>  <span class="c"># &lt;-- ここを追加</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>アプリケーションのデータモデルを定義する<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Subversion などのバージョン管理システムは「チェンジセット」という単位で変更点を記録します。
+英語で書くと &#8220;changeset&#8221; なので、このデータモデルを定義しましょう。
+データモデルは <tt class="file docutils literal"><span class="pre">logviewer/models.py</span></tt> に記述します。</p>
+<p><tt class="file docutils literal"><span class="pre">logviewer/models.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span> <span class="nc">Changeset</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">revision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">committer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">commit_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>クラスがデータベースのテーブル、プロパティがテーブルのカラムに相当します。
+RDBMS のイメージとしては、Changeset というテーブルがあり、そこには次の３つのカラムがあります。</p>
+<ul class="simple">
+<li>revision: 変更点のリビジョン番号。整数型。</li>
+<li>committer: 変更をコミットしたユーザー名。文字列型で、最大200文字。</li>
+<li>commit_date: 変更がコミットされた日付と時刻。時間用フィールドで、データベースの種類によって実装は異なる。</li>
+</ul>
+<p>XxxField というものは他にもいくつか用意されています。
+詳しくは <a class="reference external" href="https://docs.djangoproject.com/en/dev/ref/models/fields/">Django の公式ドキュメント</a> を参照してください。</p>
+</div>
+<div class="section" id="id5">
+<h2>データベースに反映させる<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><tt class="file docutils literal"><span class="pre">logviewer/models.py</span></tt> を変更したら、Django の管理スクリプトで変更を反映させます。
+まずは、どのような SQL が実行されるのかを確認しましょう。</p>
+<div class="highlight-python"><pre>&gt; python manage.py sql logviewer
+BEGIN;
+CREATE TABLE "logviewer_changeset" (
+    "id" integer NOT NULL PRIMARY KEY,
+    "revision" integer NOT NULL,
+    "committer" varchar(200) NOT NULL,
+    "commit_date" datetime NOT NULL
+)
+;
+COMMIT;</pre>
+</div>
+<p>Django が <em>id</em> というカラムを追加していますが、おおよそは予想通りの SQL ではないでしょうか。
+そもそも SQL の意味が分からない、という場合は別途学習してください。
+名前付けのルールなどは公式チュートリアルに記載されています。</p>
+<p>次に、実際にデータベースに反映させます。</p>
+<div class="highlight-python"><pre>&gt; python manage.py syncdb</pre>
+</div>
+<p>SQLite のビューアー (ここでは <a class="reference external" href="http://www.dehats.com/drupal/?q=node/58">Lita - SQLite Administration Tool</a> を使用)
+で <tt class="file docutils literal"><span class="pre">sandbox.sqlite</span></tt> を確認してみると、
+<em>logviewer_changeset</em> というテーブルが作成されています。</p>
+<div class="figure">
+<img alt="../images/django-table-created.png" src="../images/django-table-created.png" />
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">スキーマを変更するには、データベースから該当のテーブルを削除して、
+再度 syncdb を実行してください。 (ちょっとメンドクサイ...)</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>管理画面から操作する<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>各アプリケーションで定義したデータモデルは、管理画面から操作可能にもできます。
+<tt class="file docutils literal"><span class="pre">logviewer/admin.py</span></tt> というファイルを <em>新規作成</em> しましょう。
+(<tt class="file docutils literal"><span class="pre">models.py</span></tt> と同じフォルダ)</p>
+<p><tt class="file docutils literal"><span class="pre">logviewer/admin.py</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">logviewer.models</span> <span class="kn">import</span> <span class="n">Changeset</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Changeset</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>テストサーバを起動 (<tt class="file docutils literal"><span class="pre">manage.py</span></tt> で <em>runserver</em> を実行) して、 <a class="reference external" href="http://localhost:8000/admin">管理画面</a> にログインしてみます。
+新しいデータが定義されているでしょう。</p>
+<div class="figure">
+<img alt="../images/django-admin-top.png" src="../images/django-admin-top.png" />
+</div>
+<p>&#8220;Logviewer&#8221; の部分に &#8220;Changesets&#8221; があります。
+&#8220;Add&#8221; をクリックすると、データを追加する画面に切り替わります。</p>
+<div class="figure">
+<img alt="../images/django-admin-models-new.png" src="../images/django-admin-models-new.png" />
+</div>
+<p>必要な情報を入力して &#8220;Save&#8221; ボタンをクリックすると、データを登録できます。
+登録したデータは <tt class="file docutils literal"><span class="pre">sandbox.sqlite</span></tt> に反映されますので、別のビューアーでも確認できます。</p>
+<p>データモデルを新規に実装し、それを管理画面でも操作したい場合には、
+<tt class="docutils literal"><span class="pre">admin.site.register</span></tt> の部分を編集してください。</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="webapps-1.html">Django の環境構築</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="webapps-3.html">データの管理</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

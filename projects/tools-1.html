@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>構成、ビルドのツール &mdash; Python School 1.3.0rc documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.3.0rc',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.3.0rc documentation" href="../index.html" />
+    <link rel="up" title="プロジェクトの構成" href="index.html" />
+    <link rel="next" title="自動化を進める" href="tools-2.html" />
+    <link rel="prev" title="Nose を使ったテスト" href="tests-2.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.3.0rc documentation</span></a></h1>
+        <h2 class="heading"><span>構成、ビルドのツール</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="tests-2.html">Nose を使ったテスト</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tools-2.html">自動化を進める</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="id1">
+<h1>構成、ビルドのツール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>どのプログラミング言語を使うにしろ、構成やビルド、それからリリースに関するツールは重要です。
+多くのソフトウェアでは <em>autotools</em> と <em>Makefile</em> が使われていますが、
+これから勉強するには読みにくいなど、いくつかの問題も抱えています。</p>
+<p>Python で記述された構成管理のツールにもいくつかの選択肢があり、それぞれに長所と短所があります。
+これらのツールの多くは、対象とするソフトウェアのプログラミング言語とは独立しています。
+したがって、C 言語で記述されたソフトウェアを Python 製のツールで管理することもできます。</p>
+<p>ここでは次の３つのツールに関するリンクを紹介します。
+詳しくはそれぞれのリファレンスを参照してください。
+細かい TIPS などは検索エンジンで探してみましょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://pypi.python.org/pypi/zc.buildout">zc.buildout</a></li>
+<li><a class="reference external" href="http://www.scons.org/">SCons</a></li>
+<li><a class="reference external" href="http://code.google.com/p/waf/">Waf</a></li>
+</ul>
+<p>いくつかのビルドシステムの比較記事はこちらにまとめられています。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.scons.org/wiki/SconsVsOtherBuildTools">SconsVsOtherBuildTools</a></li>
+</ul>
+<div class="section" id="zc-buildout">
+<h2>zc.buildout<a class="headerlink" href="#zc-buildout" title="Permalink to this headline">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://www.freia.jp/taka/docs/pyhack4/buildout/index.html">zc.buildout (Python Hack-a-thon 4 ハンズオン 中級コース)</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">buildout はPythonベースのビルドシステムです。
+パーツという単位で アプリケーションを作成、組み立て、配置などを行い、非Pythonベースのものも構築可能です。</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://plone.jp/documentation/buildout-tutorial-jp">zc.buildoutを使ってプロジェクトを管理する</a>:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">eggs、setuptoolsと依存管理、そして開発環境のセットアップにzc.buildoutを使う方法を学びます。</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://pypi.python.org/pypi/rod.recipe.mongodb/">rod.recipe.mongodb 1.2.2</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Buildout recipe for downloading and installing mongoDB.
+(MongoDB をダウンロードしてインストールするレシピ)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="scons">
+<h2>SCons<a class="headerlink" href="#scons" title="Permalink to this headline">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://cccis.jp/wiki/SCons/Makefile%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%AE%E3%81%AB%E7%96%B2%E3%82%8C%E3%81%9F%E4%BA%BA%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AESCons">SConsMakefileを書くのに疲れた人のためのSCons</a>:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">SConsはmakeやAntのように数多くあるビルドツールのうち一つであり、Pythonで書かれている。
+ビルド設定のファイルをPythonで記述することができ、またSCons自身が依存関係解析の機能を持っているため、
+makeと比べるとずっと簡単にビルド環境を構築することができる。</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://cydn.cybozu.co.jp/2008/05/scons.html">SCons (調査レポート)</a> - 簡単な使い方など:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li>プログラムでビルドを制御できる</li>
+<li>プログラミングのパターンが C や C++ のソースコードのビルドに適している</li>
+<li>モジュール形式で、オブジェクト間の依存関係の制御が優れている
+(SCons を起動すると、まずビルドの依存性グラフを修正し、それからそれに基いてビルドを作成する)</li>
+<li>各プラットフォームでビルドが適切に行われたかどうかを試験するパッケージソフトが豊富にある</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="waf">
+<h2>Waf<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h2>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://d.hatena.ne.jp/tanakh/20100212">waf チュートリアル</a> (純粋関数型雑記帳):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">waf は Python ベースのビルドシステムです。
+同様のことを行うツールとして、Autotools、Scons、CMake、Antなどがあります。
+Sconsからの派生で、比較的新しいソフトウェアです。</td>
+</tr>
+</tbody>
+</table>
+<p>waf はシステムワイドなインストールが不要で、バイナリをダウンロードして PATH を通せば使えます。
+<a class="reference internal" href="../advanced/advanced-2.html"><em>モジュールのインポート方法いろいろ</em></a> にファイルをダウンロードするスクリプトがあります。
+次のようにしてダウンロードし、 <tt class="file docutils literal"><span class="pre">waf.bat</span></tt> というバッチファイルで起動させれば使い始められます。</p>
+<div class="highlight-python"><pre>&gt; python downloader.py http://waf.googlecode.com/files/waf-1.6.11
+&gt; copy waf-1.6.11 Scripts\waf</pre>
+</div>
+<p><tt class="file docutils literal"><span class="pre">waf.bat</span></tt></p>
+<div class="highlight-python"><pre>@echo off
+python %~dp0\waf %*</pre>
+</div>
+<p>Waf は Node.js のビルドシステムとしても使われています。
+作者の Ryan Dahl は複雑だとも述べていますが、現状で使っているものをとりあえず知っておくのも良いでしょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://nodejs.org/docs/latest/api/addons.html">Addons (Node.js)</a></li>
+<li><a class="reference external" href="http://bostinno.com/2011/01/31/node-js-interview-4-questions-with-creator-ryan-dahl/">Node.js Interview: 4 Questions with Creator Ryan Dahl</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="tests-2.html">Nose を使ったテスト</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="tools-2.html">自動化を進める</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2011, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

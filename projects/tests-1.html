@@ -230,6 +230,13 @@ FAILED (errors=1)</pre>
 <p>負の数から開始してしまうと再帰の行き着く先がありませんので無限ループになってしまいます。
 適切に <tt class="file docutils literal"><span class="pre">fibonacci.py</span></tt> を改修してください。</p>
 <p>こうしてテストと実装を繰り返すことで境界値条件が明確になり、変更の影響範囲を絞ることが可能になります。</p>
+<p>再帰を使ったフィボナッチ数列の実装は、N が 30 くらいから非常に遅くなります。
+数学的な解決策としては、三項間漸化式を解いて N に関する方程式を導出する方法があります。
+Wikipedia のページなどを参考にして、異なる実装を考えてみるのも良いでしょう。</p>
+<p>また、フィボナッチ数列のように繰り返し計算する必要があるものでは
+「メモ化」という技法を採用することもあります。
+こちらも詳しくは Wikipedia のページなどを参考にしてください。
+なお「エキスパート Python」という書籍でもメモ化の実装には触れられています。</p>
 </div>
 <div class="section" id="doctest">
 <h2>doctest の実行方法<a class="headerlink" href="#doctest" title="Permalink to this headline">¶</a></h2>
