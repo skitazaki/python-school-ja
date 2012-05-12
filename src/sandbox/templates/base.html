@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SVN Log Viewer</title>
+  </head>
+
+  <body>
+    {% if username %}
+    Welcome {{ username }}, <a href="#/logout" class="btn">Logout</a>
+    {% else %}
+    <a href="#/login" class="btn">Login</a>
+    {% endif %}
+    {% block contents %}{% endblock %}
+  </body>
+</html>

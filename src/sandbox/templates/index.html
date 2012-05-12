@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block contents %}
+{% for changeset in changesets %}
+<div class="row">
+  <h1>Changeset ID={{ changeset.id }}</h1>
+  <p>リビジョン: {{ changeset.revision }}</p>
+  <p>コミッター: {{ changeset.committer }}</p>
+  <p>日付: {{ changeset.commit_date }}</p>
+</div>
+{% endfor %}
+{% endblock %}
