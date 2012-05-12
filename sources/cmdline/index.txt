@@ -1,5 +1,13 @@
 コマンドライン操作
 ==================
+Python でシェルのラッパースクリプトを記述できるようになりましょう。
+英文ですが、こちらの記事にいくつかの例が紹介されています。
+
+* `Using Python to create UNIX command line tools`_
+
+.. _Using Python to create UNIX command line tools: http://www.ibm.com/developerworks/aix/library/au-pythocli/
+
+ここでは以下のトピックを扱います。
 
 .. toctree::
    :maxdepth: 2

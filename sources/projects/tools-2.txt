@@ -1,0 +1,35 @@
+==============
+自動化を進める
+==============
+まずはこれら一連の記事に目を通してみましょう。
+
+* `万人のためのオートメーション`_ - IBM developerWorks
+    * `継続的インテグレーション・サーバーの選択`_
+    * `Eclipse プラグインによるコードの改善`_
+    * `アーキテクチャー健全性のアサーション`_
+    * `継続的インテグレーションのアンチパターン、第 1 回`_
+    * `オートメーションによるデプロイメントの円滑化`_
+    * `継続的インテグレーションのアンチパターン、第 2 回`_
+    * `人手を介さない自動負荷テスト`_
+    * `Ivy による依存関係の管理`_
+    * `プッシュボタンによるドキュメント作成`_
+    * `デプロイメントの自動化パターン、第 1 回`_
+
+.. _万人のためのオートメーション: http://www.ibm.com/developerworks/jp/views/java/libraryview.jsp?search_by=%E4%B8%87%E4%BA%BA%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%82%AA%E3%83%BC%E3%83%88%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
+.. _継続的インテグレーション・サーバーの選択: http://www.ibm.com/developerworks/jp/java/library/j-ap09056/index.html
+.. _Eclipse プラグインによるコードの改善: http://www.ibm.com/developerworks/jp/java/library/j-ap01117/index.html
+.. _アーキテクチャー健全性のアサーション: http://www.ibm.com/developerworks/jp/java/library/j-ap07107/index.html
+.. _継続的インテグレーションのアンチパターン、第 1 回: http://www.ibm.com/developerworks/jp/java/library/j-ap11297/index.html
+.. _オートメーションによるデプロイメントの円滑化: http://www.ibm.com/developerworks/jp/java/library/j-ap01088/index.html
+.. _継続的インテグレーションのアンチパターン、第 2 回: http://www.ibm.com/developerworks/jp/java/library/j-ap03048/index.html
+.. _人手を介さない自動負荷テスト: http://www.ibm.com/developerworks/jp/java/library/j-ap04088/index.html
+.. _Ivy による依存関係の管理: http://www.ibm.com/developerworks/jp/java/library/j-ap05068/index.html
+.. _プッシュボタンによるドキュメント作成: http://www.ibm.com/developerworks/jp/java/library/j-ap06108/index.html
+.. _デプロイメントの自動化パターン、第 1 回: http://www.ibm.com/developerworks/jp/java/library/j-ap01139/index.html
+
+パッケージングを自動化してみましょう。
+
+* `Python のパッケージ化に関するガイド`_ - IBM developerWorks
+
+.. _Python のパッケージ化に関するガイド: http://www.ibm.com/developerworks/jp/opensource/library/os-pythonpackaging/
+

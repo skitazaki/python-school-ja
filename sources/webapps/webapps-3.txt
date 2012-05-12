@@ -1,0 +1,106 @@
+============
+データの管理
+============
+:file:`manage.py` を使ってデータを管理できます。
+:file:`manage.py` の次の３つのコマンドを使ってみましょう。
+
+* dumpdata:
+    データをバックアップします
+* loaddata:
+    バックアップデータを復元します
+* shell:
+    コマンドラインで操作できます
+
+データをバックアップする
+========================
+virtualenv 環境を有効にしてから、次のコマンドを実行してみましょう。 ::
+
+    > python manage.py dumpdata
+
+ターミナルに大量のデータが出力されるでしょう。
+これはデータベースの内容を JSON 形式に書き出したものになります。
+ファイルに書き出して、JSON のビューアー (例: `JSON Viewer`_) で見てみましょう。 ::
+
+    > python manage.py dumpdata >dumpdata.json
+
+.. _JSON Viewer: http://jsonviewer.codeplex.com/
+
+.. figure:: django-dumpdata.png
+
+たくさんあるデータの中に、 *logviewer.changeset* があります。
+
+すべてのデータをバックアップできることは便利ですが、
+開発を進めていく中では冗長でもあります。
+*dumpdata* コマンドは引数を受け取ることができ、アプリケーション名を渡すと、
+そのアプリケーションのデータだけを出力できます。 ::
+
+    > python manage.py dumpdata logviewer >logviewer.json
+
+.. figure:: django-dumpdata-app-only.png
+
+アプリケーションのモデルごとでも出力できます。
+*dumpdata* コマンドに渡す引数を *logviewer* から *logviewer.changeset* に変更してみてください。
+
+バックアップデータを復元する
+============================
+*dumpdata* コマンドで出力した JSON データは、 *loaddata* コマンドで取り込めます。
+
+データベースファイルを一度退避して、データベースの作成からやり直してみましょう。 ::
+
+    > move sandbox.sqlite sandbox-backup.sqlite
+    > python manage.py syncdb
+
+.. note::
+    作り直すときは、スーパーユーザーを作成しなくて良いので、
+    `Would you like to create one now? (yes/no):` という質問には *no* と答えましょう。
+
+先程バックアップしたすべてのデータファイルを引数に渡します。
+結果として、いくつのオブジェクトを復元できたかを表示してくれます。 ::
+
+    > python manage.py loaddata dumpdata.json
+    Installed 41 object(s) from 1 fixture(s)
+
+もちろん、アプリケーションごと、アプリケーションのモデルごとにも復元できます。
+*dumpdata* コマンドで出力した JSON にはモデルの情報も含まれていますので、
+引数のファイル名を変更してみてください。
+また、引数のファイル名は複数指定できます。
+
+データを復元できる、ということは、テストデータの共有につながります。
+マスタデータを JSON で保存しておくことで、チーム開発におけるデータ入力の手間を省けます。
+
+コマンドラインで操作する
+========================
+モデルデータは Python オブジェクトとして定義されていますから、
+Python のインタラクティブシェルからも操作できます。
+ただし、モジュール検索パスを調整したり、設定情報を読み込む必要があります。
+
+:file:`manage.py` の *shell* コマンドは、これらをラップしてくれます。
+実際に試してみましょう。 ::
+
+    > python manage.py shell
+
+通常の Python プロンプトと同様ですが、アプリケーションをインポートできます。 ::
+
+    >>> import logviewer
+    >>> logviewer.models.Changeset
+    <class 'logviewer.models.Changeset'>
+
+Django のモデル API に関しては公式のドキュメントとチュートリアルを参照してください。
+参考までに、新規オブジェクトを作成し、オブジェクトの一覧を表示してみます。 ::
+
+    >>> import datetime
+    >>> c = logviewer.models.Changeset(revision=100, committer="Django", commit_date=datetime.datetime.now())
+    >>> c.save()
+    >>> c.id
+    2
+    >>>
+    >>> logviewer.models.Changeset.objects.all()
+    [<Changeset: Changeset object>, <Changeset: Changeset object>]
+    >>> changesets = _
+    >>> for changeset in changesets:
+    ...     print changeset.committer
+    ...
+    shigeru-kitazaki
+    Django
+
+簡単に動作を確認したい場合には、コマンドラインで操作してみてください。

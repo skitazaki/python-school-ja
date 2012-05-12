@@ -29,12 +29,12 @@ Python 固有のこともありますが、どのプログラミング言語で�
 
    tests-1
    tests-2
+   tools-1
+   tools-2
 
 ..
    documents-1
    documents-2
-   tools-1
-   tools-2
 
 さらに興味がある場合には "CMMI", "ISO 9000", "ISO/IEC 15504", "UML" などについて調べてみてください。
 
