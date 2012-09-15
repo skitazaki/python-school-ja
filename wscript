@@ -36,9 +36,10 @@ def docclean(ctx):
 
 
 def test(ctx):
-    t = ctx.path.ant_glob('src/**/*.py')
+    t = ctx.path.ant_glob('src/csv-*.py',
+            excl=['src/sphinx-to-github', 'src/cmdline-*.py'])
     files = [f.abspath() for f in t]
-    ctx.exec_command('nosetests -vv ' + ' '.join(files))
+    ctx.exec_command('nosetests -vv --with-xunit ' + ' '.join(files))
 
 
 def dist(ctx):
