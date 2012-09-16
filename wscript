@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 APPNAME = 'python-shool-ja'
-VERSION = '1.3.0'
+VERSION = '1.4.0'
 
 top = '.'
 out = '_build'
@@ -36,7 +36,7 @@ def docclean(ctx):
 
 
 def test(ctx):
-    t = ctx.path.ant_glob('src/csv-*.py',
+    t = ctx.path.ant_glob(['src/csv-*.py', 'src/xml-*.py'],
             excl=['src/sphinx-to-github', 'src/cmdline-*.py'])
     files = [f.abspath() for f in t]
     ctx.exec_command('nosetests -vv --with-xunit ' + ' '.join(files))

@@ -1,0 +1,86 @@
+======================
+XML ファイルの処理方法
+======================
+
+XML 処理の基本
+==============
+* SAX - Simple API for XML
+* DOM - Document Object Model
+* Pull Parser
+
+多くの場合に DOM を使います。
+モダンな実装を求める場合は Pull Parser を使います。
+巨大な XML ストリームを扱う場合は SAX を使います。
+
+DOM のサンプル
+==============
+Maven で扱う POM ファイルを読み込み、
+アーティファクトに関する情報をオブジェクトにマップするスクリプトは次のように記述できます。
+
+POM ファイル (:file:`xml-1.xml`):
+
+.. literalinclude:: /../etc/xml-1.xml
+   :encoding: utf-8
+   :language: xml
+
+Python スクリプト (:file:`xml-1.py`):
+
+.. literalinclude:: /../src/xml-1.py
+
+実行結果 ::
+
+    > python xml-1.py xml-1.xml
+    sample-group/sample-group-commons/1.0.0
+
+ElementTree を使う
+==================
+DOM をそのまま扱うのは冗長な感じがありますので、多くの場合に何らかのライブラリを使います。
+Python 2.5 からは ElementTree が標準モジュールに入りました。
+
+* `19.13. xml.etree.ElementTree — The ElementTree XML API`_
+
+.. _`19.13. xml.etree.ElementTree — The ElementTree XML API`: http://docs.python.org/library/xml.etree.elementtree.html
+
+ElementTree モジュールを使うと次のように記述できます。
+
+Python スクリプト (:file:`xml-2.py`):
+
+.. literalinclude:: /../src/xml-2.py
+
+実行結果 ::
+
+    > python xml-2.py xml-1.xml
+    sample-group/sample-group-commons/1.0.0
+
+
+SAX のサンプル
+==============
+DOM はデータをメモリに読み込むため、実行マシンのメモリ量を超えてしまうような XML データを扱うことができません。
+大きなデータを扱う場合にはストリーミング処理が必要になりますが、これを実現するのが SAX です。
+
+Python スクリプト (:file:`xml-3.py`):
+
+.. literalinclude:: /../src/xml-3.py
+
+実行結果 ::
+
+    > python xml-3.py xml-1.xml
+    sample-group/sample-group-commons/1.0.0
+
+ここでは比較のために同じ XML ファイルを扱っていますが、
+たとえば、Wikipedia のダンプデータを処理する場合には SAX が役に立ちます。
+実際に自分で Wikipedia のダンプデータを処理してみましょう。
+
+* `Index of /jawiki/latest/`_ - dumps.wikimedia.org
+
+.. _Index of /jawiki/latest/: http://dumps.wikimedia.org/jawiki/latest/
+
+宿題
+====
+「XMLの論考」のシリーズを読み、実際に Python スクリプト or Java プログラムを書いてみてください。
+古びてしまった記述もありますので、古そうだと感じたことをまとめてください。
+
+* `XMLの論考: 第1回`_
+
+.. _`XMLの論考: 第1回`: http://www.ibm.com/developerworks/jp/xml/library/xml-matters1/
+
