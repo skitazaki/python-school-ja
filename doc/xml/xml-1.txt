@@ -1,16 +1,22 @@
-======================
-XML ファイルの処理方法
-======================
+=====================
+DOM, ElementTree, SAX
+=====================
 
-XML 処理の基本
-==============
+XML 処理で利用する API
+======================
+XML 処理で利用する API としては、次の２つが有名です。
 * SAX - Simple API for XML
 * DOM - Document Object Model
-* Pull Parser
 
 多くの場合に DOM を使います。
-モダンな実装を求める場合は Pull Parser を使います。
-巨大な XML ストリームを扱う場合は SAX を使います。
+XML データがメモリに乗り切らないほどに 巨大 である場合は SAX を使います。
+
+その他に、Pull Parser という API もあります。
+
+* Pull Parser
+
+Python の場合、SAX と DOM の API は完備されており、
+Python 2.5 以上では ElementTree も標準ライブラリとして利用できます。
 
 DOM のサンプル
 ==============

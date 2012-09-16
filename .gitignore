@@ -7,3 +7,4 @@ man
 lib
 sphinx-to-github
 *.zip
+nosetests.xml
