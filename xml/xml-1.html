@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DOM, ElementTree, SAX &mdash; Python School 1.5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Python School 1.5.0 documentation" href="../index.html" />
+    <link rel="up" title="XML ファイルの処理方法" href="index.html" />
+    <link rel="next" title="プロジェクトの構成" href="../projects/index.html" />
+    <link rel="prev" title="XML ファイルの処理方法" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Python School 1.5.0 documentation</span></a></h1>
+        <h2 class="heading"><span>DOM, ElementTree, SAX</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">XML ファイルの処理方法</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../projects/index.html">プロジェクトの構成</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="dom-elementtree-sax">
+<h1>DOM, ElementTree, SAX<a class="headerlink" href="#dom-elementtree-sax" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="xml-api">
+<h2>XML 処理で利用する API<a class="headerlink" href="#xml-api" title="Permalink to this headline">¶</a></h2>
+<p>XML 処理で利用する API としては、次の２つが有名です。
+* SAX - Simple API for XML
+* DOM - Document Object Model</p>
+<p>多くの場合に DOM を使います。
+XML データがメモリに乗り切らないほどに 巨大 である場合は SAX を使います。</p>
+<p>その他に、Pull Parser という API もあります。</p>
+<ul class="simple">
+<li>Pull Parser</li>
+</ul>
+<p>Python の場合、SAX と DOM の API は完備されており、
+Python 2.5 以上では ElementTree も標準ライブラリとして利用できます。</p>
+</div>
+<div class="section" id="dom">
+<h2>DOM のサンプル<a class="headerlink" href="#dom" title="Permalink to this headline">¶</a></h2>
+<p>Maven で扱う POM ファイルを読み込み、
+アーティファクトに関する情報をオブジェクトにマップするスクリプトは次のように記述できます。</p>
+<p>POM ファイル (<tt class="file docutils literal"><span class="pre">xml-1.xml</span></tt>):</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;project</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>
+    <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+    <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>sample-group<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>sample-group-commons<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+</div>
+<p>Python スクリプト (<tt class="file docutils literal"><span class="pre">xml-1.py</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Usage: %prog [options] {POM_FILE}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="kn">import</span> <span class="n">parse</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidArtifact</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Artifact</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">DEFAULT_GROUP</span> <span class="o">=</span> <span class="s">&#39;sample-group&#39;</span>
+    <span class="n">DEFAULT_VERSION</span> <span class="o">=</span> <span class="s">&#39;1.0.0-SNAPSHOT&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifactId</span><span class="p">,</span> <span class="n">groupId</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span> <span class="o">=</span> <span class="n">artifactId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupId</span> <span class="o">=</span> <span class="n">groupId</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_GROUP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_VERSION</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_pom_file</span><span class="p">(</span><span class="n">pom</span><span class="p">):</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pom</span><span class="p">)</span>
+        <span class="n">els</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&#39;artifactId&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">els</span><span class="p">:</span>
+            <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">els</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidArtifact</span><span class="p">(</span><span class="s">&quot;&#39;artifactId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="n">els</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&#39;groupId&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">els</span><span class="p">:</span>
+            <span class="n">artifact</span><span class="o">.</span><span class="n">groupId</span> <span class="o">=</span> <span class="n">els</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;&#39;groupId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="n">els</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">els</span><span class="p">:</span>
+            <span class="n">artifact</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">els</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;&#39;groupId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">artifact</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">pom</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pom</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">pom</span> <span class="o">+</span> <span class="s">&#39; was not found.&#39;</span><span class="p">)</span>
+
+    <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">from_pom_file</span><span class="p">(</span><span class="n">pom</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">artifact</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s">&quot;etc/xml-1.xml&quot;</span>
+    <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">from_pom_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">artifact</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python xml-1.py xml-1.xml
+sample-group/sample-group-commons/1.0.0</pre>
+</div>
+</div>
+<div class="section" id="elementtree">
+<h2>ElementTree を使う<a class="headerlink" href="#elementtree" title="Permalink to this headline">¶</a></h2>
+<p>DOM をそのまま扱うのは冗長な感じがありますので、多くの場合に何らかのライブラリを使います。
+Python 2.5 からは ElementTree が標準モジュールに入りました。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.org/library/xml.etree.elementtree.html">19.13. xml.etree.ElementTree — The ElementTree XML API</a></li>
+</ul>
+<p>ElementTree モジュールを使うと次のように記述できます。</p>
+<p>Python スクリプト (<tt class="file docutils literal"><span class="pre">xml-2.py</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Usage: %prog [options] {POM_FILE}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">parse</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+
+<span class="k">class</span> <span class="nc">InvalidArtifact</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Artifact</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">NAMESPACE</span> <span class="o">=</span> <span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+    <span class="n">DEFAULT_GROUP</span> <span class="o">=</span> <span class="s">&#39;sample-group&#39;</span>
+    <span class="n">DEFAULT_VERSION</span> <span class="o">=</span> <span class="s">&#39;1.0.0-SNAPSHOT&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifactId</span><span class="p">,</span> <span class="n">groupId</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span> <span class="o">=</span> <span class="n">artifactId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupId</span> <span class="o">=</span> <span class="n">groupId</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_GROUP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_VERSION</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_pom_file</span><span class="p">(</span><span class="n">pom</span><span class="p">):</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pom</span><span class="p">)</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;{</span><span class="si">%s</span><span class="s">}artifactId&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Artifact</span><span class="o">.</span><span class="n">NAMESPACE</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidArtifact</span><span class="p">(</span><span class="s">&quot;&#39;artifactId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;{</span><span class="si">%s</span><span class="s">}groupId&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Artifact</span><span class="o">.</span><span class="n">NAMESPACE</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;&#39;groupId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">artifact</span><span class="o">.</span><span class="n">groupId</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;{</span><span class="si">%s</span><span class="s">}version&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">Artifact</span><span class="o">.</span><span class="n">NAMESPACE</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;&#39;groupId&#39; is missing in &quot;</span> <span class="o">+</span> <span class="n">pom</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">artifact</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">artifact</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">pom</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pom</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">pom</span> <span class="o">+</span> <span class="s">&#39; was not found.&#39;</span><span class="p">)</span>
+
+    <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">from_pom_file</span><span class="p">(</span><span class="n">pom</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">artifact</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s">&quot;etc/xml-1.xml&quot;</span>
+    <span class="n">artifact</span> <span class="o">=</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">from_pom_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">artifact</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python xml-2.py xml-1.xml
+sample-group/sample-group-commons/1.0.0</pre>
+</div>
+</div>
+<div class="section" id="sax">
+<h2>SAX のサンプル<a class="headerlink" href="#sax" title="Permalink to this headline">¶</a></h2>
+<p>DOM はデータをメモリに読み込むため、実行マシンのメモリ量を超えてしまうような XML データを扱うことができません。
+大きなデータを扱う場合にはストリーミング処理が必要になりますが、これを実現するのが SAX です。</p>
+<p>Python スクリプト (<tt class="file docutils literal"><span class="pre">xml-3.py</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Usage: %prog [options] {POM_FILE}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">xml.sax</span>
+<span class="kn">from</span> <span class="nn">xml.sax.handler</span> <span class="kn">import</span> <span class="n">ContentHandler</span>
+
+<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
+
+
+<span class="k">class</span> <span class="nc">Artifact</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">DEFAULT_GROUP</span> <span class="o">=</span> <span class="s">&#39;sample-group&#39;</span>
+    <span class="n">DEFAULT_VERSION</span> <span class="o">=</span> <span class="s">&#39;1.0.0-SNAPSHOT&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifactId</span><span class="p">,</span> <span class="n">groupId</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span> <span class="o">=</span> <span class="n">artifactId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupId</span> <span class="o">=</span> <span class="n">groupId</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_GROUP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span> <span class="ow">or</span> <span class="n">Artifact</span><span class="o">.</span><span class="n">DEFAULT_VERSION</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifactId</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ArtifactParser</span><span class="p">(</span><span class="n">ContentHandler</span><span class="p">):</span>
+
+    <span class="n">targets</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;artifactId&quot;</span><span class="p">,</span>
+                <span class="s">&quot;groupId&quot;</span><span class="p">,</span>
+                <span class="s">&quot;version&quot;</span>
+              <span class="p">)</span>
+    <span class="n">artifact</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_current</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">startElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">artifact</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">endElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="ow">and</span> <span class="n">c</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">artifact</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">pom</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pom</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">pom</span> <span class="o">+</span> <span class="s">&#39; was not found.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArtifactParser</span><span class="p">()</span>
+    <span class="n">xml</span><span class="o">.</span><span class="n">sax</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">pom</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">Artifact</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">artifact</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s">&quot;etc/xml-1.xml&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArtifactParser</span><span class="p">()</span>
+    <span class="n">xml</span><span class="o">.</span><span class="n">sax</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">parser</span><span class="o">.</span><span class="n">artifact</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>実行結果</p>
+<div class="highlight-python"><pre>&gt; python xml-3.py xml-1.xml
+sample-group/sample-group-commons/1.0.0</pre>
+</div>
+<p>ここでは比較のために同じ XML ファイルを扱っていますが、
+たとえば、Wikipedia のダンプデータを処理する場合には SAX が役に立ちます。
+実際に自分で Wikipedia のダンプデータを処理してみましょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://dumps.wikimedia.org/jawiki/latest/">Index of /jawiki/latest/</a> - dumps.wikimedia.org</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>宿題<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>「XMLの論考」のシリーズを読み、実際に Python スクリプト or Java プログラムを書いてみてください。
+古びてしまった記述もありますので、古そうだと感じたことをまとめてください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.ibm.com/developerworks/jp/xml/library/xml-matters1/">XMLの論考: 第1回</a></li>
+</ul>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">XML ファイルの処理方法</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="../index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../projects/index.html">プロジェクトの構成</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

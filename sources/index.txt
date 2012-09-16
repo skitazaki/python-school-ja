@@ -19,12 +19,10 @@ Python の学習
    scripts/index
    csv/index
    cmdline/index
+   xml/index
    projects/index
    webapps/index
    advanced/index
-
-..
-   xml/index
 
 
 なぜ Python か？
