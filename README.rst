@@ -1,5 +1,11 @@
 Python School
 =============
+Elementary documents to study Python.
+This series cover syntax, simple scripts, parsing various kind of data, and Web application.
+
+Full HTML documents are available on github pages.
+
+* http://skitazaki.github.com/python-school-ja/
 
 Configure
 ---------
@@ -11,7 +17,7 @@ Setup Python environment with `virtualenv`. ::
 
 Optional::
 
-    $ curl http://waf.googlecode.com/files/waf-1.6.8 >bin/waf
+    $ curl http://waf.googlecode.com/files/waf-1.7.2 >bin/waf
     $ chmod +x bin/waf
 
 Optional::
