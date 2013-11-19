@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -16,7 +14,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -67,7 +65,9 @@
 <h3>Python のインストール<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <p>Python の公式サイトからインストーラーをダウンロードします。
 Python のメジャーバージョンには 2 系と 3 系があります。
-将来的には 3 系を使った方が良いですが、2011年時点では 2 系を使います。</p>
+2011年時点では 2 系がオススメですが、2013年ではそろそろ 3 系を使い始めた方が良い状況です。
+これから記述するスクリプトの寿命を考えてバージョンを選択しましょう。
+２年以上は使うことを想定しているならば、Python 3 で書いてください。</p>
 <ul>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="http://www.python.org/download/">http://www.python.org/download/</a></dt>
@@ -79,22 +79,28 @@ Python のメジャーバージョンには 2 系と 3 系があります。
 </dl>
 </li>
 </ul>
-<p>インストーラーを実行したら、デフォルト設定で進めてください。</p>
-<p>インストールが完了すると、C ドライブ直下に <tt class="docutils literal"><span class="pre">Python27</span></tt> フォルダが作成されます。
+<p>インストーラーを実行したら、デフォルト設定で進めてください。
+インストールが完了すると、C ドライブ直下に <tt class="docutils literal"><span class="pre">Python27</span></tt> フォルダが作成されます。
 コマンドプロンプトを立ち上げて、バージョンを確認しましょう。</p>
 <div class="highlight-python"><pre>&gt; C:\Python27\python.exe -V
 Python 2.7.2</pre>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">ここでは環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を編集しないでください。
+<p>インターネット上で見つかるいくつかの記事では、環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を設定する方法が記載されています。
+しかし、ここでは環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を編集しないでください。
 後で述べる <cite>virtualenv</cite> がパスを解決してくれます。</p>
+<p class="last"><cite>virtualenv</cite> を採用した方がサードパーティモジュールを効果的に管理できます。
+チーム開発を行う場合には是非とも導入を検討しましょう。
+Jenkins などの CI 環境との親和性も向上します。</p>
 </div>
 </div>
 <div class="section" id="distribute">
 <h3>distribute のインストール<a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h3>
 <p>サードパーティのライブラリを管理するライブラリとして <tt class="docutils literal"><span class="pre">distribute</span></tt> を使います。
-<tt class="docutils literal"><span class="pre">distribute</span></tt> は <tt class="docutils literal"><span class="pre">setuptools</span></tt> の代替ツールです。</p>
+<tt class="docutils literal"><span class="pre">distribute</span></tt> は <tt class="docutils literal"><span class="pre">setuptools</span></tt> の代替ツールです。
+様々な経緯がありますので、興味のある人は Web 上の記事を探してみましょう。
+ここでは深追いせず先に進みます。</p>
 <ul>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="http://packages.python.org/distribute/">http://packages.python.org/distribute/</a></dt>
@@ -111,11 +117,6 @@ Python 2.7.2</pre>
 </div>
 <p>Python の <cite>Scripts</cite> フォルダに <strong class="command">easy_install</strong> が追加されます。</p>
 <div class="highlight-python"><pre>&gt; dir /b C:\Python27\Scripts</pre>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">プロキシの設定が必要な場合があります。原因は分かっていません。
-<em>URLError</em> が表示される場合には環境変数 <tt class="docutils literal"><span class="pre">http_proxy</span></tt> に適切なホストを指定してください。</p>
 </div>
 </div>
 <div class="section" id="pip">
@@ -205,7 +206,7 @@ Hello World.</pre>
 
     <div class="footer">
         &copy; Copyright 2012, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
     </div>
   </body>
 </html>
