@@ -1,11 +1,6 @@
 _build
 *.pyc
 .lock-*
-bin
-include
-man
-lib
-sphinx-to-github
-*.zip
+.ruby-version
 nosetests.xml
 .DS_Store

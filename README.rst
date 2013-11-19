@@ -43,6 +43,15 @@ Check syntax with ``flake8`` for Python 3.x syntax ::
 
     $ waf
 
+Note
+----
+
+To update `gh-page`, save secure token via OAuth.
+
+* `Sharing Travis-CI generated files`_
+
+.. _`Sharing Travis-CI generated files`: http://sleepycoders.blogspot.jp/2013/03/sharing-travis-ci-generated-files.html
+
 About
 -----
 
