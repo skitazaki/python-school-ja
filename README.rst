@@ -1,41 +1,58 @@
 Python School
 =============
-Elementary documents to study Python.
+
+Elementary documents to study **Python**.
 This series cover syntax, simple scripts, parsing various kind of data, and Web application.
 
-Full HTML documents are available on github pages.
+Full HTML documents are available at:
 
 * http://skitazaki.github.com/python-school-ja/
 
-Configure
+Setup
 ---------
-Setup Python environment with `virtualenv`. ::
 
-    $ virtualenv --distribute .
-    $ source bin/activate
+Create virtual Python environment with `pyvenv`. ::
+
+    $ pyvenv $HOME/.pyvenv/python-school-ja
+    $ source $HOME/.pyvenv/python-school-ja/bin/activate
+    $ pip-3.3 install -r requirements.txt
+    $ curl http://waf.googlecode.com/files/waf-1.7.13 >$HOME/.pyvenv/python-school-ja/bin/waf
+    $ chmod +x $HOME/.pyvenv/python-school-ja/bin/waf
+    $ waf configure
+
+Optional to generate HTML documents using Python 2.7 ::
+
+    $ cd doc
+    $ virtualenv --distribute $HOME/.pyvenv/sphinx
+    $ source $HOME/.pyvenv/sphinx/bin/activate
     $ pip install -r requirements.txt
+    $ make clean html
 
-Optional::
+Above procedures are written in ``devsetup.sh``.
 
-    $ curl http://waf.googlecode.com/files/waf-1.7.2 >bin/waf
-    $ chmod +x bin/waf
-
-Optional::
-
-    $ pip install -e git+git://github.com/michaeljones/sphinx-to-github.git#egg=sphinx-to-github
-
-Build
+Edit
 -----
-Compile reST documents. ::
 
-    $ waf doc
+Run web server which watches source files using ``livereload``. ::
 
-Read
+    $ livereload -p 8000
+
+Edit documents under `doc` directory.
+
+Check syntax with ``flake8`` for Python 3.x syntax ::
+
+    $ waf
+
+Note
 ----
-``doc/_build/html/index.html`` is your starting point.
 
+To update `gh-page`, save secure token via OAuth.
 
-ABOUT
+* `Sharing Travis-CI generated files`_
+
+.. _`Sharing Travis-CI generated files`: http://sleepycoders.blogspot.jp/2013/03/sharing-travis-ci-generated-files.html
+
+About
 -----
-KITAZAKI Shigeru <skitazaki[at]gmail.com>
 
+KITAZAKI Shigeru <skitazaki[at]gmail.com>

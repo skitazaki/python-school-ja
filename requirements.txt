@@ -1,24 +1,24 @@
 # Basic libraries
-pep8
-pyflakes
+flake8
+pyyaml
+requests
 
-# Document and Test
-Sphinx
-sphinxjp.themes.s6
+# Test tools
 nose
+pytest
 
-# CSV series
+# Database
 SQLAlchemy
+mysql-connector-python
+py-postgresql
+pymongo
 
-# Command-line series
+# Server tools
 paramiko
 fabric
 
-# Web application series
-Django==1.3
-flup==1.0.2
+# Web application
+Django==1.6
 
 # Misc.
-pyyaml
-httplib2
-
+httpie

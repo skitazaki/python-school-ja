@@ -1,0 +1,10 @@
+language: python
+python:
+- '2.7'
+before_install:
+- cp doc/requirements.txt requirements.txt
+script: cd doc; make clean html; cd -
+after_success: ./update-gh-pages.sh
+env:
+  global:
+    secure: NzKKRCz7WIxAfYri/CPfFKliWX6PlvvIIS4yth0tXRKBcDE8hj4+Ws4Up/5iOCDD6rlwcHkSpeftG6hnImVSpGQ9YsE8KRFEQdfuwcmk75B/f7prPlbsTjC8BEHNIFZnlvm0v8pL7skmrzyn6LiTjfaq9MR2aj6mBuqu6i8P3zc=

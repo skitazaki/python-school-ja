@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from livereload.task import Task
+from livereload.compiler import shell
+
+Task.add('*.txt', shell('make html'))
