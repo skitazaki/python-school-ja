@@ -1,6 +1,7 @@
 ============
 基本的な文法
 ============
+
 基本的な文法を速足で確認します。
 丁寧に追いかけたい場合は公式のチュートリアルを参考にしてください。
 
@@ -11,10 +12,15 @@
 
 条件分岐と繰り返し
 ==================
+
 条件分岐には ``if``, ``elif``, ``else`` を使います。
 行の終わりには ``:`` (コロン) を書いて、次の行にインデントを入れます。
 インデントはタブ記号か半角空白の連続ですが、
 細かいことを気にするとややこしいので、半角空白４文字で統一してください。
+Google の場合は半角空白２文字のようです。
+しばらく Python を書いてみて慣れてきたら、 `Google Python Style Guide`_ も参考にしてみましょう。
+
+.. _`Google Python Style Guide`: http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
 
 Python のインタラクティブシェルを使って、次のように確認できます。
 "#" 記号以降はコメントです。入力しないでください。 ::
@@ -49,8 +55,7 @@ Java の拡張 for 文のように、オブジェクトのイテレーターを�
 Python のコードを読み書きしていると、 ``for`` 文にはたくさんの書き方があるように感じるかもしれません。
 気になる場合はイテレーターやジェネレーターという考え方を学習してください。
 
-.. note::
-    予約語、標準モジュール
+.. note:: 予約語、標準モジュール
 
     Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
     上述のサンプルでは、 ``import`` や ``print`` 、それから ``if``, ``for`` などが予約語で、 ``time`` が標準モジュールです。
@@ -74,6 +79,17 @@ Python のコードを読み書きしていると、 ``for`` 文にはたくさ�
 .. _`2.3.1. Keywords`: http://docs.python.org/reference/lexical_analysis.html#keywords
 .. _`2. Built-in Functions`: http://docs.python.org/library/functions.html
 .. _Python Module of the Week: http://www.doughellmann.com/PyMOTW/contents.html
+
+``if`` と ``for`` は後置することも可能です。 ::
+
+    >>> import time
+    >>> t = 'A' if time.time() / 2 == 0 else 'B'
+    >>> t
+    'B'
+
+    >>> l = [i for i in range(10)]
+    >>> l
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 例外処理
 ========
@@ -108,11 +124,18 @@ Java の場合と同じように Python でも ``finally`` を使えます。
 実行環境によって注意すること
 ============================
 
+Python は多くの環境で動作しますし、Linux や MacOSX では初めからインストールされています。
+しかし、そのバージョンは少しずつ異なります。
+異なるバージョンに対してスクリプトを記述する場合の注意点をいくつか列挙しておきます。
+
 * Python 2.4 だと ``except`` と ``finally`` を同時に使えない。
 * Python 2.4 だと後置IF文を使えない。
+* Python 3.x では ``print()`` 文になる。
 * 標準モジュールが異なる。 (e.g. *json* が無い、など)
 * 同じモジュールでもプロパティに違いがある。
 * バージョンが古いと `with` を使えない。
+* 例外を補足する処理の記述方法が異なる。 (``as`` を使うか否か)
+* 文字列に関するデータ型の発展が非常にややこしい。 (``str``, ``unicode``, ``byte``)
 
 構文と規約
 ==========
@@ -122,9 +145,12 @@ Java の場合と同じように Python でも ``finally`` を使えます。
 
 ソースコードが PEP 8 に従っているかをチェックするツールもあります。
 コードをコミットする前にチェッカーを実行する習慣を身につけてください。
+エディタのプラグインとして組込めるものもあります。
+例えば、Sublime Text を使っている場合は `SublimeLinter`_ があります。
 
 .. _PEP 8: http://www.python.org/dev/peps/pep-0008/
 .. _PEP 8 日本語: http://oldriver.org/python/pep-0008j.html
+.. _`SublimeLinter`: https://github.com/SublimeLinter/SublimeLinter
 
 モジュールのインストール
 ------------------------
@@ -154,10 +180,11 @@ PyPI に pep8 というモジュールがあります。
     次のようなバッチファイルになります。(パスは要調整) ::
 
         @echo off
-        D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflakes %*
+        C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflakes %*
 
 構文チェッカーの実行
 --------------------
+
 :file:`first-sample.py` という Python ファイルを用意します。
 
 .. literalinclude:: ../src/first-sample.py
@@ -178,5 +205,9 @@ PyPI に pep8 というモジュールがあります。
     first-sample.py:8: 'os' imported but unused
 
 空白にはノータッチですが、使っていない `import` 文を検知してくれます。
+
+このふたつを組み合わせたものとして :command:`flake8` があります。
+:command:`pip` で簡単にインストールできますので、既存のコードがある場合も新規にプロジェクトを作成する場合も、
+日常的に構文チェッカーが実行されるようにしておきましょう。
 
 次は、もう少し実際的なスクリプトを記述していきます。
