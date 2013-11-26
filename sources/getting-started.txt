@@ -25,15 +25,15 @@ Python のメジャーバージョンには 2 系と 3 系があります。
 ２年以上は使うことを想定しているならば、Python 3 で書いてください。
 
 * http://www.python.org/download/
-    * ``python-2.7.2.msi``: 手元の環境が 32bit マシンの場合
-    * ``python-2.7.2.amd64.msi``: 手元の環境が 64bit マシンの場合
+    * ``python-2.7.6.msi``: 手元の環境が 32bit マシンの場合
+    * ``python-2.7.6.amd64.msi``: 手元の環境が 64bit マシンの場合
 
 インストーラーを実行したら、デフォルト設定で進めてください。
 インストールが完了すると、C ドライブ直下に ``Python27`` フォルダが作成されます。
 コマンドプロンプトを立ち上げて、バージョンを確認しましょう。 ::
 
     > C:\Python27\python.exe -V
-    Python 2.7.2
+    Python 2.7.6
 
 .. warning::
 
@@ -41,7 +41,7 @@ Python のメジャーバージョンには 2 系と 3 系があります。
     しかし、ここでは環境変数 ``PATH`` を編集しないでください。
     後で述べる `virtualenv` がパスを解決してくれます。
 
-    `virtualenv` を採用した方がサードパーティモジュールを効果的に管理できます。
+    `virtualenv` を採用した方がサードパーティモジュールを効率的に管理できます。
     チーム開発を行う場合には是非とも導入を検討しましょう。
     Jenkins などの CI 環境との親和性も向上します。
 
@@ -54,14 +54,16 @@ distribute のインストール
 ここでは深追いせず先に進みます。
 
 * http://packages.python.org/distribute/
-    * `distribute_setup.py`_ を D ドライブ直下などにダウンロード
+    * `distribute_setup.py`_ をホームディレクトリにダウンロード
 
 .. _`distribute_setup.py`: http://python-distribute.org/distribute_setup.py
 
-コマンドプロンプトでダウンロードしたディレクトリに移動し、Python スクリプトを実行します。 ::
+コマンドプロンプトでダウンロードした Python スクリプトを実行します。 ::
 
-    > D:
-    > C:\Python27\python.exe distribute_setup.py
+    > C:\Python27\python.exe %HOMEDRIVE%\%HOMEPATH%\distribute_setup.py
+
+* ``%HOMEDRIVE%`` でホームドライブを指定します。基本的には C ドライブのことです。
+* ``%HOMEPATH%`` でホームディレクトリを指定します。
 
 Python の `Scripts` フォルダに :command:`easy_install` が追加されます。 ::
 
@@ -70,8 +72,7 @@ Python の `Scripts` フォルダに :command:`easy_install` が追加されま�
 pip のインストール
 ------------------
 
-サードパーティのライブラリをインストール / アンインストールするツールとして ``pip`` を使います。
-``pip`` は ``easy_install`` の代替ツールです。 ::
+サードパーティのライブラリをインストール / アンインストールするツールとして ``pip`` を使います。 ::
 
     > C:\Python27\Scripts\easy_install.exe pip
 
@@ -79,9 +80,10 @@ Python の `Scripts` フォルダに :command:`pip` が追加されます。 ::
 
     > dir /b C:\Python27\Scripts
 
-Python コミュニティの方針として ``easy_install`` ではなく ``pip`` を使うように移行していきますので、
+Python コミュニティの方針として ``easy_install`` ではなく ``pip`` を使うように移行していきます。
 新しく何かを始める場合には ``pip`` を使ってください。
 ``pip`` の場合はモジュールのフリーズなどもできるようになります。
+Python 3.4 からは本体に組み込まれる予定です。
 
 virtualenv のインストール
 -------------------------
@@ -120,16 +122,11 @@ C ドライブ直下に :file:`sandbox` ディレクトリを作成し、その�
     > cd C:\sandbox
     > C:\Python27\Scripts\virtualenv.exe --distribute python-school
 
-.. note::
-
-    D ドライブが別になっているマシンの場合には D ドライブを使った方が良いと思います。
-
 :command:`virtualenv` で作成したフォルダには、Python インタープリタやライブラリ置き場などが作成されます。
 一番最初に重要なのは `Scripts` フォルダにある :file:`activate.bat` です。
 まずはこれを実行しましょう。 ::
 
-    > cd python-school
-    > Scripts\activate.bat
+    > C:\sandbox\python-school\Scripts\activate.bat
 
 環境変数が書き変わり、プロンプトが切り替わります。
 ``PATH`` の値も変わり、 :command:`python` がそのままで実行できます。 ::

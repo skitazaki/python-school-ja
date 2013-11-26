@@ -39,26 +39,45 @@ Python の学習
     * 他の人が読むことも考えてコードを書く
     * ドキュメントもテストも書く
 * 事例の増加
-    * 海外では Python の使用例が増えている (`TIOBEの2010年最優秀言語はPython`_)
+    * 海外では Python の使用例が増えている
+        * `TIOBEの2010年最優秀言語はPython`_
+        * `Dropboxは全部Pythonで信頼性の高いソフトウェアを作った（前編）～PyCon APAC 2013`_ - www.publickey1.jp
     * 日本語のドキュメントも増えている
         * `Pythonスタートアップ勉強会201109 python入門`_
         * `そろそろPython始めてみませんか?`_
 
-Perl は "There's more than one way to do it" の考え方。
-Python は "There's only one way to do it" の考え方。
-文法で担保できるものでもないが、気持ちの問題。
+Perl や Ruby、PHP と比較されることも多くあります。
+もちろん、構文やライブラリ、処理系にコミュニティも違いますので一概に善し悪しは分かりません。
+ひとつの切り口として、それぞれの言語が持つモットーがあります。
 
-Ruby (というか Rails) は CoC (Convention over configuration) の考え方。
-Python は "Explicit is better than implicit" の考え方。
-明示的に記述されている方が理解しやすい、ような気がする。
+Perl が "There's more than one way to do it" の考え方なのに対して、
+Python は "There's only one way to do it" の考え方です。
+選択肢が多いに超したことはありませんが、増えすぎるとチーム開発での舵取りが難しくなってしまうこともあります。
+もちろん文法で担保できるものではありませんが、考え方のひとつとしては重要でしょう。
+
+Ruby (というか Rails) が CoC (Convention over configuration) の考え方なのに対して、
+Python は "Explicit is better than implicit" の考え方です。
+明示的に記述されている方が理解しやすい、ような気がします。
+
+それ以外にも、クラウド環境を初めとして幅広い用途で使われています。
 
 * `Python and Django on Heroku`_ - blog.heroku.com
 * `Heroku上でPython と Django`_ - infoq.com (上記の日本語解説)
 
+データ・サイエンスの分野でも利用されることが増えています。
+科学計算に適したライブラリ NumPy もあります。
+
+* `Python Displacing R As The Programming Language For Data Science`_ - readwrite.com
+
+英語でも構わなければ書籍もたくさんあります。
+
+* `Python に関連する書籍`_ - hackershelf.com
+
 .. _Python and Django on Heroku: http://blog.heroku.com/archives/2011/9/28/python_and_django/
 .. _Heroku上でPython と Django: http://www.infoq.com/jp/news/2011/10/python-django-heroku
-
 .. _Pythonスタートアップ勉強会201109 python入門: http://www.slideshare.net/shimizukawa/python201109-python
 .. _TIOBEの2010年最優秀言語はPython: http://www.infoq.com/jp/news/2011/01/python-tiobe-award
 .. _そろそろPython始めてみませんか?: http://wiki.liris.org/article/python_intro
-
+.. _`Python Displacing R As The Programming Language For Data Science`: http://readwrite.com/2013/11/25/python-displacing-r-as-the-programming-language-for-data-science
+.. _`Python に関連する書籍`: http://hackershelf.com/topic/python/
+.. _`Dropboxは全部Pythonで信頼性の高いソフトウェアを作った（前編）～PyCon APAC 2013`: http://www.publickey1.jp/blog/13/dropboxpythonpycon_apac_2013.html

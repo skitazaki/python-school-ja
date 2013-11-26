@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -6,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>基本的な文法 &mdash; Python School 1.5.0 documentation</title>
+    <title>基本的な文法 &mdash; Python School 1.5.2 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -14,8 +16,8 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.5.0',
+        URL_ROOT:    '',
+        VERSION:     '1.5.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,13 +27,13 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="Python School 1.5.0 documentation" href="index.html" />
+    <link rel="top" title="Python School 1.5.2 documentation" href="index.html" />
     <link rel="next" title="基本的なスクリプト" href="scripts/index.html" />
     <link rel="prev" title="はじめの一歩" href="getting-started.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Python School 1.5.0 documentation</span></a></h1>
+          <span>Python School 1.5.2 documentation</span></a></h1>
         <h2 class="heading"><span>基本的な文法</span></h2>
       </div>
       <div class="topnav">
@@ -60,7 +62,9 @@
 <p>条件分岐には <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">elif</span></tt>, <tt class="docutils literal"><span class="pre">else</span></tt> を使います。
 行の終わりには <tt class="docutils literal"><span class="pre">:</span></tt> (コロン) を書いて、次の行にインデントを入れます。
 インデントはタブ記号か半角空白の連続ですが、
-細かいことを気にするとややこしいので、半角空白４文字で統一してください。</p>
+細かいことを気にするとややこしいので、半角空白４文字で統一してください。
+Google の場合は半角空白２文字のようです。
+しばらく Python を書いてみて慣れてきたら、 <a class="reference external" href="http://google-styleguide.googlecode.com/svn/trunk/pyguide.html">Google Python Style Guide</a> も参考にしてみましょう。</p>
 <p>Python のインタラクティブシェルを使って、次のように確認できます。
 &#8220;#&#8221; 記号以降はコメントです。入力しないでください。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>             <span class="c"># time モジュールをインポート</span>
@@ -114,6 +118,17 @@ Java の拡張 for 文のように、オブジェクトのイテレーターを�
 <li><a class="reference external" href="http://docs.python.org/library/functions.html">2. Built-in Functions</a> (公式ドキュメント)</li>
 </ul>
 </div>
+<p><tt class="docutils literal"><span class="pre">if</span></tt> と <tt class="docutils literal"><span class="pre">for</span></tt> は後置することも可能です。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="s">&#39;A&#39;</span> <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s">&#39;B&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span>
+<span class="go">&#39;B&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span>
+<span class="go">[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="id3">
 <h2>例外処理<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
@@ -145,12 +160,18 @@ Java の場合と同じように Python でも <tt class="docutils literal"><spa
 </div>
 <div class="section" id="id4">
 <h2>実行環境によって注意すること<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Python は多くの環境で動作しますし、Linux や MacOSX では初めからインストールされています。
+しかし、そのバージョンは少しずつ異なります。
+異なるバージョンに対してスクリプトを記述する場合の注意点をいくつか列挙しておきます。</p>
 <ul class="simple">
 <li>Python 2.4 だと <tt class="docutils literal"><span class="pre">except</span></tt> と <tt class="docutils literal"><span class="pre">finally</span></tt> を同時に使えない。</li>
 <li>Python 2.4 だと後置IF文を使えない。</li>
+<li>Python 3.x では <tt class="docutils literal"><span class="pre">print()</span></tt> 文になる。</li>
 <li>標準モジュールが異なる。 (e.g. <em>json</em> が無い、など)</li>
 <li>同じモジュールでもプロパティに違いがある。</li>
 <li>バージョンが古いと <cite>with</cite> を使えない。</li>
+<li>例外を補足する処理の記述方法が異なる。 (<tt class="docutils literal"><span class="pre">as</span></tt> を使うか否か)</li>
+<li>文字列に関するデータ型の発展が非常にややこしい。 (<tt class="docutils literal"><span class="pre">str</span></tt>, <tt class="docutils literal"><span class="pre">unicode</span></tt>, <tt class="docutils literal"><span class="pre">byte</span></tt>)</li>
 </ul>
 </div>
 <div class="section" id="id5">
@@ -159,7 +180,9 @@ Java の場合と同じように Python でも <tt class="docutils literal"><spa
 違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながりますので、
 できるだけ従うようにしましょう。</p>
 <p>ソースコードが PEP 8 に従っているかをチェックするツールもあります。
-コードをコミットする前にチェッカーを実行する習慣を身につけてください。</p>
+コードをコミットする前にチェッカーを実行する習慣を身につけてください。
+エディタのプラグインとして組込めるものもあります。
+例えば、Sublime Text を使っている場合は <a class="reference external" href="https://github.com/SublimeLinter/SublimeLinter">SublimeLinter</a> があります。</p>
 <div class="section" id="id7">
 <h3>モジュールのインストール<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>PyPI に pep8 というモジュールがあります。
@@ -180,7 +203,7 @@ Scripts フォルダに <tt class="file docutils literal"><span class="pre">pyfl
 スクリプトのラッパーを作成してください。
 次のようなバッチファイルになります。(パスは要調整)</p>
 <div class="last highlight-python"><pre>@echo off
-D:\sandbox\python-school\Scripts\python D:\sandbox\python-school\Scripts\pyflakes %*</pre>
+C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflakes %*</pre>
 </div>
 </div>
 </div>
@@ -215,6 +238,9 @@ first-sample.py:6:32: E231 missing whitespace after ','</pre>
 first-sample.py:8: 'os' imported but unused</pre>
 </div>
 <p>空白にはノータッチですが、使っていない <cite>import</cite> 文を検知してくれます。</p>
+<p>このふたつを組み合わせたものとして <strong class="command">flake8</strong> があります。
+<strong class="command">pip</strong> で簡単にインストールできますので、既存のコードがある場合も新規にプロジェクトを作成する場合も、
+日常的に構文チェッカーが実行されるようにしておきましょう。</p>
 <p>次は、もう少し実際的なスクリプトを記述していきます。</p>
 </div>
 </div>
@@ -235,8 +261,8 @@ first-sample.py:8: 'os' imported but unused</pre>
       </div>
 
     <div class="footer">
-        &copy; Copyright 2012, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b3.
+        &copy; Copyright 2013, KITAZAKI Shigeru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
