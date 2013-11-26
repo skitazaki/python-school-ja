@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 APPNAME = 'python-shool-ja'
-VERSION = '1.5.1'
+VERSION = '1.5.2'
 
 top = '.'
 out = '_build'
@@ -22,7 +22,7 @@ def build(bld):
 
 def test(ctx):
     t = ctx.path.ant_glob(['src/csv-*.py', 'src/xml-*.py'],
-            excl=['src/sphinx-to-github', 'src/cmdline-*.py'])
+            excl=['src/cmdline-*.py'])
     files = [f.abspath() for f in t]
     ctx.exec_command('nosetests -vv --with-xunit ' + ' '.join(files))
 
@@ -30,12 +30,5 @@ def test(ctx):
 def dist(ctx):
     ctx.files = ctx.path.ant_glob(['doc/_build/html/**/*'])
     ctx.base_path = ctx.path.find_dir('doc/_build/html')
-
-
-def pages(ctx):
-    ctx.exec_command('git checkout gh-pages')
-    ctx.exec_command('cp -r doc/_build/html/* .')
-    ctx.exec_command('git status')
-
 
 # vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :
