@@ -1,6 +1,7 @@
 #!/bin/sh
 
-if [ "$TRAVIS_BRANCH" == "master" ]
+echo "Branch: $TRAVIS_BRANCH"
+if [ "$TRAVIS_BRANCH" = "master" ]
 then
   echo "Starting to update gh-pages"
 

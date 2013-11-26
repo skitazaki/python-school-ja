@@ -50,7 +50,12 @@ To update `gh-page`, save secure token via OAuth.
 
 * `Sharing Travis-CI generated files`_
 
+To write a script running on Travis-CI, be careful the difference between ``sh`` and ``bash``.
+
+* `[ :Unexpected operator in shell programming`_
+
 .. _`Sharing Travis-CI generated files`: http://sleepycoders.blogspot.jp/2013/03/sharing-travis-ci-generated-files.html
+.. _`[ :Unexpected operator in shell programming`: http://stackoverflow.com/questions/3411048/unexpected-operator-in-shell-programming
 
 About
 -----
