@@ -7,8 +7,7 @@
 
 * `Python チュートリアル`_
 
-.. _`Python チュートリアル`: http://www.python.jp/doc/release/tutorial/
-
+.. _`Python チュートリアル`: http://docs.python.jp/3/tutorial/
 
 条件分岐と繰り返し
 ==================
@@ -27,25 +26,25 @@ Python のインタラクティブシェルを使って、次のように確認�
 
     >>> import time             # time モジュールをインポート
     >>> now = time.time()       # time モジュールの time 関数を実行し、結果を変数 now に保存
-    >>> print now               # now の値を表示
+    >>> print(now)              # now の値を表示
     1322531056.483
     >>> if int(now) % 3 == 0:   # now が３で割り切れる場合
-    ...     print "A"
+    ...     print("A")
     ... elif int(now) % 3 == 1: # now を３で割ると１余る場合
-    ...     print "B"
+    ...     print("B")
     ... else:                   # 上記以外の場合
-    ...     print "C"
+    ...     print("C")
     ...                         # エンターを押す
     B
 
-インタラクティブシェルから抜けるには ``Ctrl+Z`` を入力してエンターを押します。
+インタラクティブシェルから抜けるには ``Ctrl+D`` (Windows の場合は ``Ctrl+Z``) を入力してエンターを押します。
 
 繰り返し処理には ``for`` を使います。
 Java の拡張 for 文のように、オブジェクトのイテレーターを使って要素を走査します。 ::
 
     >>> for i in range(5):     # range は組み込み関数
-    ...     print i
-    ...                         # エンターを押す
+    ...     print(i)
+    ...                        # エンターを押す
     0
     1
     2
@@ -55,29 +54,28 @@ Java の拡張 for 文のように、オブジェクトのイテレーターを�
 Python のコードを読み書きしていると、 ``for`` 文にはたくさんの書き方があるように感じるかもしれません。
 気になる場合はイテレーターやジェネレーターという考え方を学習してください。
 
-.. note:: 予約語、標準モジュール
+Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
+上述のサンプルでは、 ``import`` や ``if``, ``elif``, ``else``, ``for`` などが予約語、
+``print`` と ``range`` は組み込み関数、それから ``time`` が標準モジュールです。
 
-    Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
-    上述のサンプルでは、 ``import`` や ``print`` 、それから ``if``, ``for`` などが予約語で、 ``time`` が標準モジュールです。
+予約語と組み込み関数の一覧はドキュメントで確認してください。
 
-    予約語の一覧はドキュメントで確認してください。
+* `2.3.1. Keywords`_ (公式ドキュメント - 予約語)
+* `2. Built-in Functions`_ (公式ドキュメント - 組み込み関数)
 
-    * `2.3.1. Keywords`_ (The Python Language Reference)
+標準モジュールはたくさんありますので使いながら覚えていきましょう。
+網羅的に学習したい場合には PyMOTW を読んでください。
 
-    標準モジュールは使いながら覚えていきましょう。
-    網羅的に学習したい場合には PyMOTW を読んでください。
+* `Python Module of the Week`_
 
-    * `Python Module of the Week`_
+.. note:: 組み込み関数の上書き
 
-    また、組み込み関数もあります。
     組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
     多くの場合に予期せぬ振る舞いになってしまうでしょう。
-    この一覧に掲載されている文字列を変数名や関数名には使わないでください。
+    上記の一覧に掲載されている文字列を変数名や関数名には使わないでください。
 
-    * `2. Built-in Functions`_ (公式ドキュメント)
-
-.. _`2.3.1. Keywords`: http://docs.python.org/reference/lexical_analysis.html#keywords
-.. _`2. Built-in Functions`: http://docs.python.org/library/functions.html
+.. _`2.3.1. Keywords`: https://docs.python.org/3/reference/lexical_analysis.html#keywords
+.. _`2. Built-in Functions`: https://docs.python.org/3/library/functions.html
 .. _Python Module of the Week: http://www.doughellmann.com/PyMOTW/contents.html
 
 ``if`` と ``for`` は後置することも可能です。 ::
@@ -93,6 +91,7 @@ Python のコードを読み書きしていると、 ``for`` 文にはたくさ�
 
 例外処理
 ========
+
 Java の場合は ``try-catch`` で例外処理を実現しますが、
 Python の場合は ``try-except`` という構文を使います。
 
@@ -101,9 +100,9 @@ Python の場合は ``try-except`` という構文を使います。
     >>> a, b = 1, 0
     >>> try:
     ...     a / b
-    ...     print "Success"
-    ... except:
-    ...     print "Error"
+    ...     print("Success")
+    ... except ZeroDivisionError:
+    ...     print("Error")
     ...
     Error
 
@@ -130,47 +129,114 @@ Python は多くの環境で動作しますし、Linux や MacOSX では初め�
 
 * Python 2.4 だと ``except`` と ``finally`` を同時に使えない。
 * Python 2.4 だと後置IF文を使えない。
-* Python 3.x では ``print()`` 文になる。
-* 標準モジュールが異なる。 (e.g. *json* が無い、など)
+* Python 2.x では ``print`` 節、Python 3.x からは ``print()`` 文になる。
+* 標準モジュールが異なる。 (e.g. *json* は Python 2.6 以降、など)
 * 同じモジュールでもプロパティに違いがある。
 * バージョンが古いと `with` を使えない。
 * 例外を補足する処理の記述方法が異なる。 (``as`` を使うか否か)
 * 文字列に関するデータ型の発展が非常にややこしい。 (``str``, ``unicode``, ``byte``)
 
+こうした構文の違いをいちいち考慮するのは大変です。
+既存の Python 2.x 系のソースコードを Python 3.x 系に変換する場合は :command:`2to3` コマンド
+(`26.6. 2to3 - Automated Python 2 to 3 code translation`_)、
+これから両方のバージョンに対応する場合は `six`_ を使いましょう。
+
+.. _six: http://pythonhosted.org/six/
+.. _`26.6. 2to3 - Automated Python 2 to 3 code translation`: https://docs.python.org/3/library/2to3.html
+
 構文と規約
 ==========
-`PEP 8`_ (`PEP 8 日本語`_) で Style Guide for Python Code が定義されています。
-違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながりますので、
-できるだけ従うようにしましょう。
 
-ソースコードが PEP 8 に従っているかをチェックするツールもあります。
+`PEP 8`_ (`PEP 8 日本語`_) で Style Guide for Python Code が定義されています。
+違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながります。
+ソースコードが PEP 8 に従っているかをチェックするツール `pep8`_ もあります。
 コードをコミットする前にチェッカーを実行する習慣を身につけてください。
 エディタのプラグインとして組込めるものもあります。
 例えば、Sublime Text を使っている場合は `SublimeLinter`_ があります。
+その他のエディタや IDE でも同様のツールがあるはずですので、まずは検索してみてください。
+
+ここでは例示として、以下のようなソースコード (:file:`first-sample.py`) を用意します。
+
+.. literalinclude:: ../src/first-sample.py
+   :language: python
+   :linenos:
+
+実行すると以下の結果を得られます。
+
+::
+
+    ========================================
+    Hello World.
+    a=1, b=2, a+b=3
+    a=2, b=1, a+b=3
+
+なんとなく動きはしますが、このソースコードの表記は不揃いです。
+チーム開発の場合はソースコード規約策定に関する活発な議論を始めるのも良いでしょうが、
+既存のルールとそれをチェックするツールも開発されています。まずはそれらを使ってみましょう。
 
 .. _PEP 8: http://www.python.org/dev/peps/pep-0008/
 .. _PEP 8 日本語: http://oldriver.org/python/pep-0008j.html
+.. _pep8: https://pypi.python.org/pypi/pep8
 .. _`SublimeLinter`: https://github.com/SublimeLinter/SublimeLinter
 
-モジュールのインストール
+pep8 による構文チェック
 ------------------------
-PyPI に pep8 というモジュールがあります。
-引数として Python ファイルを与えると、規約に違反していないかを確認してくれます。
 
+PyPI から pep8 モジュールをインストールします。
 :command:`pip` を使ってインストールします。 ::
 
     > pip install pep8
 
-論理的な整合性も確認してくれるツールとして pyflakes_ があります。
+Windows の場合は :file:`Scripts` フォルダ、Linux などの場合は :file:`bin` に
+:command:`pep8` がインストールされます。
 
-:command:`pip` を使ってインストールします。 ::
+:command:`pep8` を実行してみます。 ::
+
+    $ pep8 first-sample.py
+    first-sample.py:1:15: E202 whitespace before ')'
+    first-sample.py:2:9: E231 missing whitespace after ','
+    first-sample.py:3:1: E302 expected 2 blank lines, found 0
+    first-sample.py:4:33: E222 multiple spaces after operator
+    first-sample.py:5:3: E201 whitespace after '('
+    first-sample.py:6:9: E203 whitespace before ':'
+    first-sample.py:7:3: E111 indentation is not a multiple of four
+    first-sample.py:8:7: E225 missing whitespace around operator
+    first-sample.py:9:10: E401 multiple imports on one line
+
+空白の有無についてエラーを表示してくれます。
+エラーメッセージからも分かりますが、
+`エラーコードの一覧`_ を見ると、それぞれ以下の意味だと分かります。
+100番台はインデントに関すること、200番台は空白に関すること、
+300番台は空行に関すること、400番台は import に関することです。
+
+.. csv-table:: Error codes から抜粋
+   :header: "コード", "サンプルメッセージ"
+   :widths: 15, 40
+
+   "E111", "indentation is not a multiple of four"
+   "E201", "whitespace after '('"
+   "E202", "whitespace before ')'"
+   "E203", "whitespace before ':'"
+   "E222", "multiple spaces after operator"
+   "E225", "missing whitespace around operator"
+   "E231", "missing whitespace after ','"
+   "E302", "expected 2 blank lines, found 0"
+   "E401", "multiple imports on one line"
+
+.. _`エラーコードの一覧`: http://pep8.readthedocs.org/en/latest/intro.html#error-codes
+
+pyflakes による規約チェック
+-----------------------------
+
+論理的な整合性も確認してくれるツールとして pyflakes_ があります。
+:command:`pip` を使って PyPI からインストールします。 ::
 
     > pip install pyflakes
 
 .. _pyflakes: http://pypi.python.org/pypi/pyflakes
 
-いずれも :file:`Scripts` フォルダ (Linux などの場合は :file:`bin`) に
-:command:`pep8` と :command:`pyflakes` がインストールされます。
+Windows の場合は :file:`Scripts` フォルダ、Linux などの場合は :file:`bin` に
+:command:`pyflakes` がインストールされます。
 
 .. note::
 
@@ -182,32 +248,18 @@ PyPI に pep8 というモジュールがあります。
         @echo off
         C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflakes %*
 
-構文チェッカーの実行
---------------------
-
-:file:`first-sample.py` という Python ファイルを用意します。
-
-.. literalinclude:: ../src/first-sample.py
-   :language: python
-   :linenos:
-
-:command:`pep8` を実行してみます。 ::
-
-    > pep8 first-sample.py
-    first-sample.py:3:7: E222 multiple spaces after operator
-    first-sample.py:6:32: E231 missing whitespace after ','
-
-3行目と6行目に余計な空白が混入していることが分かります。
-
-:command:`pyflakes` を実行してみます。 ::
+:command:`pyflakes` を上記の :file:`first-sample.py` に対して実行してみます。 ::
 
     > pyflakes first-sample.py
-    first-sample.py:8: 'os' imported but unused
+    first-sample.py:9: 'os' imported but unused
+    first-sample.py:9: 'sys' imported but unused
 
 空白にはノータッチですが、使っていない `import` 文を検知してくれます。
 
-このふたつを組み合わせたものとして :command:`flake8` があります。
+このふたつを組み合わせたものとして :command:`flake8` (flake8_) があります。
 :command:`pip` で簡単にインストールできますので、既存のコードがある場合も新規にプロジェクトを作成する場合も、
 日常的に構文チェッカーが実行されるようにしておきましょう。
+
+.. _flake8: https://pypi.python.org/pypi/flake8
 
 次は、もう少し実際的なスクリプトを記述していきます。
