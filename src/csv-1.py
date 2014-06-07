@@ -1,53 +1,70 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""%prog [options] csv_file
+"""Parse daily Tokyo stock prices.
 """
 
+import argparse
 import logging
-import optparse
-import os
-
-DEFAULT_CSV_FILE = 'sample.csv'
 
 
 def parse_args():
-    """Parse arguments and sets up logging verbosity.
+    """Parse arguments and set up logging verbosity.
 
-    :rtype: normal options and arguments as tuple.
+    :rtype: parsed arguments as Namespace object.
     """
-    parser = optparse.OptionParser(__doc__)
-    parser.add_option("-o", "--output", dest="output",
-        help="output file", metavar="FILE")
-    parser.add_option("-v", "--verbose", dest="verbose",
-        default=False, action="store_true", help="verbose mode")
-    parser.add_option("-q", "--quiet", dest="quiet",
-        default=False, action="store_true", help="quiet mode")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", dest="filename",
+                        help="setting file", metavar="FILE")
+    parser.add_argument("-o", "--output", dest="output",
+                        help="output file", metavar="FILE")
+    parser.add_argument("-n", "--dryrun", dest="dryrun",
+                        help="dry run", default=False, action="store_true")
+    parser.add_argument("-v", "--verbose", dest="verbose", default=False,
+                        action="store_true", help="verbose mode")
+    parser.add_argument("-q", "--quiet", dest="quiet", default=False,
+                        action="store_true", help="quiet mode")
+    # Add this line from boilerplate.
+    parser.add_argument("filename", nargs=1, help="CVS file path")
 
-    opts, args = parser.parse_args()
+    args = parser.parse_args()
 
-    if opts.verbose:
+    if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
-    elif not opts.quiet:
+    elif not args.quiet:
         logging.basicConfig(level=logging.INFO)
 
-    return opts, args
+    return args
 
 
-def csv2tsv(fname):
-    """Convert a CSV format file to TSV format string.
+def process(args):
+    """Parse daily Tokyo stock prices, and calculate up/down.
     """
-    with open(fname) as reader:
-        for line in reader:
-            print line.strip().replace(',', '\t')
+    with open(args.filename[0]) as fp:
+        for line in fp:
+            l = line.rstrip('\r\n')
+            t = l.split(',')
+            # Assign each field on individual variables.
+            day = t[0]
+            price_begin = float(t[1])
+            price_max = float(t[2])
+            price_min = float(t[3])
+            price_end = float(t[4])
+            # Calculate the differenciate of the day.
+            diff = price_end - price_begin
+            if diff > 0:
+                message = 'up'
+            elif diff < 0:
+                message = 'down'
+            else:
+                message = 'same'
+            # Write out day, up/down/same, and diff.
+            print('{}\t{:5}\t{}'.format(day, message, round(diff, 2)))
 
 
 def main():
-    opts, args = parse_args()
-    fname = args[0] if args else DEFAULT_CSV_FILE
-    if not os.path.exists(fname):
-        raise SystemExit(fname + " is not found.")
-    csv2tsv(fname)
+    args = parse_args()
+    process(args)
 
 
 def test():
