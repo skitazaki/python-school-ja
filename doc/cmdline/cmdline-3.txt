@@ -1,88 +1,116 @@
 ==================
-設定情報を管理する
+設定情報を読み込む
 ==================
+
 プログラムの設定情報を管理する方法はたくさんあります。
 ここでは、環境変数の利用と、設定ファイルの利用を紹介します。
+主にログレベルやディレクトリレイアウトに関する設定です。
+認証情報に関してはハッシュ化して保存するなど、セキュアな管理方法を考えましょう。
 
-モジュールが環境変数を参照することもあります。
-よく使うモジュールでは `urllib2` が挙げられます。
-プロキシを使った環境では、環境変数 ``http_proxy`` に依存します。
+標準モジュールやサードパーティーのモジュールが環境変数を参照することもあります。
+よく使うものとして、プロキシサーバーを使ったときの環境変数 ``http_proxy`` があります。
 
-環境変数の扱い
+環境変数の参照
 ==============
-os.environ で環境変数を設定、参照できます。
+
+*os.environ* で環境変数を設定、参照できます。
 ::
 
     >>> import os
-    >>> for k, v in os.environ.iteritems():
-    ...     print "%-20s\t%s" % (k, v)
-    ...
-    VERSIONER_PYTHON_PREFER_32_BIT  no
-    TERM_PROGRAM_VERSION    299
-    WINDOW                  1
-    LOGNAME                 shigeru
-    USER                    shigeru
-    HOME                    /Users/shigeru
-    PATH                    /Users/shigeru/projects/python-school-ja/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
-    PS1                     (python-school-ja)\n\e[1;4;33m\u \w\e[m [\#]\n$
-    ( ... もっと続く ... )
+    >>> for k, v in os.environ.items():
+    ...     print("{:20}\t{}".format(k, v))
 
-インタープリタを起動する前に環境変数を設定しておくと、起動中にその値を参照できます。
-サーバごとに設定値を変更したい場合には知っておくと便利でしょう。
+プロセス起動前に環境変数を設定しておくと、起動中にその値を参照できます。
+実行環境ごとに設定値を変更したい場合には知っておくと便利でしょう。
 
 設定ファイルの扱い
 ==================
+
+ファイルの形式にもいくつかありますが、Python ではだいたいどのファイル形式も対応しています。
+
 * Python スクリプトをそのまま使う (:file:`settings.py` など)
-* `ConfigParser`_ を使う (*.ini* / *.cfg* 形式)
-* JSON を使う (Python 2.6 から標準モジュール)
+* `configparser`_ を使う (*.ini*, *.cfg* 形式)
+* `json`_ を使う (Python 2.6 から標準モジュール)
 * YAML を使う (`pyyaml`_ をインストール)
 * 自前で解析器を実装する (ダメなパターンが多い...)
 
-.. _ConfigParser: http://docs.python.org/library/configparser.html
+.. _configparser: https://docs.python.org/3.4/library/configparser.html
+.. _json: https://docs.python.org/3.4/library/json.html
 .. _pyyaml: http://pyyaml.org/wiki/PyYAML
 
 手っ取り早く始めるためには Python スクリプトをそのまま使いましょう。
 構造については Django の設定ファイルを参考にすると良いでしょう。
 
-:file:`settings.py` (geodjango の初期設定から抜粋)
+データベース接続を切り替えるために、以下のようなファイル (:file:`settings.py`) を用意してみましょう。
 
 .. literalinclude:: /../src/settings.py
    :encoding: utf-8
    :language: python
 
-
-:file:`cmdline-3.py` (:file:`settings.py` は同じディレクトリに配置)
+:file:`cmdline-3.py` (:file:`settings.py` は同じディレクトリに配置) から設定を読み出してみます。
 
 .. literalinclude:: /../src/cmdline-3.py
    :encoding: utf-8
    :language: python
 
-実行結果 ::
+実行結果
 
-    $ python cmdline-3.py
-    <module 'settings' from '/Users/shigeru/projects/python-school-ja/src/settings.pyc'>
+.. code-block:: bash
+
+    $ python src/cmdline-3.py
     ['DATABASES',
      'DEBUG',
-     'LOGGING',
      'TEMPLATE_DEBUG',
      '__builtins__',
+     '__cached__',
      '__doc__',
      '__file__',
+     '__initializing__',
+     '__loader__',
      '__name__',
      '__package__']
-    True
-    {'default': {'ENGINE': 'django.contrib.gis.db.backends.postgis',
-                 'HOST': 'DOTCLOUD_DB_SQL_HOST',
-                 'NAME': 'template1',
-                 'PASSWORD': 'DOTCLOUD_DB_SQL_PASSWORD',
-                 'PORT': 12345,
-                 'USER': 'DOTCLOUD_DB_SQL_LOGIN'}}
-    {'disable_existing_loggers': False,
-     'handlers': {'mail_admins': {'class': 'django.utils.log.AdminEmailHandler',
-                                  'level': 'ERROR'}},
-     'loggers': {'django.request': {'handlers': ['mail_admins'],
-                                    'level': 'ERROR',
-                                    'propagate': True}},
-     'version': 1}
+    {'DEBUG': True}
+    {'ENGINE': 'django.contrib.gis.db.backends.postgis',
+     'HOST': 'DB_HOST',
+     'NAME': 'template1',
+     'PASSWORD': 'DB_USER_PASSWORD',
+     'PORT': 5432,
+     'USER': 'DB_USER_NAME'}
 
+設定ファイルと環境変数の組み合わせ
+======================================================
 
+設定ファイルに異なる環境の設定を記述しておき、環境変数でそのキーを指定します。
+先ほどの例で、 "default" と "staging" を切り替えます。(:file:`cmdline-3a.py`)
+
+.. literalinclude:: /../src/cmdline-3a.py
+   :encoding: utf-8
+   :language: python
+
+環境変数 `PYSCHOOL_DATABASE` を "staging" にすると読み込む情報が変わります。
+未登録のキーが指定された場合はその旨が表示されます。
+出力レベルはロガーを使うようにすると柔軟にを切り替えられます。
+
+::
+
+    $ python cmdline-3a.py
+    Current environment is "default".
+    {'ENGINE': 'django.contrib.gis.db.backends.postgis',
+     'HOST': 'DB_HOST',
+     'NAME': 'template1',
+     'PASSWORD': 'DB_USER_PASSWORD',
+     'PORT': 5432,
+     'USER': 'DB_USER_NAME'}
+
+    $ PYSCHOOL_DATABASE=staging python cmdline-3a.py
+    Current environment is "staging".
+    {'ENGINE': 'django.contrib.gis.db.backends.postgis',
+     'HOST': 'DB_HOST_STAGING',
+     'NAME': 'template1',
+     'PASSWORD': 'DB_USER_PASSWORD_STAGING',
+     'PORT': 5432,
+     'USER': 'DB_USER_NAME_STAGING'}
+
+    $ PYSCHOOL_DATABASE=development python cmdline-3a.py
+    Current environment is "development".
+    Unknown environment for database settings.
