@@ -39,7 +39,7 @@ def parse_args():
                         action="store_true", help="contains header row")
     parser.add_argument("--encoding", dest="encoding", default='utf-8',
                         help="Encoding of input file")
-    parser.add_argument("filename", nargs=1, help="CVS file path")
+    parser.add_argument("filename", nargs=1, help="CSV file path")
 
     args = parser.parse_args()
 

@@ -28,7 +28,7 @@ def parse_args():
     # Add this line from boilerplate.
     parser.add_argument("--header-encoding", dest="header_encoding",
                         help="Encoding of header row")
-    parser.add_argument("filename", nargs=1, help="CVS file path")
+    parser.add_argument("filename", nargs=1, help="CSV file path")
 
     args = parser.parse_args()
 

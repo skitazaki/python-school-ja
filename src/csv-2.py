@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument("-q", "--quiet", dest="quiet", default=False,
                         action="store_true", help="quiet mode")
     # Add this line from boilerplate.
-    parser.add_argument("filename", nargs=1, help="CVS file path")
+    parser.add_argument("filename", nargs=1, help="CSV file path")
 
     args = parser.parse_args()
 

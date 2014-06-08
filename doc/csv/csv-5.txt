@@ -72,7 +72,52 @@ Python はトップレベルに関数を定義できますので、無理にク�
 
 .. code-block:: diff
 
-    @@ -8,6 +8,15 @@
+    @@ -9,6 +9,19 @@
+     import logging
+
+
+    +class StockPrice(object):
+    +
+    +    def __init__(self, day, price_begin, price_max, price_min, price_end):
+    +        self.day = day
+    +        self.price_begin = float(price_begin)
+    +        self.price_max = float(price_max)
+    +        self.price_min = float(price_min)
+    +        self.price_end = float(price_end)
+    +
+    +    def diff(self):
+    +        return self.price_end - self.price_begin
+    +
+    +
+     def parse_args():
+         """Parse arguments and set up logging verbosity.
+
+    @@ -44,14 +57,8 @@
+         with open(args.filename[0]) as fp:
+             reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+             for t in reader:
+    -            # Assign each field on individual variables.
+    -            day = t[0]
+    -            price_begin = float(t[1])
+    -            price_max = float(t[2])
+    -            price_min = float(t[3])
+    -            price_end = float(t[4])
+    -            # Calculate the differenciate of the day.
+    -            diff = price_end - price_begin
+    +            p = StockPrice(*t)
+    +            diff = p.diff()
+                 if diff > 0:
+                     message = 'up'
+                 elif diff < 0:
+    @@ -59,7 +66,7 @@
+                 else:
+                     message = 'same'
+                 # Write out day, up/down/same, and diff.
+    -            print('{}\t{:5}\t{}'.format(day, message, round(diff, 2)))
+    +            print('{}\t{:5}\t{}'.format(p.day, message, round(diff, 2)))
+
+
+     def main():
 
 パッケージング
 ========================================
