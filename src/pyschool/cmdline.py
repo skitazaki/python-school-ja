@@ -28,8 +28,6 @@ def parse_args():
                         action="store_true", help="contains header row")
     parser.add_argument("--encoding", dest="encoding", default='utf-8',
                         help="encoding of input file")
-    parser.add_argument("-o", "--output", dest="output", metavar="FILE",
-                        help="output file path")
     parser.add_argument("filename", nargs=1, help="input file path")
 
     args = parser.parse_args()
