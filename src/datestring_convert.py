@@ -9,8 +9,8 @@ def datestring_convert(s):
     """
     assert type(s) == str, "Argument must be string"
     dt = s.split()
-    year, month, day = map(lambda r: int(r), dt[0].split("-"))
-    hour, minute, second = map(lambda r: int(r), dt[1].split(":"))
+    year, month, day = map(int, dt[0].split("-"))
+    hour, minute, second = map(int, dt[1].split(":"))
     return datetime.datetime(year, month, day, hour, minute, second)
 
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     d1 = datestring_convert(TEST_1)
     d2 = datestring_convert(TEST_2)
     diff = d1 - d2
-    print "%s ==> %s" % (TEST_1, TEST_2)
-    print "DIFF: days=%d, seconds=%d" % (diff.days, diff.seconds)
+    print("{} ==> {}".format(TEST_1, TEST_2))
+    print("DIFF: days={}, seconds={}".format(diff.days, diff.seconds))
 
 # vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :

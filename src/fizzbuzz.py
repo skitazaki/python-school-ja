@@ -80,7 +80,7 @@ def test():
     actual = fizzbuzz_list(16)
     assert len(expected) == len(actual)
     for e, a in zip(expected, actual):
-        assert e == a
+        assert e == a, 'expected={}, actual={}'.format(e, a)
 
 if __name__ == "__main__":
     main()
