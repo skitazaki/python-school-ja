@@ -1,14 +1,18 @@
-import paramiko, getpass
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import getpass
+import paramiko
 
 server = "localhost"
 username = password = None
 try:
     u = getpass.getuser()
-    username = raw_input("Username: (Default=%s) " % (u,))
+    username = input("Username: (Default=%s) " % (u,))
     if not username:
         username = u
     password = getpass.getpass("Password: ")
-except:
+except KeyboardInterrupt:
     raise SystemExit("Cancel")
 
 if not password:
@@ -23,7 +27,6 @@ except:
 
 ch = t.open_channel(kind="session")
 ch.exec_command("uptime")
-if (ch.recv_ready):
-    print server + ": " + ch.recv(1000)
+if ch.recv_ready:
+    print(server + ": " + ch.recv(1000))
 t.close()
-

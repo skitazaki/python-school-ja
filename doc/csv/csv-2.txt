@@ -1,6 +1,7 @@
-====================
-標準モジュールを使う
-====================
+=========================
+標準モジュール csv を使う
+=========================
+
 前の章のように自前で実装すると次の二点への対応が難しくなります。
 
 * エスケープ処理
@@ -14,67 +15,49 @@
 
 * `csv – カンマ区切りのファイル`_ (PyMOTW)
 
-.. _13.1. csv — CSV File Reading and Writing: http://docs.python.org/library/csv.html
+.. _13.1. csv — CSV File Reading and Writing: https://docs.python.org/3/library/csv.html
 .. _csv – カンマ区切りのファイル: http://www.doughellmann.com/PyMOTW-ja/csv/
 
 csv モジュール
 ==============
-csv モジュールを使って、 :doc:`csv-1` と同様の処理を実装しましょう。
 
-:file:`csv-2.py`
+csv モジュールを使って、 :doc:`csv-1` と同様の処理を実装しましょう。
+実行結果は一緒になりますね。
 
 .. literalinclude:: /../src/csv-2.py
    :language: python
 
-処理する CSV は少し変更します。
+このファイルを :file:`csv-2.py` とすると、差分は以下の通りです。
 
-:file:`csv-2.csv`
+.. code-block:: diff
 
-.. literalinclude:: /../etc/csv-2.csv
+    @@ -5,6 +5,7 @@
+     """
 
-実行結果 ::
-
-    > python csv-2.py csv-2.csv
-    ISO8601 June, 1988
-    ISO8601:2000    December, 2000
-    Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
-
-    > python csv-2.py csv-1.csv
-    2011-03-11      Earthquake
-    2011-06-06      World IPv6 Day
-    2011-11-11      Eleven Eleven
-    2011-12-10      total lunar eclipse     not solar eclipse
-
-:file:`csv-1.py` で処理した結果 ::
-
-    > python csv-1.py csv-2.csv
-    ISO8601 "June    1988"
-    ISO8601:2000    "December        2000"
-    Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
-
-ダブルクォートを考慮できていないことが分かります。
-
-差分 ::
-
-    $ diff -U 1 csv-1.py csv-2.py
-    --- csv-1.py    2011-12-07 00:35:38.000000000 +0900
-    +++ csv-2.py    2011-12-07 00:46:55.000000000 +0900
-    @@ -6,2 +6,3 @@
-     
-    +import csv
+     import argparse
+    +import csv  # import standard "csv" module
      import logging
-    @@ -40,4 +41,4 @@
-         with open(fname) as reader:
-    -        for line in reader:
-    -            print line.strip().replace(',', '\t')
-    +        for row in csv.reader(reader):
-    +            print '\t'.join(row)
- 
+
+
+    @@ -41,9 +42,8 @@
+         """Parse daily Tokyo stock prices, and calculate up/down.
+         """
+         with open(args.filename[0]) as fp:
+    -        for line in fp:
+    -            l = line.rstrip('\r\n')
+    -            t = l.split(',')
+    +        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+    +        for t in reader:
+                 # Assign each field on individual variables.
+                 day = t[0]
+                 price_begin = float(t[1])
+
+
 宿題
 ====
-csv モジュールの ``reader()`` 関数は *dialect* という引数を解釈します。
-これを切り替えることで、区切り文字を変更できます。
+
+csv モジュールの ``reader()`` 関数は *dialect* や *delimiter*, *quotechar* という引数を解釈します。
+これらを切り替えることで、エスケープ文字や区切り文字を変更できます。
 
 * 公式ドキュメントのコード例に目を通し、空白区切りやコロン区切りのデータを扱っている部分を確認してください。
 * コマンドラインのオプションを解釈し、区切り文字をオプション引数で与えられるようにしてください。
-

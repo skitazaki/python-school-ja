@@ -1,71 +1,97 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""%prog [options] csv_file [sqlite_file]
+"""Parse daily Tokyo stock prices.
 """
 
-import os
+import csv
+import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, Float, String, Date
 
-from pyschool.unicodecsv import UnicodeReader
 from pyschool.cmdline import parse_args
 
-DEFAULT_CSV_FILE = 'sample.csv'
+# SQLite On-Memory storage for test run.
 DEFAULT_SQLITE_FILE = ':memory:'
+
+# Declare input fields definition.
+FIELDS = (
+    {'id': 'day', 'type': 'datetime', 'format': '%Y-%m-%d'},
+    {'id': 'price_begin', 'type': 'float'},
+    {'id': 'price_max', 'type': 'float'},
+    {'id': 'price_min', 'type': 'float'},
+    {'id': 'price_end', 'type': 'float'}
+)
 
 Session = sessionmaker()
 Base = declarative_base()
 
 
-class LeagueStats(Base):
+class StockPrice(Base):
 
-    __tablename__ = 'league_stats'
+    __tablename__ = 'stock_price'
 
     id = Column(Integer, primary_key=True)
-    team = Column(String)
-    rank = Column(Integer)
-    point = Column(Integer)
-    match = Column(Integer)
-    goaldiff = Column(Integer)
+    day = Column(Date, nullable=False, unique=True)
+    price_begin = Column(Float, nullable=False)
+    price_max = Column(Float, nullable=False)
+    price_min = Column(Float, nullable=False)
+    price_end = Column(Float, nullable=False)
 
     def __repr__(self):
-        return "<LeagueStats('%s:%d')>" % (self.team, self.point)
+        return "<StockPrice('{}')>".format(self.day)
+
+    def diff(self):
+        return self.price_end - self.price_begin
 
 
-def csv2sqlite(fname, output):
-    """Import a CSV format file to SQLite database.
+def process(args):
+    """Parse daily Tokyo stock prices, and calculate up/down.
+    After that, import them into SQLite database.
     """
-    dsl = 'sqlite:///' + output
+    # Prepare database connection, table, and session.
+    dsl = 'sqlite:///' + (args.output or DEFAULT_SQLITE_FILE)
     engine = create_engine(dsl, echo=True)
     Base.metadata.create_all(engine)
     Session.configure(bind=engine)
     session = Session()
-    with open(fname) as reader:
-        stream = UnicodeReader(reader)
-        # Read a header line.
-        fields = stream.next()
-        for row in stream:
-            record = dict(zip(fields, row))
-            r = LeagueStats(team=record['team'],
-                    rank=int(record['rank']),
-                    point=int(record['point']),
-                    match=int(record['match']),
-                    goaldiff=int(record['goaldiff']))
-            session.add(r)
+    with open(args.filename[0]) as fp:
+        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+        for t in reader:
+            # Convert input values to declared name and type.
+            dt = {}
+            for i, f in enumerate(FIELDS):
+                if f['type'] == 'integer':
+                    dt[f['id']] = int(t[i])
+                elif f['type'] == 'float':
+                    dt[f['id']] = float(t[i])
+                elif f['type'] == 'datetime':
+                    dt[f['id']] = datetime.datetime.strptime(t[i], f['format'])
+                else:
+                    dt[f['id']] = t[i]
+            # Instantiate SQLAlchemy data model object.
+            p = StockPrice(**dt)
+            # Show the same things with previous scripts.
+            diff = p.diff()
+            if diff > 0:
+                message = 'up'
+            elif diff < 0:
+                message = 'down'
+            else:
+                message = 'same'
+            # Write out day, up/down/same, and diff.
+            print('{}\t{:5}\t{}'.format(p.day, message, round(diff, 2)))
+            session.add(p)
+    # Don't forget to commit the changes you add.
     session.commit()
 
 
 def main():
-    opts, args = parse_args(__doc__)
-    fname = args[0] if args else DEFAULT_CSV_FILE
-    if not os.path.exists(fname):
-        raise SystemExit("\"%s\" is not found." % (fname,))
-    out = args[1] if len(args) > 1 else DEFAULT_SQLITE_FILE
-    csv2sqlite(fname, out)
+    args = parse_args()
+    process(args)
 
 
 def test():

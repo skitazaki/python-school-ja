@@ -11,7 +11,7 @@ def fib(n):
 
 
 if __name__ == '__main__':
-    for i in xrange(13):
-        print "%4d --fib--> %4d" % (i, fib(i))
+    for i in range(13):
+        print("{:2}\t--fib-->\t{:3}".format(i, fib(i)))
 
 # vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :

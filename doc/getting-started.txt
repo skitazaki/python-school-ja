@@ -2,15 +2,32 @@
 はじめの一歩
 ============
 
-Windows で Python を開発できる環境を整えます。
-次の４つのソフトウェアをインストールしていきましょう。
+まずは Python を開発できる環境を整えます。
+Python 2.4、Python 2.7、Python 3.3、Python 3.4 で以下の違いがあります。
+最新のバージョンであるほどセットアップが簡単になっていますので、出来るだけ Python 3.4 を使いましょう。
 
-* Python 2.7
-* distribute
-* pip
-* virtualenv
+Python のメジャーバージョンには 2 系と 3 系があり、構文が異なる場合もあります。
+このドキュメントは Python 3.4 をターゲットにして作成しています。
 
-インストールできたら、簡単なプロジェクトを作ってスクリプトを記述します。
+.. list-table:: Python のバージョンとセットアップに関するツール
+   :widths: 15 20 30
+   :header-rows: 1
+
+   * - バージョン
+     - パッケージ管理
+     - 仮想環境の作成
+   * - Python 2.4
+     - pip
+     - virtualenv
+   * - Python 2.7
+     - pip
+     - virtualenv
+   * - Python 3.3
+     - pip
+     - pyvenv (標準でインストール)
+   * - Python 3.4
+     - pip (標準でインストール)
+     - pyvenv (標準でインストール)
 
 インストール手順
 ================
@@ -19,31 +36,96 @@ Python のインストール
 ---------------------
 
 Python の公式サイトからインストーラーをダウンロードします。
-Python のメジャーバージョンには 2 系と 3 系があります。
-2011年時点では 2 系がオススメですが、2013年ではそろそろ 3 系を使い始めた方が良い状況です。
-これから記述するスクリプトの寿命を考えてバージョンを選択しましょう。
-２年以上は使うことを想定しているならば、Python 3 で書いてください。
 
 * http://www.python.org/download/
-    * ``python-2.7.6.msi``: 手元の環境が 32bit マシンの場合
-    * ``python-2.7.6.amd64.msi``: 手元の環境が 64bit マシンの場合
+    * Windows と Mac OSX の場合は 32bit か 64bit をマシンに合わせて選択してください。
+    * Linux の場合はソースコードからビルドしてください。ビルド済パッケージを配布しているディストリビューションの場合はそちらを使いましょう。
 
-インストーラーを実行したら、デフォルト設定で進めてください。
-インストールが完了すると、C ドライブ直下に ``Python27`` フォルダが作成されます。
+Windows 環境の場合、インストーラーの手順をデフォルト設定で進めると
+C ドライブ直下に ``Python34`` フォルダが作成されます。
 コマンドプロンプトを立ち上げて、バージョンを確認しましょう。 ::
 
-    > C:\Python27\python.exe -V
-    Python 2.7.6
+    > C:\Python34\python.exe -V
+    Python 3.4.1
 
 .. warning::
 
-    インターネット上で見つかるいくつかの記事では、環境変数 ``PATH`` を設定する方法が記載されています。
+    いくつかのセットアップ記事では、環境変数 ``PATH`` を設定する方法が記載されています。
     しかし、ここでは環境変数 ``PATH`` を編集しないでください。
-    後で述べる `virtualenv` がパスを解決してくれます。
+    :command:`pyvenv` で仮想環境を作成した方が効率的に管理できます。
+    特に、Jenkins や Travis CI などの統合環境との親和性も向上します。
 
-    `virtualenv` を採用した方がサードパーティモジュールを効率的に管理できます。
-    チーム開発を行う場合には是非とも導入を検討しましょう。
-    Jenkins などの CI 環境との親和性も向上します。
+サンプルプロジェクト
+------------------------
+
+:command:`pyvenv` を使ってプロジェクト用の仮想環境を作成します。
+ホームディレクトリ配下の隠しディレクトリなどにしておきましょう。
+ここでは、ホームディレクトリ直下の ``.pyvenv`` という名前にします。
+
+Windows の場合
+````````````````````
+
+.. code-block:: bat
+
+    > C:\Python34\Scripts\pyvenv %HOMEDRIVE%\%HOMEPATH%\.pyvenv\python-school
+
+次に、環境変数などをプロジェクト固有のものに設定します。
+`Scripts` フォルダにある :file:`activate.bat` にこの処理が記述されていますので実行しましょう。
+
+.. code-block:: bat
+
+    > %HOMEDRIVE%\%HOMEPATH%\.pyvenv\python-school\Scripts\activate.bat
+
+プロンプトが切り替わり、環境変数 ``PATH`` の値も変わります。
+:command:`python` がそのままで実行できますので、バージョンを確認しましょう。 ::
+
+    > python -V
+
+簡単なスクリプトを書いて実行してみましょう。
+
+.. code-block:: bat
+
+    > echo print "Hello World." >example.py
+    > python example.py
+    Hello World.
+
+これではじめの一歩は完了です。
+次の章 - :doc:`basic-syntax` - で簡単なスクリプトを書きながら Python の文法を学びましょう。
+
+以降のパートでは仮想環境が activate された状態を仮定して話を進めます。
+マシンを再起動した場合などは :file:`activate.bat` の実行を忘れないようにしてください。
+
+Mac OSX の場合
+````````````````````
+
+.. code-block:: bash
+
+    $ PYVENV_DIR=~/.pyvenv/python-school
+    $ pyvenv-3.4 $PYVENV_DIR
+    $ source $PYVENV_DIR/bin/activate
+    $ python -V
+    $ which python
+
+これではじめの一歩は完了です。
+次の章 - :doc:`basic-syntax` - で簡単なスクリプトを書きながら Python の文法を学びましょう。
+
+以降のパートでは仮想環境が activate された状態を仮定して話を進めます。
+`direnv <http://direnv.net/>`_ などを使って作業ディレクトリでは特定の仮想環境を有効にしておいてください。
+例えば、以下のような :file:`.envrc` を用意します。
+
+.. code-block:: bash
+
+    PYVENV_DIR=$HOME/.pyvenv/python-school
+    [ -d $PYVENV_DIR ] || pyvenv-3.4 $PYVENV_DIR
+    source $PYVENV_DIR/bin/activate
+
+
+Python 3.4 以前のバージョンの場合
+=====================================
+
+Python 3.4 より前のバージョンでは、追加でいくつかのツールをインストールする必要があります。
+バージョンに合わせて作業を実施してください。
+Python のバージョンが古いほど、手順は長くなります。
 
 distribute のインストール
 -------------------------
@@ -54,25 +136,29 @@ distribute のインストール
 ここでは深追いせず先に進みます。
 
 * http://packages.python.org/distribute/
-    * `distribute_setup.py`_ をホームディレクトリにダウンロード
+    * `distribute_setup.py`_ をホームディレクトリにダウンロードしてください。
 
 .. _`distribute_setup.py`: http://python-distribute.org/distribute_setup.py
 
-コマンドプロンプトでダウンロードした Python スクリプトを実行します。 ::
+コマンドプロンプトでダウンロードした Python スクリプトを実行します。
+基本的に環境変数は自動的に置換されますので、コピペでそのまま動くはずです。
+::
 
     > C:\Python27\python.exe %HOMEDRIVE%\%HOMEPATH%\distribute_setup.py
 
 * ``%HOMEDRIVE%`` でホームドライブを指定します。基本的には C ドライブのことです。
 * ``%HOMEPATH%`` でホームディレクトリを指定します。
 
-Python の `Scripts` フォルダに :command:`easy_install` が追加されます。 ::
+Python の `Scripts` フォルダに :command:`easy_install` が追加されます。
+ファイルが新規に配置されたことを確認しておきましょう。
+::
 
     > dir /b C:\Python27\Scripts
 
 pip のインストール
 ------------------
 
-サードパーティのライブラリをインストール / アンインストールするツールとして ``pip`` を使います。 ::
+サードパーティのライブラリをインストール / アンインストールするツールとして :command:`pip` を使います。 ::
 
     > C:\Python27\Scripts\easy_install.exe pip
 
@@ -80,22 +166,23 @@ Python の `Scripts` フォルダに :command:`pip` が追加されます。 ::
 
     > dir /b C:\Python27\Scripts
 
-Python コミュニティの方針として ``easy_install`` ではなく ``pip`` を使うように移行していきます。
-新しく何かを始める場合には ``pip`` を使ってください。
-``pip`` の場合はモジュールのフリーズなどもできるようになります。
-Python 3.4 からは本体に組み込まれる予定です。
+Python コミュニティの方針として ``easy_install`` ではなく ``pip`` を使うように移行しています。
+``pip`` の場合はモジュールのフリーズなどもできます。
+Python 3.4 からは本体に組み込まれています。
 
 virtualenv のインストール
 -------------------------
 
-Python 自体のバージョンや依存するモジュールのバージョンを整えるために ``virtualenv`` を使います。
-ひとりで開発する場合には不要ですが、複数人の開発者が関わる場合や、複数のプラットフォームに配布する場合には必須のモジュールとなります。
-Python 2.4 と Python 2.7 で明示的に使い分けたい場合にも重宝します。
+Python 自体のバージョンや依存するモジュールのバージョンを整えるために :command:`virtualenv` を使います。
+Python 3.3 では :command:`pyvenv` として本体に組込まれています。
 
-``virtualenv`` を使うとプロジェクトごとに Python の実行環境を構成しますので、
-環境変数 ``PATH`` も追加してくれます。
+:command:`virtualenv` を使うとプロジェクトごとに環境変数 ``PATH`` も追加してくれます。
+ひとりで単一のプロジェクトのみを開発する場合には不要ですが、複数人の開発者が関わる場合や、
+複数のプラットフォームに配布する場合には必須のツールとなります。
+例えば、Python 2.4 と Python 2.7 で明示的に使い分けたい場合、
+Python 2.7 を使うことは共通でも依存モジュールが異なる場合に重宝します。
 
-PyPI (Python Package Index) に登録されていますので、 ``pip`` を使ってインストールできます。 ::
+PyPI (Python Package Index) に登録されていますので、 :command:`pip` を使ってインストールできます。 ::
 
     > C:\Python27\Scripts\pip.exe install virtualenv
 
@@ -113,7 +200,7 @@ PyPI (Python Package Index) に登録されていますので、 ``pip`` を使�
     ``pip`` は ``easy_install`` 互換のツールですから、同じようにしてインストールできます。
 
 サンプルプロジェクト
-====================
+--------------------
 
 :command:`virtualenv` を使ってプロジェクトを作成します。
 C ドライブ直下に :file:`sandbox` ディレクトリを作成し、その中に `python-school` プロジェクトを作成します。 ::

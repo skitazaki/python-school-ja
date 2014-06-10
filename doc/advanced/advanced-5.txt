@@ -5,66 +5,68 @@ Tips
 モジュールの実行
 ================
 
-* `ANS-prog: pythonの-m指定で便利なモジュール類`_ - freia.jp
-
-.. _`ANS-prog: pythonの-m指定で便利なモジュール類`: http://www.freia.jp/taka/blog/766/
+いくつかの Python の標準モジュールは `-m` オプションを指定して実行できます。
+ちょっとした便利機能を提供してくれますので、覚えておきましょう。
 
 JSON の整形
 -----------
-:doc:`advanced-3` の「HTTP でダウンロード」で作成した :file:`downloader.py` を使って、
-Web サービスから JSON をダウンロードできます。
-しかし、Web サービスが出力する JSON は空白や改行などを含まないため、人が読むには適していません。
-いくつかのビューアーもありますが、Python のモジュールを利用して整形することもできます。
 
-*json.tool* というモジュールは実行可能なモジュールになっています。
-Python インタープリタの `-m` オプションに指定することで、
-モジュールを実行できます。
+一般的に、Web サービスが出力する JSON は空白や改行などを含まないため、
+コード例としてドキュメントに載せるには適していません。
+いくつかのビューアーもありますし、 `jq`_ を使うことが便利ではありますが、
+Python のモジュールを利用して整形することも可能です。
 
-JSON のダウンロード (Twitter で「Python」という単語を検索) ::
+.. _jq: http://stedolan.github.io/jq/
 
-    $ python downloader.py "http://search.twitter.com/search.json?q=Python"
-    INFO:root:Download: http://search.twitter.com/search.json?q=Python -> search.json
+*json.tool* というモジュールは実行可能形式になっており、
+Python インタープリタの `-m` オプションに指定すると実行できます。
 
-JSON の整形 ::
+.. code-block:: bash
 
-    $ python -m json.tool search.json >search-pretty.json
+    $ echo "[1, \"a\"]" | python -m json.tool
+    [
+        1,
+        "a"
+    ]
 
-整形結果の確認 ::
+:command:`jq` を使う場合と一緒ですね。（こちらの方が短いですが）
 
-    $ head search-pretty.json
-    {
-        "completed_in": 0.081,
-        "max_id": 162157219486502912,
-        "max_id_str": "162157219486502912",
-        "next_page": "?page=2&max_id=162157219486502912&q=Python",
-        "page": 1,
-        "query": "Python",
-        "refresh_url": "?since_id=162157219486502912&q=Python",
-        "results": [
-            {
+.. code-block:: bash
+
+    $ echo "[1, \"a\"]" | jq '.'
+    [
+        1,
+        "a"
+    ]
 
 HTTP サーバの起動
 -----------------
-Python 2 系では `SimpleHTTPServer` というモジュールを実行すると、
-カレントディレクトリを HTTP サーバで公開できます。 ::
 
-    > python -m SimpleHTTPServer
-
-Python 3 系では `http.server` に変更されています。 ::
-
-    > python3 -m http.server
-
+`http.server` モジュールで HTTP サーバーを実行できます。
 アドホックなネットワーク環境でファイルを交換する場合や、
-JavaScript を実装する場合には便利なこともありますので、覚えておいてください。
+JavaScript を使った簡単な Web ページを実装する場合には便利です。
+カレントディレクトリが公開されます。
+デフォルトのポート番号は8000番ですが、引数で任意のポート番号を指定できます。
+
+.. code-block:: bash
+
+    $ python3 -m http.server
+
+なお、Python 2 系では `SimpleHTTPServer` というモジュールでした。
+ブログ記事などを読む場合は気をつけましょう。
+
+.. code-block:: bash
+
+    $ python -m SimpleHTTPServer
 
 日本語を扱うときに便利なこと
 ============================
+
 JSON に含まれる日本語をエスケープさせない
 -----------------------------------------
 
-* `python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする`_
-
-.. _python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする: http://iyukki.blog56.fc2.com/blog-entry-137.html
+コード例などは日本語で読めるようになっているとコミュニケーションロスを防げることがあります。
+JSON を書き出すときにいくつかのオプションを指定すると実現できますので、確認しておきましょう。
 
 :file:`json-dump.py`
 
@@ -72,7 +74,9 @@ JSON に含まれる日本語をエスケープさせない
    :language: python
    :encoding: utf-8
 
-実行結果 ::
+実行結果
+
+.. code-block:: bash
 
     $ python json-dump.py
     Wrote to "out.json".
@@ -80,17 +84,22 @@ JSON に含まれる日本語をエスケープさせない
     {
         "results": [
             {
+                "description": "naash.go.jp",
                 "latitude": 139.714941,
-                "name": "国立霞ヶ丘競技場",
                 "longitude": 35.67816,
-                "description": "naash.go.jp"
+                "name": "国立霞ヶ丘競技場"
             },
             {
+                "description": "http://www.ajinomotostadium.com/\n元の名称: 東京スタジアム",
                 "latitude": 139.5272,
-                "name": "味の素スタジアム",
                 "longitude": 35.6646,
-                "description": "http://www.ajinomotostadium.com/\n元の名称: 東京スタジアム"
+                "name": "味の素スタジアム"
             }
         ]
     }
 
+Python 2.x 系ではこちらの記事を参考にしてください。
+
+* `python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする`_
+
+.. _python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする: http://iyukki.blog56.fc2.com/blog-entry-137.html

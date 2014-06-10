@@ -1,76 +1,155 @@
 ==============================
 組込み関数 (zip / dict) を使う
 ==============================
-CSV はデータが単に羅列されたものですから、何番目のフィールドがどのような意味を持つかを教えてあげる必要があります。
-各フィールドの意味は、別の仕様書に記述されている場合と、ファイルの先頭ヘッダーに記述されている場合があります。
 
-ここでは前者を扱います。
-次のページで後者の方法を扱います。
+前の章でファイルの１行目にヘッダー行がある場合のファイル処理を実装しました。
+今度は、組込み関数 (``zip`` / ``dict``) を使って実現してみましょう。
 
-データの並びがあらかじめ分かっている場合
-========================================
-次のような CSV ファイルを考えます。
-
-    ==============  ======================
-    フィールド番号  意味
-    ==============  ======================
-    1               順位
-    2               チーム
-    3               勝点
-    4               試合
-    5               得失点差
-    ==============  ======================
-
-:file:`csv-4.csv`
+:file:`csv-1.csv` に英語でヘッダー行を追加して :file:`csv-4.csv` とします。
 
 .. literalinclude:: /../etc/csv-4.csv
 
-辞書データに変換
-----------------
-データの並びに意味をマップさせるには、 ``zip()`` と ``dict()`` を組み合わせることで実現できます。
+zip のテスト
+========================================
 
-:file:`csv-4.py`
+コンソールで :command:`python` を実行して REPL (`Read–eval–print loop`_) モードに入りましょう。
+インタラクティブに動作を確認できます。
+
+.. _`Read–eval–print loop`: http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
+
+２つのタプル "a", "b" を用意して、それらに ``zip()`` を適用させます。
+
+.. code-block:: bash
+
+    $ python
+    >>> a = ("A", "B", "C")
+    >>> b = (1, 2, 3)
+    >>> zip(a, b)
+    <zip object at 0x1018e5320>
+    >>> for t in zip(a, b):
+    ...     t
+    ...
+    ('A', 1)
+    ('B', 2)
+    ('C', 3)
+
+それぞれの同じインデックスにある要素をまとめていることが分かりました。
+
+dict のテスト
+========================================
+
+次に、 ``dict()`` を使ってみます。
+引数には配列の配列（多次元配列）を渡します。
+
+.. code-block:: bash
+
+    $ python
+    >>> a = (('A', 1), ('B', 2), ('C', 3))
+    >>> dict(a)
+    {'A': 1, 'B': 2, 'C': 3}
+
+先ほどの ``zip()`` と合わせて考えると、
+２つの配列から、それぞれのインデックス番号でまとめた辞書オブジェクトを生成できました。
+
+実装の改修
+========================================
+
+列の情報を辞書で保持し、名称とデータ型を持つようにします。
+そして、入力行に対して ``zip`` と ``dict`` を適用することで辞書オブジェクトに変換します。
+辞書で扱うと、ソースコード内のマジックナンバーを少なく保てるメリットがあります。
+
+:file:`csv-2.py` を改修して :file:`csv-4.py` としています。
 
 .. literalinclude:: /../src/csv-4.py
+   :encoding: utf-8
    :language: python
 
-なお、辞書の値だけを取り出すには ``values()`` メソッドも使えます。
-キーだけを取り出すには ``keys()`` を使います。
+ヘッダー行付きの :file:`csv-4.csv` を読み込む場合は `--header` オプションを付けて実行し、
+ヘッダー行無しの :file:`csv-1.csv` を読み込む場合はオプションを付けずに実行します。
 
-オブジェクトに変換
-------------------
-クラスを定義して、コンストラクタに渡す方法もあります。
-タプルに "*" 記号を付けると、引数には展開されて渡されます。
-(そういう書き方もあるよ、というレベルの話で、多用しないでください)
+:file:`csv-2.py` からの差分は以下の通りです。
+組み込み関数 ``next()`` を使って１行だけ読み込む処理も記載していますので、確認しておきましょう。
 
-オブジェクトに変換する場合には型をチェックしても良いでしょう。
-値の制約条件をチェックするのも有効です。
+.. code-block:: diff
 
-:file:`csv-4a.py`
+    @@ -8,6 +8,15 @@
+     import csv  # import standard "csv" module
+     import logging
 
-.. literalinclude:: /../src/csv-4a.py
-   :language: python
+    +# Declare fields definition.
+    +FIELDS = (
+    +    {'id': 'day', 'type': 'string'},
+    +    {'id': 'price_begin', 'type': 'float'},
+    +    {'id': 'price_max', 'type': 'float'},
+    +    {'id': 'price_min', 'type': 'float'},
+    +    {'id': 'price_end', 'type': 'float'}
+    +)
+    +
 
-クラスを定義するときは ``self`` というキーワードが欠かせません。
-メソッド内で使う場合も使わない場合も記述しなければなりませんが、
-``self`` を使う必要のないメソッドは、そもそもそのクラスに定義すべきメソッドではないかもしれません。
-Python はトップレベルに関数を定義できますので、無理にクラスを定義する必要はないことを忘れないでください。
+     def parse_args():
+         """Parse arguments and set up logging verbosity.
+    @@ -26,6 +35,10 @@
+         parser.add_argument("-q", "--quiet", dest="quiet", default=False,
+                             action="store_true", help="quiet mode")
+         # Add this line from boilerplate.
+    +    parser.add_argument("--header", dest="header", default=False,
+    +                        action="store_true", help="contains header row")
+    +    parser.add_argument("--encoding", dest="encoding", default='utf-8',
+    +                        help="Encoding of input file")
+         parser.add_argument("filename", nargs=1, help="CVS file path")
 
-``self`` の必要性について考えるためには ``@classmethod`` 、 ``@staticmethod`` 、デコレータの実装方法について学習しなければなりません。
-詳しく知りたい場合はこちらのブログを読んでから、再度考えてください。
+         args = parser.parse_args()
+    @@ -41,17 +54,18 @@
+     def process(args):
+         """Parse daily Tokyo stock prices, and calculate up/down.
+         """
+    -    with open(args.filename[0]) as fp:
+    +    header = tuple(map(lambda f: f['id'], FIELDS))
+    +    with open(args.filename[0], encoding=args.encoding) as fp:
+             reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+    +        if args.header:
+    +            _ = next(reader)
+    +            logging.info('Skip header row: %s', _)
+    +        else:
+    +            logging.info('No header row is to be in input file.')
+             for t in reader:
+    -            # Assign each field on individual variables.
+    -            day = t[0]
+    -            price_begin = float(t[1])
+    -            price_max = float(t[2])
+    -            price_min = float(t[3])
+    -            price_end = float(t[4])
+    +            dt = dict(zip(header, t))  # Bind header and row
+                 # Calculate the differenciate of the day.
+    -            diff = price_end - price_begin
+    +            diff = float(dt['price_end']) - float(dt['price_begin'])
+                 if diff > 0:
+                     message = 'up'
+                 elif diff < 0:
+    @@ -59,7 +73,7 @@
+                 else:
+                     message = 'same'
+                 # Write out day, up/down/same, and diff.
+    -            print('{}\t{:5}\t{}'.format(day, message, round(diff, 2)))
+    +            print('{}\t{:5}\t{}'.format(dt['day'], message, round(diff, 2)))
 
-* `Why explicit self has to stay`_ (`和訳 : なぜPythonのメソッド引数に明示的にselfと書くのか`_)
 
-.. _Why explicit self has to stay: http://neopythonic.blogspot.com/2008/10/why-explicit-self-has-to-stay.html
-.. _`和訳 : なぜPythonのメソッド引数に明示的にselfと書くのか`: http://coreblog.org/ats/translation-of-why-explicit-self-has-to-stay
+     def main():
+
 
 宿題
 ====
-オプションを変更することで挙動を切り替え可能にしましょう。
 
-* 出力データの区切り文字
-* 出力先 (標準出力とファイル)
-* 入力の文字エンコーディングと出力の文字エンコーディング
+1. フィールド定義に沿ってデータ型の変換も実施してください。
+   つまり、相場の動きを以下のように記述できるようにしてください。
 
-ここまでは設定だけで使ってきませんでしたが、 `logging` モジュールを使ってログを出力できます。
-処理している行数を *INFO* レベルで出力するようにスクリプトを修正してみましょう。
+   .. code-block:: python
+
+       # diff = float(dt['price_end']) - float(dt['price_begin'])
+       diff = dt['price_end'] - dt['price_begin']
+
+2. `--header` オプションでヘッダー行の有無を指定させていますが、自動的に認識させてください。
+3. *csv* モジュールには ``DictReader`` クラスがあります。このクラスを使って実装してください。
+4. *collections* モジュールの `namedtuple()`_ を使って実装してください。
+
+.. _`namedtuple()`: http://docs.python.jp/3.3/library/collections.html#collections.namedtuple
