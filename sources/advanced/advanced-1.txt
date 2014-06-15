@@ -1,6 +1,7 @@
 ==========
 デコレータ
 ==========
+
 関数などに機能を追加するシンタックスシュガーとして、デコレータがあります。
 シンタックスシュガー、あるいは糖衣構文という言葉が分からない場合は別途学習しておいてください。
 (Python に限った言葉ではなく、プログラミング一般で使われるため)
@@ -9,10 +10,11 @@
 
 日本語での一通りの解説はこちらの記事を参照してください。
 
-* `1 デコレータとは`_ / Effective Python
+* `python のデコレーター構文`_
 
 組み込みデコレータ
 ==================
+
 ``@classmethod`` と ``@staticmethod`` という二つのデコレータは Python 2.2 以上で使えます。
 使い方はこちらのブログを確認してください。
 
@@ -27,7 +29,9 @@
    :language: python
    :encoding: utf-8
 
-実行結果 ::
+実行結果
+
+.. code-block:: bash
 
     $ python decorator-sample.py
     Greetings from classmethod.
@@ -37,14 +41,15 @@
 
 デコレータのいろいろ
 ====================
+
 いくつかの参考リンクを列挙しておきます。
 デコレータについて更なる学習を進めるならば目を通しておきましょう。
 
 :`Python Decorator Library`_  - wiki.python.org:
     様々なデコレータの例が掲載されています。
-    自分で実装するときには目を通してみるとよいでしょう。
+    自分で実装するときには目を通してみるとよいでしょう。欲しいものが既にあるかもしれません。
 
-:`9.8. functools — Higher order functions and operations on callable objects`_ (公式ドキュメント):
+:`10.2. functools — Higher order functions and operations on callable objects`_ (公式ドキュメント):
     自分で実装するときは、 *functools* モジュールの ``wraps`` デコレータを使うようにしましょう。
     *functools* モジュールは Python 2.5 から利用できます。
 
@@ -61,9 +66,9 @@
     暇なときに読んでみると良いかもしれません。
 
 
+.. _`python のデコレーター構文`: http://www.nasuinfo.or.jp/FreeSpace/kenji/sf/python/virtualMachine/decorator.htm
 .. _the history of the process of adding decorators to Python: http://wiki.python.org/moin/PythonDecorators
 .. _Python Decorator Library: http://wiki.python.org/moin/PythonDecoratorLibrary
-.. _1 デコレータとは: http://morchin.sakura.ne.jp/effective_python/decorator.html
 .. _Fabric post-run processing Python decorator: http://www.saltycrane.com/blog/2010/11/fabric-post-run-processing-python-decorator/
-.. _9.8. functools — Higher order functions and operations on callable objects: http://docs.python.org/library/functools.html
+.. _10.2. functools — Higher order functions and operations on callable objects: https://docs.python.org/3.4/library/functools.html
 .. _What are common uses of Python decorators?: http://www.quora.com/What-are-common-uses-of-Python-decorators

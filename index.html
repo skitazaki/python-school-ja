@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python の学習 &mdash; Python School 1.5.2 documentation</title>
+    <title>Python の学習 &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,12 +23,12 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="#" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="#" />
     <link rel="next" title="はじめの一歩" href="getting-started.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="#">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>Python の学習</span></h2>
       </div>
       <div class="topnav">
@@ -53,7 +53,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">はじめの一歩</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting-started.html#id2">インストール手順</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting-started.html#id3">サンプルプロジェクト</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#python-3-4">Python 3.4 以前のバージョンの場合</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basic-syntax.html">基本的な文法</a><ul>
@@ -70,17 +70,17 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="csv/index.html">CSV ファイルの処理方法</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="csv/csv-1.html">ファイルを読み込む</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csv/csv-2.html">標準モジュールを使う</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csv/csv-2.html">標準モジュール csv を使う</a></li>
 <li class="toctree-l2"><a class="reference internal" href="csv/csv-3.html">ユニコード文字列を考慮する</a></li>
 <li class="toctree-l2"><a class="reference internal" href="csv/csv-4.html">組込み関数 (zip / dict) を使う</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csv/csv-5.html">ファイル風オブジェクトを意識する</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csv/csv-6.html">O/R マッパーを使ってデータベースを使う</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csv/csv-5.html">クラスを定義する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csv/csv-6.html">O/R マッパー経由でデータベースを使う</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cmdline/index.html">コマンドライン操作</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-1.html">ファイルの一覧を確認する</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-2.html">ファイルシステムの階層を辿る</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-3.html">設定情報を管理する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-3.html">設定情報を読み込む</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-4.html">シェルコマンドを実行する</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-5.html">SSH を使う</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmdline/cmdline-6.html">fabric を使う</a></li>
@@ -97,20 +97,9 @@
 <li class="toctree-l2"><a class="reference internal" href="projects/tools-2.html">自動化を進める</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="webapps/index.html">Webアプリケーションの実装</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-1.html">Django の環境構築</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-2.html">アプリケーションの作成</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-3.html">データの管理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-4.html">Web ブラウザに表示</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-5.html">ビューのカスタマイズ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webapps/webapps-6.html">アプリケーションの配置</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="advanced/index.html">発展的なことがら</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="advanced/advanced-1.html">デコレータ</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced/advanced-2.html">モジュールのインポート方法いろいろ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced/advanced-3.html">ネットワークプログラミング</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced/advanced-4.html">Web API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced/advanced-5.html">Tips</a></li>
 </ul>
 </li>
@@ -124,7 +113,7 @@
 <dd><ul class="first last simple">
 <li>タイプ量ではなく、ソースコード量の問題</li>
 <li>記述量が少なければ、必然的に読む量も少ない</li>
-<li>読む量が少なければ、多くの人が議論できる</li>
+<li>読む量が少なければ、多くの人が議論に参加できる</li>
 <li>多くの人が議論できれば、考える機会が多くなる</li>
 <li>人に依存した体制を避けられるかも？</li>
 </ul>
@@ -167,7 +156,7 @@
 </li>
 </ul>
 <p>Perl や Ruby、PHP と比較されることも多くあります。
-もちろん、構文やライブラリ、処理系にコミュニティも違いますので一概に善し悪しは分かりません。
+もちろん、構文やライブラリ、処理系、そしてコミュニティも違いますので一概に善し悪しは分かりません。
 ひとつの切り口として、それぞれの言語が持つモットーがあります。</p>
 <p>Perl が &#8220;There&#8217;s more than one way to do it&#8221; の考え方なのに対して、
 Python は &#8220;There&#8217;s only one way to do it&#8221; の考え方です。
@@ -180,11 +169,15 @@ Python は &#8220;Explicit is better than implicit&#8221; の考え方です。
 <ul class="simple">
 <li><a class="reference external" href="http://blog.heroku.com/archives/2011/9/28/python_and_django/">Python and Django on Heroku</a> - blog.heroku.com</li>
 <li><a class="reference external" href="http://www.infoq.com/jp/news/2011/10/python-django-heroku">Heroku上でPython と Django</a> - infoq.com (上記の日本語解説)</li>
+<li><a class="reference external" href="https://devcenter.heroku.com/articles/getting-started-with-python">Getting Started with Python on Heroku</a> - devcenter.heroku.com</li>
 </ul>
-<p>データ・サイエンスの分野でも利用されることが増えています。
-科学計算に適したライブラリ NumPy もあります。</p>
+<p>データ処理の分野でも利用されることが増えています。
+科学計算に適したライブラリ NumPy や SciPy もあります。</p>
 <ul class="simple">
 <li><a class="reference external" href="http://readwrite.com/2013/11/25/python-displacing-r-as-the-programming-language-for-data-science">Python Displacing R As The Programming Language For Data Science</a> - readwrite.com</li>
+<li><a class="reference external" href="http://nbviewer.ipython.org/github/gumption/Python_for_Data_Science/blob/master/Python_for_Data_Science_all.ipynb">Python for Data Science</a> (<a class="reference external" href="http://ipython.org/">IPython</a> 形式)</li>
+<li><a class="reference external" href="http://nborwankar.github.io/LearnDataScience/">Learn Data Science</a></li>
+<li><a class="reference external" href="https://www.kaggle.com/wiki/GettingStartedWithPythonForDataScience">Getting Started With Python For Data Science</a></li>
 </ul>
 <p>英語でも構わなければ書籍もたくさんあります。</p>
 <ul class="simple">
@@ -206,7 +199,7 @@ Python は &#8220;Explicit is better than implicit&#8221; の考え方です。
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

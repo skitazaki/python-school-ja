@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>モジュールのインポート方法いろいろ &mdash; Python School 1.5.2 documentation</title>
+    <title>モジュールのインポート方法いろいろ &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="発展的なことがら" href="index.html" />
-    <link rel="next" title="ネットワークプログラミング" href="advanced-3.html" />
+    <link rel="next" title="Tips" href="advanced-5.html" />
     <link rel="prev" title="デコレータ" href="advanced-1.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>モジュールのインポート方法いろいろ</span></h2>
       </div>
       <div class="topnav">
@@ -40,7 +40,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="advanced-3.html">ネットワークプログラミング</a>&#160;&#160;»
+        <a href="advanced-5.html">Tips</a>&#160;&#160;»
         </p>
 
       </div>
@@ -51,39 +51,40 @@
 <h1>モジュールのインポート方法いろいろ<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p>モジュールのインポートには <tt class="docutils literal"><span class="pre">import</span></tt> 文を使いますが、
 実行環境によってインポート可能なモジュールが異なる場合もあります。
-この問題に対処するために、 try-catch を使うこともあります。</p>
+この問題に対処するために、 try-catch を使って <tt class="docutils literal"><span class="pre">ImportError</span></tt> を使うこともあります。
+この章では、インポートのルールやバージョン間の違いについての理解を進めましょう。</p>
 <div class="section" id="id2">
 <h2>標準モジュールのインポート<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>標準モジュールのインポートはこれまでも見てきた通りです。
 インタープリタを起動してから即座にインポートできます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">unittest</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">unittest</span><span class="p">)</span>
-<span class="go">&lt;type &#39;module&#39;&gt;</span>
+<span class="go">&lt;class &#39;module&#39;&gt;</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">type()</span></tt> は組み込み関数で、引数の「型」を返します。</p>
+<p><tt class="docutils literal"><span class="pre">type()</span></tt> は組み込み関数で、引数の「型」を返します。
+この場合はモジュールであることが分かります。</p>
 <p>インポートしたモジュールオブジェクトからは、 <tt class="docutils literal"><span class="pre">dir()</span></tt> 関数でメソッド一覧を取得できます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">availables</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="n">unittest</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">availables</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%20s%20s%20s%20s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">availables</span><span class="p">)</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">availables</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">[&#39;BaseTestSuite&#39;, &#39;FunctionTestCase&#39;, &#39;SkipTest&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">availables</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&#39;    &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">availables</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">4</span><span class="p">]))</span>
 <span class="gp">...</span>
-<span class="go">       BaseTestSuite    FunctionTestCase            SkipTest            TestCase</span>
-<span class="go">          TestLoader         TestProgram          TestResult           TestSuite</span>
-<span class="go">      TextTestResult      TextTestRunner     _TextTestResult             __all__</span>
-<span class="go">        __builtins__             __doc__            __file__            __name__</span>
-<span class="go">         __package__            __path__          __unittest                case</span>
-<span class="go">   defaultTestLoader     expectedFailure       findTestCases    getTestCaseNames</span>
-<span class="go">      installHandler              loader                main           makeSuite</span>
-<span class="go">      registerResult       removeHandler        removeResult              result</span>
-<span class="go">              runner             signals                skip              skipIf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;</span><span class="si">%20s%20s%20s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-<span class="go">          skipUnless               suite                util</span>
+<span class="go">BaseTestSuite    FunctionTestCase    SkipTest    TestCase</span>
+<span class="go">TestLoader    TestProgram    TestResult    TestSuite</span>
+<span class="go">TextTestResult    TextTestRunner    _TextTestResult    __all__</span>
+<span class="go">__builtins__    __cached__    __doc__    __file__</span>
+<span class="go">__initializing__    __loader__    __name__    __package__</span>
+<span class="go">__path__    __unittest    case    defaultTestLoader</span>
+<span class="go">expectedFailure    findTestCases    getTestCaseNames    installHandler</span>
+<span class="go">loader    main    makeSuite    registerResult</span>
+<span class="go">removeHandler    removeResult    result    runner</span>
+<span class="go">signals    skip    skipIf    skipUnless</span>
+<span class="go">suite    util</span>
 </pre></div>
 </div>
 </div>
@@ -91,44 +92,31 @@
 <h2>サードパーティモジュールのインポート<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p><strong class="command">easy_install</strong> あるいは <strong class="command">pip</strong> でインストールしたモジュールも同様に読み込めます。
 API ドキュメントがソースに記述されている場合には、 <tt class="docutils literal"><span class="pre">help()</span></tt> 関数で表示できます。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">docutils</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">docutils</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">flake8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">flake8</span><span class="p">)</span>
 
 <span class="go">(スクリーンビューアーに切り替わる)</span>
-
-<span class="go">Help on package docutils:</span>
-
-<span class="go">NAME</span>
-<span class="go">    docutils - This is the Docutils (Python Documentation Utilities) package.</span>
-
-<span class="go">FILE</span>
-<span class="go">    /Users/shigeru/projects/python-school-ja/lib/python2.7/site-packages/docutils/__init__.py</span>
-
-<span class="go">DESCRIPTION</span>
-<span class="go">    Package Structure</span>
-<span class="go">    =================</span>
-
-<span class="go">(ヘルプメッセージが続く...)</span>
 </pre></div>
 </div>
 <p>モジュールを別名でインポートしたい場合には <tt class="docutils literal"><span class="pre">as</span></tt> を使います。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span> <span class="kn">as</span> <span class="nn">simplejson</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">simplejson</span><span class="p">)</span>
+<span class="go">&lt;class &#39;module&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
   File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
 <span class="gr">NameError</span>: <span class="n">name &#39;json&#39; is not defined</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">simplejson</span>
-<span class="go">&lt;module &#39;json&#39; from &#39;/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.pyc&#39;&gt;</span>
 </pre></div>
 </div>
-<p>こうすることで、 <em>simplejson</em> モジュールをベースに書かれたスクリプトを移行できます。</p>
+<p>こうすることで、 <em>simplejson</em> モジュールに依存して書かれたスクリプトを移行できます。</p>
 </div>
 <div class="section" id="id4">
 <h2>自作ライブラリのインポート<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>自分で記述したスクリプトをインポートして再利用できます。
-パターンとしては三つあり、普通は二つ目か三つ目を使います。</p>
+パターンとしては四つあり、普通は三つ目か四つ目を使います。</p>
 <ol class="arabic simple">
-<li>実行時のディレクトリにスクリプトを置くだけ</li>
+<li>実行時のディレクトリにスクリプトを置く</li>
+<li>環境変数 <cite>PYTHONPATH</cite> を通す</li>
 <li>ディレクトリを用意して、そこに階層化して配置する</li>
 <li><tt class="file docutils literal"><span class="pre">setup.py</span></tt> を使ってインストールする</li>
 </ol>
@@ -142,31 +130,41 @@ API ドキュメントがソースに記述されている場合には、 <tt cl
 <span class="sd">&quot;&quot;&quot;Simple Command Line Utility.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">optparse</span>
 
 
-<span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and set up logging verbosity.</span>
 
-<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    :rtype: parsed arguments as Namespace object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="c"># Add this line from boilerplate.</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--header&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;contains header row&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--encoding&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;encoding&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;encoding of input file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;filename&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;input file path&quot;</span><span class="p">)</span>
 
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+    <span class="k">return</span> <span class="n">args</span>
 
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
@@ -174,25 +172,35 @@ API ドキュメントがソースに記述されている場合には、 <tt cl
 <p><tt class="file docutils literal"><span class="pre">mylib-sample.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cmdline</span>
 
-<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">----- cmdline module -----</span><span class="se">\n</span><span class="s">&quot;</span>
-<span class="k">print</span> <span class="nb">dir</span><span class="p">(</span><span class="n">cmdline</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">----- cmdline module -----</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;* &#39;</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">* &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">cmdline</span><span class="p">)))</span>
 
-<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">----- parse_args() document -----</span><span class="se">\n</span><span class="s">&quot;</span>
-<span class="k">print</span> <span class="n">cmdline</span><span class="o">.</span><span class="n">parse_args</span><span class="o">.</span><span class="n">__doc__</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">----- parse_args() document -----</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cmdline</span><span class="o">.</span><span class="n">parse_args</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python mylib-sample.py
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python mylib-sample.py
 
 ----- cmdline module -----
 
-[&#39;__builtins__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;logging&#39;, &#39;optparse&#39;, &#39;parse_args&#39;]
+* __builtins__
+* __cached__
+* __doc__
+* __file__
+* __initializing__
+* __loader__
+* __name__
+* __package__
+* argparse
+* logging
+* parse_args
 
------ parse_args() document -----
+----- parse_args<span class="o">()</span> document -----
 
-Parse arguments and sets up logging verbosity.
+Parse arguments and <span class="nb">set </span>up logging verbosity.
 
-    :rtype: normal options and arguments as tuple.
+    :rtype: parsed arguments as Namespace object.
 </pre></div>
 </div>
 </div>
@@ -202,10 +210,8 @@ Parse arguments and sets up logging verbosity.
 また、機能の単位やモジュール同士の依存関係などが全く分かりません。</p>
 <p>そこで、通常は階層構造を持たせて管理することになります。
 モジュールの階層は基本的にはディレクトリの階層に一致しますが、
-それぞれのディレクトリには <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> という特殊ファイルが
-配置されていなければなりません。
-<tt class="file docutils literal"><span class="pre">__init__.py</span></tt> は空のファイルでも構いませんし、
-そこに Python スクリプトを記述しても構いません。</p>
+それぞれのディレクトリには <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> という特殊ファイルが配置されていなければなりません。
+<tt class="file docutils literal"><span class="pre">__init__.py</span></tt> は空のファイルでも構いませんし、そこに Python スクリプトを記述しても構いません。</p>
 <p>前述の <tt class="file docutils literal"><span class="pre">cmdline.py</span></tt> を <em>pyschool</em> というディレクトリに置き、
 <em>pyschool</em> ディレクトリに空の <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> ファイルを置きます。</p>
 <div class="highlight-python"><div class="highlight"><pre>$ tree pyschool/
@@ -217,23 +223,6 @@ pyschool/
 <p>モジュールの情報を確認してみます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyschool.cmdline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">pyschool</span><span class="o">.</span><span class="n">cmdline</span><span class="p">)</span>
-<span class="go">Help on module pyschool.cmdline in pyschool:</span>
-
-<span class="go">NAME</span>
-<span class="go">    pyschool.cmdline - Simple Command Line Utility.</span>
-
-<span class="go">FILE</span>
-<span class="go">    /Users/shigeru/projects/python-school-ja/src/pyschool/cmdline.py</span>
-
-<span class="go">FUNCTIONS</span>
-<span class="go">    parse_args(doc=None)</span>
-<span class="go">        Parse arguments and sets up logging verbosity.</span>
-
-<span class="go">        :rtype: normal options and arguments as tuple.</span>
-
-
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span><span class="p">(</span><span class="n">pyschool</span><span class="o">.</span><span class="n">cmdline</span><span class="p">)</span>
-<span class="go">[&#39;__builtins__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;logging&#39;, &#39;optparse&#39;, &#39;parse_args&#39;]</span>
 </pre></div>
 </div>
 <p>階層が深くなっていくと、いつもパッケージ名を付けるのは冗長です。
@@ -249,7 +238,7 @@ pyschool/
 しかし、「すべて」が何を意味するかは <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> の <tt class="docutils literal"><span class="pre">__all__</span></tt> 変数によって変わってきます。
 詳しくは公式チュートリアルを参照してください。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/tutorial/modules.html#packages">6.4. Packages</a> (The Python Tutorial)</li>
+<li><a class="reference external" href="https://docs.python.org/3.4/tutorial/modules.html#packages">6.4. Packages</a> (The Python Tutorial)</li>
 </ul>
 </div>
 <div class="section" id="setup-py">
@@ -267,40 +256,43 @@ pyschool/
 <p><cite>urlparse</cite> モジュールに <tt class="docutils literal"><span class="pre">parse_qs()</span></tt> という関数が定義されています。
 URL のクエリストリング (&#8221;?&#8221; の後ろの部分) を解析してくれる関数です。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/urlparse.html#urlparse.parse_qs">http://docs.python.org/library/urlparse.html#urlparse.parse_qs</a></li>
+<li><a class="reference external" href="https://docs.python.org/3.4/library/urllib.parse.html#urllib.parse.parse_qs">21.8. urllib.parse — Parse URLs into components</a> (公式ドキュメント)</li>
 </ul>
-<p>ドキュメントには次のように記述されています。</p>
+<p><a class="reference external" href="https://docs.python.org/2/library/urlparse.html#urlparse.parse_qs">Python 2.7 のドキュメント</a> には次のように記述されています。</p>
 <div class="highlight-python"><div class="highlight"><pre>New in version 2.6: Copied from the cgi module.
 
-[日本語] バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
+[日本語だと] バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
 </pre></div>
 </div>
-<p><cite>cgi</cite> モジュールの <tt class="docutils literal"><span class="pre">parse_qs()</span></tt> ドキュメントには次のように記述されています。</p>
+<p><cite>cgi</cite> モジュールの <tt class="docutils literal"><span class="pre">parse_qs()</span></tt> のドキュメントには次のように記述されています。</p>
 <div class="highlight-python"><div class="highlight"><pre>This function is deprecated in this module.
 Use urlparse.parse_qs() instead. It is maintained here only for backward compatiblity.
 
-[日本語] このモジュールにおけるこの関数は非推奨です。
+[日本語だと] このモジュールにおけるこの関数は非推奨です。
 urlparse.parse_qs() を代わりに使ってください。
 ここでの記述は後方互換性のためだけに残されています。
 </pre></div>
 </div>
-<p>ということで、Python 2.4 と Python 2.7 の両方で動作するスクリプトを記述するためには、
+<p>ということで、Python 3.x 系、Python 2.7 それから Python 2.4 で動作するスクリプトを記述するためには、
 ちょっとした気遣いが必要になります。</p>
 <p>モジュールをインポートできない場合、 <tt class="docutils literal"><span class="pre">ImportError</span></tt> という例外が発生します。
 そこで、この例外を捕まえてあげることで、利用可能なモジュールを選択的に読み込むことが可能です。
 スクリプトにすると次のようになります。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qs</span>  <span class="c"># Python 3.x</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">parse_qs</span>  <span class="c"># Python 2.6 or higher</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">cgi</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+    <span class="kn">from</span> <span class="nn">cgi</span> <span class="kn">import</span> <span class="n">parse_qs</span>  <span class="c"># Legacy Python</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">ImportError</span></tt> によって利用するモジュールを切り替える書き方は、
-ライブラリのコードには散見されます。</p>
-<p>実行時に最適な JSON ライブラリを選択してくれる <em>anyjson</em> のソースコードなどを読んでみると良いでしょう。</p>
+<p><tt class="docutils literal"><span class="pre">ImportError</span></tt> によって利用するモジュールを切り替える書き方は、ライブラリのコードには散見されます。
+基本的には <em>six</em> を使ってカプセル化するべきですが、たまに必要かもしれませんので覚えておくと良いでしょう。
+例としては、実行時に最適な JSON ライブラリを選択してくれる <em>anyjson</em> のソースコードがあります。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/pypi/anyjson/0.3.1">anyjson 0.3.1</a> - pypi.python.org</li>
-<li><a class="reference external" href="https://bitbucket.org/runeh/anyjson/src/4e162c45cc7c/anyjson/__init__.py">anyjson/__init__.py</a> - bitbucket.org</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/anyjson/0.3.3">anyjson 0.3.3</a> - pypi.python.org</li>
+<li><a class="reference external" href="https://bitbucket.org/runeh/anyjson/src/0026a68c035696bdc8db8628e364139eba9a8ba8/anyjson/__init__.py?at=default">anyjson/__init__.py</a> - bitbucket.org</li>
 </ul>
 </div>
 </div>
@@ -314,13 +306,13 @@ urlparse.parse_qs() を代わりに使ってください。
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="advanced-3.html">ネットワークプログラミング</a>&#160;&#160;»
+        <a href="advanced-5.html">Tips</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

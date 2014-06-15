@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>はじめの一歩 &mdash; Python School 1.5.2 documentation</title>
+    <title>はじめの一歩 &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,13 +23,13 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="index.html" />
     <link rel="next" title="基本的な文法" href="basic-syntax.html" />
     <link rel="prev" title="Python の学習" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>はじめの一歩</span></h2>
       </div>
       <div class="topnav">
@@ -48,52 +48,132 @@
         
   <div class="section" id="id1">
 <h1>はじめの一歩<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<p>Windows で Python を開発できる環境を整えます。
-次の４つのソフトウェアをインストールしていきましょう。</p>
-<ul class="simple">
-<li>Python 2.7</li>
-<li>distribute</li>
-<li>pip</li>
-<li>virtualenv</li>
-</ul>
-<p>インストールできたら、簡単なプロジェクトを作ってスクリプトを記述します。</p>
+<p>まずは Python を開発できる環境を整えます。
+Python 2.4、Python 2.7、Python 3.3、Python 3.4 で以下の違いがあります。
+最新のバージョンであるほどセットアップが簡単になっていますので、出来るだけ Python 3.4 を使いましょう。</p>
+<p>Python のメジャーバージョンには 2 系と 3 系があり、構文が異なる場合もあります。
+このドキュメントは Python 3.4 をターゲットにして作成しています。</p>
+<table border="1" class="docutils">
+<caption>Python のバージョンとセットアップに関するツール</caption>
+<colgroup>
+<col width="23%" />
+<col width="31%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">バージョン</th>
+<th class="head">パッケージ管理</th>
+<th class="head">仮想環境の作成</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Python 2.4</td>
+<td>pip</td>
+<td>virtualenv</td>
+</tr>
+<tr class="row-odd"><td>Python 2.7</td>
+<td>pip</td>
+<td>virtualenv</td>
+</tr>
+<tr class="row-even"><td>Python 3.3</td>
+<td>pip</td>
+<td>pyvenv (標準でインストール)</td>
+</tr>
+<tr class="row-odd"><td>Python 3.4</td>
+<td>pip (標準でインストール)</td>
+<td>pyvenv (標準でインストール)</td>
+</tr>
+</tbody>
+</table>
 <div class="section" id="id2">
 <h2>インストール手順<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="python">
 <h3>Python のインストール<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<p>Python の公式サイトからインストーラーをダウンロードします。
-Python のメジャーバージョンには 2 系と 3 系があります。
-2011年時点では 2 系がオススメですが、2013年ではそろそろ 3 系を使い始めた方が良い状況です。
-これから記述するスクリプトの寿命を考えてバージョンを選択しましょう。
-２年以上は使うことを想定しているならば、Python 3 で書いてください。</p>
+<p>Python の公式サイトからインストーラーをダウンロードします。</p>
 <ul>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="http://www.python.org/download/">http://www.python.org/download/</a></dt>
 <dd><ul class="first last simple">
-<li><tt class="docutils literal"><span class="pre">python-2.7.6.msi</span></tt>: 手元の環境が 32bit マシンの場合</li>
-<li><tt class="docutils literal"><span class="pre">python-2.7.6.amd64.msi</span></tt>: 手元の環境が 64bit マシンの場合</li>
+<li>Windows と Mac OSX の場合は 32bit か 64bit をマシンに合わせて選択してください。</li>
+<li>Linux の場合はソースコードからビルドしてください。ビルド済パッケージを配布しているディストリビューションの場合はそちらを使いましょう。</li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<p>インストーラーを実行したら、デフォルト設定で進めてください。
-インストールが完了すると、C ドライブ直下に <tt class="docutils literal"><span class="pre">Python27</span></tt> フォルダが作成されます。
+<p>Windows 環境の場合、インストーラーの手順をデフォルト設定で進めると
+C ドライブ直下に <tt class="docutils literal"><span class="pre">Python34</span></tt> フォルダが作成されます。
 コマンドプロンプトを立ち上げて、バージョンを確認しましょう。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; C:\Python27\python.exe -V
-Python 2.7.6
+<div class="highlight-python"><div class="highlight"><pre>&gt; C:\Python34\python.exe -V
+Python 3.4.1
 </pre></div>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>インターネット上で見つかるいくつかの記事では、環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を設定する方法が記載されています。
+<p class="last">いくつかのセットアップ記事では、環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を設定する方法が記載されています。
 しかし、ここでは環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> を編集しないでください。
-後で述べる <cite>virtualenv</cite> がパスを解決してくれます。</p>
-<p class="last"><cite>virtualenv</cite> を採用した方がサードパーティモジュールを効率的に管理できます。
-チーム開発を行う場合には是非とも導入を検討しましょう。
-Jenkins などの CI 環境との親和性も向上します。</p>
+<strong class="command">pyvenv</strong> で仮想環境を作成した方が効率的に管理できます。
+特に、Jenkins や Travis CI などの統合環境との親和性も向上します。</p>
 </div>
 </div>
+<div class="section" id="id3">
+<h3>サンプルプロジェクト<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong class="command">pyvenv</strong> を使ってプロジェクト用の仮想環境を作成します。
+ホームディレクトリ配下の隠しディレクトリなどにしておきましょう。
+ここでは、ホームディレクトリ直下の <tt class="docutils literal"><span class="pre">.pyvenv</span></tt> という名前にします。</p>
+<div class="section" id="windows">
+<h4>Windows の場合<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bat"><div class="highlight"><pre><span class="p">&gt;</span> <span class="n">C</span>:\Python<span class="m">34</span>\Scripts\pyvenv <span class="nv">%HOMEDRIVE%</span>\<span class="nv">%HOMEPATH%</span>\.pyvenv\python-school
+</pre></div>
+</div>
+<p>次に、環境変数などをプロジェクト固有のものに設定します。
+<cite>Scripts</cite> フォルダにある <tt class="file docutils literal"><span class="pre">activate.bat</span></tt> にこの処理が記述されていますので実行しましょう。</p>
+<div class="highlight-bat"><div class="highlight"><pre>&gt; <span class="nv">%HOMEDRIVE%</span>\<span class="nv">%HOMEPATH%</span>\.pyvenv\python-school\Scripts\activate.bat
+</pre></div>
+</div>
+<p>プロンプトが切り替わり、環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> の値も変わります。
+<strong class="command">python</strong> がそのままで実行できますので、バージョンを確認しましょう。</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python -V
+</pre></div>
+</div>
+<p>簡単なスクリプトを書いて実行してみましょう。</p>
+<div class="highlight-bat"><div class="highlight"><pre><span class="p">&gt;</span> <span class="n">echo</span> print <span class="s2">&quot;Hello World.&quot;</span> <span class="p">&gt;</span><span class="n">example</span>.py
+<span class="p">&gt;</span> <span class="n">python</span> example.py
+Hello World.
+</pre></div>
+</div>
+<p>これではじめの一歩は完了です。
+次の章 - <a class="reference internal" href="basic-syntax.html"><em>基本的な文法</em></a> - で簡単なスクリプトを書きながら Python の文法を学びましょう。</p>
+<p>以降のパートでは仮想環境が activate された状態を仮定して話を進めます。
+マシンを再起動した場合などは <tt class="file docutils literal"><span class="pre">activate.bat</span></tt> の実行を忘れないようにしてください。</p>
+</div>
+<div class="section" id="mac-osx">
+<h4>Mac OSX の場合<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ PYVENV_DIR</span><span class="o">=</span>~/.pyvenv/python-school
+<span class="nv">$ </span>pyvenv-3.4 <span class="nv">$PYVENV_DIR</span>
+<span class="nv">$ </span><span class="nb">source</span> <span class="nv">$PYVENV_DIR</span>/bin/activate
+<span class="nv">$ </span>python -V
+<span class="nv">$ </span>which python
+</pre></div>
+</div>
+<p>これではじめの一歩は完了です。
+次の章 - <a class="reference internal" href="basic-syntax.html"><em>基本的な文法</em></a> - で簡単なスクリプトを書きながら Python の文法を学びましょう。</p>
+<p>以降のパートでは仮想環境が activate された状態を仮定して話を進めます。
+<a class="reference external" href="http://direnv.net/">direnv</a> などを使って作業ディレクトリでは特定の仮想環境を有効にしておいてください。
+例えば、以下のような <tt class="file docutils literal"><span class="pre">.envrc</span></tt> を用意します。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">PYVENV_DIR</span><span class="o">=</span><span class="nv">$HOME</span>/.pyvenv/python-school
+<span class="o">[</span> -d <span class="nv">$PYVENV_DIR</span> <span class="o">]</span> <span class="o">||</span> pyvenv-3.4 <span class="nv">$PYVENV_DIR</span>
+<span class="nb">source</span> <span class="nv">$PYVENV_DIR</span>/bin/activate
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="python-3-4">
+<h2>Python 3.4 以前のバージョンの場合<a class="headerlink" href="#python-3-4" title="Permalink to this headline">¶</a></h2>
+<p>Python 3.4 より前のバージョンでは、追加でいくつかのツールをインストールする必要があります。
+バージョンに合わせて作業を実施してください。
+Python のバージョンが古いほど、手順は長くなります。</p>
 <div class="section" id="distribute">
 <h3>distribute のインストール<a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h3>
 <p>サードパーティのライブラリを管理するライブラリとして <tt class="docutils literal"><span class="pre">distribute</span></tt> を使います。
@@ -104,13 +184,14 @@ Jenkins などの CI 環境との親和性も向上します。</p>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="http://packages.python.org/distribute/">http://packages.python.org/distribute/</a></dt>
 <dd><ul class="first last simple">
-<li><a class="reference external" href="http://python-distribute.org/distribute_setup.py">distribute_setup.py</a> をホームディレクトリにダウンロード</li>
+<li><a class="reference external" href="http://python-distribute.org/distribute_setup.py">distribute_setup.py</a> をホームディレクトリにダウンロードしてください。</li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<p>コマンドプロンプトでダウンロードした Python スクリプトを実行します。</p>
+<p>コマンドプロンプトでダウンロードした Python スクリプトを実行します。
+基本的に環境変数は自動的に置換されますので、コピペでそのまま動くはずです。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; C:\Python27\python.exe %HOMEDRIVE%\%HOMEPATH%\distribute_setup.py
 </pre></div>
 </div>
@@ -118,14 +199,15 @@ Jenkins などの CI 環境との親和性も向上します。</p>
 <li><tt class="docutils literal"><span class="pre">%HOMEDRIVE%</span></tt> でホームドライブを指定します。基本的には C ドライブのことです。</li>
 <li><tt class="docutils literal"><span class="pre">%HOMEPATH%</span></tt> でホームディレクトリを指定します。</li>
 </ul>
-<p>Python の <cite>Scripts</cite> フォルダに <strong class="command">easy_install</strong> が追加されます。</p>
+<p>Python の <cite>Scripts</cite> フォルダに <strong class="command">easy_install</strong> が追加されます。
+ファイルが新規に配置されたことを確認しておきましょう。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; dir /b C:\Python27\Scripts
 </pre></div>
 </div>
 </div>
 <div class="section" id="pip">
 <h3>pip のインストール<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h3>
-<p>サードパーティのライブラリをインストール / アンインストールするツールとして <tt class="docutils literal"><span class="pre">pip</span></tt> を使います。</p>
+<p>サードパーティのライブラリをインストール / アンインストールするツールとして <strong class="command">pip</strong> を使います。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; C:\Python27\Scripts\easy_install.exe pip
 </pre></div>
 </div>
@@ -133,19 +215,20 @@ Jenkins などの CI 環境との親和性も向上します。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; dir /b C:\Python27\Scripts
 </pre></div>
 </div>
-<p>Python コミュニティの方針として <tt class="docutils literal"><span class="pre">easy_install</span></tt> ではなく <tt class="docutils literal"><span class="pre">pip</span></tt> を使うように移行していきます。
-新しく何かを始める場合には <tt class="docutils literal"><span class="pre">pip</span></tt> を使ってください。
-<tt class="docutils literal"><span class="pre">pip</span></tt> の場合はモジュールのフリーズなどもできるようになります。
-Python 3.4 からは本体に組み込まれる予定です。</p>
+<p>Python コミュニティの方針として <tt class="docutils literal"><span class="pre">easy_install</span></tt> ではなく <tt class="docutils literal"><span class="pre">pip</span></tt> を使うように移行しています。
+<tt class="docutils literal"><span class="pre">pip</span></tt> の場合はモジュールのフリーズなどもできます。
+Python 3.4 からは本体に組み込まれています。</p>
 </div>
 <div class="section" id="virtualenv">
 <h3>virtualenv のインストール<a class="headerlink" href="#virtualenv" title="Permalink to this headline">¶</a></h3>
-<p>Python 自体のバージョンや依存するモジュールのバージョンを整えるために <tt class="docutils literal"><span class="pre">virtualenv</span></tt> を使います。
-ひとりで開発する場合には不要ですが、複数人の開発者が関わる場合や、複数のプラットフォームに配布する場合には必須のモジュールとなります。
-Python 2.4 と Python 2.7 で明示的に使い分けたい場合にも重宝します。</p>
-<p><tt class="docutils literal"><span class="pre">virtualenv</span></tt> を使うとプロジェクトごとに Python の実行環境を構成しますので、
-環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> も追加してくれます。</p>
-<p>PyPI (Python Package Index) に登録されていますので、 <tt class="docutils literal"><span class="pre">pip</span></tt> を使ってインストールできます。</p>
+<p>Python 自体のバージョンや依存するモジュールのバージョンを整えるために <strong class="command">virtualenv</strong> を使います。
+Python 3.3 では <strong class="command">pyvenv</strong> として本体に組込まれています。</p>
+<p><strong class="command">virtualenv</strong> を使うとプロジェクトごとに環境変数 <tt class="docutils literal"><span class="pre">PATH</span></tt> も追加してくれます。
+ひとりで単一のプロジェクトのみを開発する場合には不要ですが、複数人の開発者が関わる場合や、
+複数のプラットフォームに配布する場合には必須のツールとなります。
+例えば、Python 2.4 と Python 2.7 で明示的に使い分けたい場合、
+Python 2.7 を使うことは共通でも依存モジュールが異なる場合に重宝します。</p>
+<p>PyPI (Python Package Index) に登録されていますので、 <strong class="command">pip</strong> を使ってインストールできます。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; C:\Python27\Scripts\pip.exe install virtualenv
 </pre></div>
 </div>
@@ -162,9 +245,8 @@ Python 2.4 と Python 2.7 で明示的に使い分けたい場合にも重宝し
 <tt class="docutils literal"><span class="pre">pip</span></tt> は <tt class="docutils literal"><span class="pre">easy_install</span></tt> 互換のツールですから、同じようにしてインストールできます。</p>
 </div>
 </div>
-</div>
-<div class="section" id="id3">
-<h2>サンプルプロジェクト<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>サンプルプロジェクト<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p><strong class="command">virtualenv</strong> を使ってプロジェクトを作成します。
 C ドライブ直下に <tt class="file docutils literal"><span class="pre">sandbox</span></tt> ディレクトリを作成し、その中に <cite>python-school</cite> プロジェクトを作成します。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; mkdir C:\sandbox
@@ -195,6 +277,7 @@ Hello World.
 マシンを再起動した場合などは <tt class="file docutils literal"><span class="pre">activate.bat</span></tt> の実行を忘れないようにしてください。</p>
 </div>
 </div>
+</div>
 
 
       </div>
@@ -211,7 +294,7 @@ Hello World.
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

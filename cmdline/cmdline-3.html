@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>設定情報を管理する &mdash; Python School 1.5.2 documentation</title>
+    <title>設定情報を読み込む &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,15 +23,15 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="コマンドライン操作" href="index.html" />
     <link rel="next" title="シェルコマンドを実行する" href="cmdline-4.html" />
     <link rel="prev" title="ファイルシステムの階層を辿る" href="cmdline-2.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
-        <h2 class="heading"><span>設定情報を管理する</span></h2>
+          <span>Python School 2.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>設定情報を読み込む</span></h2>
       </div>
       <div class="topnav">
       
@@ -48,45 +48,37 @@
         
         
   <div class="section" id="id1">
-<h1>設定情報を管理する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1>設定情報を読み込む<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p>プログラムの設定情報を管理する方法はたくさんあります。
-ここでは、環境変数の利用と、設定ファイルの利用を紹介します。</p>
-<p>モジュールが環境変数を参照することもあります。
-よく使うモジュールでは <cite>urllib2</cite> が挙げられます。
-プロキシを使った環境では、環境変数 <tt class="docutils literal"><span class="pre">http_proxy</span></tt> に依存します。</p>
+ここでは、環境変数の利用と、設定ファイルの利用を紹介します。
+主にログレベルやディレクトリレイアウトに関する設定です。
+認証情報に関してはハッシュ化して保存するなど、セキュアな管理方法を考えましょう。</p>
+<p>標準モジュールやサードパーティーのモジュールが環境変数を参照することもあります。
+よく使うものとして、プロキシサーバーを使ったときの環境変数 <tt class="docutils literal"><span class="pre">http_proxy</span></tt> があります。</p>
 <div class="section" id="id2">
-<h2>環境変数の扱い<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>os.environ で環境変数を設定、参照できます。</p>
+<h2>環境変数の参照<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p><em>os.environ</em> で環境変数を設定、参照できます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-20s</span><span class="se">\t</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">VERSIONER_PYTHON_PREFER_32_BIT  no</span>
-<span class="go">TERM_PROGRAM_VERSION    299</span>
-<span class="go">WINDOW                  1</span>
-<span class="go">LOGNAME                 shigeru</span>
-<span class="go">USER                    shigeru</span>
-<span class="go">HOME                    /Users/shigeru</span>
-<span class="go">PATH                    /Users/shigeru/projects/python-school-ja/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin</span>
-<span class="go">PS1                     (python-school-ja)\n\e[1;4;33m\u \w\e[m [\#]\n$</span>
-<span class="go">( ... もっと続く ... )</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:20}</span><span class="se">\t</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>インタープリタを起動する前に環境変数を設定しておくと、起動中にその値を参照できます。
-サーバごとに設定値を変更したい場合には知っておくと便利でしょう。</p>
+<p>プロセス起動前に環境変数を設定しておくと、起動中にその値を参照できます。
+実行環境ごとに設定値を変更したい場合には知っておくと便利でしょう。</p>
 </div>
 <div class="section" id="id3">
 <h2>設定ファイルの扱い<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>ファイルの形式にもいくつかありますが、Python ではだいたいどのファイル形式も対応しています。</p>
 <ul class="simple">
 <li>Python スクリプトをそのまま使う (<tt class="file docutils literal"><span class="pre">settings.py</span></tt> など)</li>
-<li><a class="reference external" href="http://docs.python.org/library/configparser.html">ConfigParser</a> を使う (<em>.ini</em> / <em>.cfg</em> 形式)</li>
-<li>JSON を使う (Python 2.6 から標準モジュール)</li>
+<li><a class="reference external" href="https://docs.python.org/3.4/library/configparser.html">configparser</a> を使う (<em>.ini</em>, <em>.cfg</em> 形式)</li>
+<li><a class="reference external" href="https://docs.python.org/3.4/library/json.html">json</a> を使う (Python 2.6 から標準モジュール)</li>
 <li>YAML を使う (<a class="reference external" href="http://pyyaml.org/wiki/PyYAML">pyyaml</a> をインストール)</li>
 <li>自前で解析器を実装する (ダメなパターンが多い...)</li>
 </ul>
 <p>手っ取り早く始めるためには Python スクリプトをそのまま使いましょう。
 構造については Django の設定ファイルを参考にすると良いでしょう。</p>
-<p><tt class="file docutils literal"><span class="pre">settings.py</span></tt> (geodjango の初期設定から抜粋)</p>
+<p>データベース接続を切り替えるために、以下のようなファイル (<tt class="file docutils literal"><span class="pre">settings.py</span></tt>) を用意してみましょう。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">TEMPLATE_DEBUG</span> <span class="o">=</span> <span class="n">DEBUG</span>
 
@@ -94,70 +86,97 @@
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.contrib.gis.db.backends.postgis&#39;</span><span class="p">,</span>
         <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;template1&#39;</span><span class="p">,</span>
-        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;DOTCLOUD_DB_SQL_LOGIN&#39;</span><span class="p">,</span>
-        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;DOTCLOUD_DB_SQL_PASSWORD&#39;</span><span class="p">,</span>
-        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;DOTCLOUD_DB_SQL_HOST&#39;</span><span class="p">,</span>
-        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;12345&#39;</span><span class="p">),</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;mail_admins&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;level&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
-            <span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;django.utils.log.AdminEmailHandler&#39;</span>
-        <span class="p">}</span>
+        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;DB_USER_NAME&#39;</span><span class="p">,</span>
+        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;DB_USER_PASSWORD&#39;</span><span class="p">,</span>
+        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;DB_HOST&#39;</span><span class="p">,</span>
+        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;5432&#39;</span><span class="p">),</span>
     <span class="p">},</span>
-    <span class="s">&#39;loggers&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;django.request&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;mail_admins&#39;</span><span class="p">],</span>
-            <span class="s">&#39;level&#39;</span><span class="p">:</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
-            <span class="s">&#39;propagate&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-        <span class="p">},</span>
+    <span class="s">&#39;staging&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.contrib.gis.db.backends.postgis&#39;</span><span class="p">,</span>
+        <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;template1&#39;</span><span class="p">,</span>
+        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;DB_USER_NAME_STAGING&#39;</span><span class="p">,</span>
+        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;DB_USER_PASSWORD_STAGING&#39;</span><span class="p">,</span>
+        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;DB_HOST_STAGING&#39;</span><span class="p">,</span>
+        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;5432&#39;</span><span class="p">),</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><tt class="file docutils literal"><span class="pre">cmdline-3.py</span></tt> (<tt class="file docutils literal"><span class="pre">settings.py</span></tt> は同じディレクトリに配置)</p>
+<p><tt class="file docutils literal"><span class="pre">cmdline-3.py</span></tt> (<tt class="file docutils literal"><span class="pre">settings.py</span></tt> は同じディレクトリに配置) から設定を読み出してみます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">import</span> <span class="nn">settings</span>
 
-<span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
 <span class="n">pprint</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">settings</span><span class="p">))</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DATABASES</span><span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">LOGGING</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">({</span><span class="s">&#39;DEBUG&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">})</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DATABASES</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python cmdline-3.py
-&lt;module &#39;settings&#39; from &#39;/Users/shigeru/projects/python-school-ja/src/settings.pyc&#39;&gt;
-[&#39;DATABASES&#39;,
- &#39;DEBUG&#39;,
- &#39;LOGGING&#39;,
- &#39;TEMPLATE_DEBUG&#39;,
- &#39;__builtins__&#39;,
- &#39;__doc__&#39;,
- &#39;__file__&#39;,
- &#39;__name__&#39;,
- &#39;__package__&#39;]
-True
-{&#39;default&#39;: {&#39;ENGINE&#39;: &#39;django.contrib.gis.db.backends.postgis&#39;,
-             &#39;HOST&#39;: &#39;DOTCLOUD_DB_SQL_HOST&#39;,
-             &#39;NAME&#39;: &#39;template1&#39;,
-             &#39;PASSWORD&#39;: &#39;DOTCLOUD_DB_SQL_PASSWORD&#39;,
-             &#39;PORT&#39;: 12345,
-             &#39;USER&#39;: &#39;DOTCLOUD_DB_SQL_LOGIN&#39;}}
-{&#39;disable_existing_loggers&#39;: False,
- &#39;handlers&#39;: {&#39;mail_admins&#39;: {&#39;class&#39;: &#39;django.utils.log.AdminEmailHandler&#39;,
-                              &#39;level&#39;: &#39;ERROR&#39;}},
- &#39;loggers&#39;: {&#39;django.request&#39;: {&#39;handlers&#39;: [&#39;mail_admins&#39;],
-                                &#39;level&#39;: &#39;ERROR&#39;,
-                                &#39;propagate&#39;: True}},
- &#39;version&#39;: 1}
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python src/cmdline-3.py
+<span class="o">[</span><span class="s1">&#39;DATABASES&#39;</span>,
+ <span class="s1">&#39;DEBUG&#39;</span>,
+ <span class="s1">&#39;TEMPLATE_DEBUG&#39;</span>,
+ <span class="s1">&#39;__builtins__&#39;</span>,
+ <span class="s1">&#39;__cached__&#39;</span>,
+ <span class="s1">&#39;__doc__&#39;</span>,
+ <span class="s1">&#39;__file__&#39;</span>,
+ <span class="s1">&#39;__initializing__&#39;</span>,
+ <span class="s1">&#39;__loader__&#39;</span>,
+ <span class="s1">&#39;__name__&#39;</span>,
+ <span class="s1">&#39;__package__&#39;</span><span class="o">]</span>
+<span class="o">{</span><span class="s1">&#39;DEBUG&#39;</span>: True<span class="o">}</span>
+<span class="o">{</span><span class="s1">&#39;ENGINE&#39;</span>: <span class="s1">&#39;django.contrib.gis.db.backends.postgis&#39;</span>,
+ <span class="s1">&#39;HOST&#39;</span>: <span class="s1">&#39;DB_HOST&#39;</span>,
+ <span class="s1">&#39;NAME&#39;</span>: <span class="s1">&#39;template1&#39;</span>,
+ <span class="s1">&#39;PASSWORD&#39;</span>: <span class="s1">&#39;DB_USER_PASSWORD&#39;</span>,
+ <span class="s1">&#39;PORT&#39;</span>: 5432,
+ <span class="s1">&#39;USER&#39;</span>: <span class="s1">&#39;DB_USER_NAME&#39;</span><span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>設定ファイルと環境変数の組み合わせ<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>設定ファイルに異なる環境の設定を記述しておき、環境変数でそのキーを指定します。
+先ほどの例で、 &#8220;default&#8221; と &#8220;staging&#8221; を切り替えます。(<tt class="file docutils literal"><span class="pre">cmdline-3a.py</span></tt>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">import</span> <span class="nn">settings</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;PYSCHOOL_DATABASE&#39;</span><span class="p">,</span> <span class="s">&#39;default&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Current environment is &quot;{}&quot;.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">env</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">DATABASES</span><span class="p">:</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DATABASES</span><span class="p">[</span><span class="n">env</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Unknown environment for database settings.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>環境変数 <cite>PYSCHOOL_DATABASE</cite> を &#8220;staging&#8221; にすると読み込む情報が変わります。
+未登録のキーが指定された場合はその旨が表示されます。
+出力レベルはロガーを使うようにすると柔軟にを切り替えられます。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python cmdline-3a.py
+Current environment is &quot;default&quot;.
+{&#39;ENGINE&#39;: &#39;django.contrib.gis.db.backends.postgis&#39;,
+ &#39;HOST&#39;: &#39;DB_HOST&#39;,
+ &#39;NAME&#39;: &#39;template1&#39;,
+ &#39;PASSWORD&#39;: &#39;DB_USER_PASSWORD&#39;,
+ &#39;PORT&#39;: 5432,
+ &#39;USER&#39;: &#39;DB_USER_NAME&#39;}
+
+$ PYSCHOOL_DATABASE=staging python cmdline-3a.py
+Current environment is &quot;staging&quot;.
+{&#39;ENGINE&#39;: &#39;django.contrib.gis.db.backends.postgis&#39;,
+ &#39;HOST&#39;: &#39;DB_HOST_STAGING&#39;,
+ &#39;NAME&#39;: &#39;template1&#39;,
+ &#39;PASSWORD&#39;: &#39;DB_USER_PASSWORD_STAGING&#39;,
+ &#39;PORT&#39;: 5432,
+ &#39;USER&#39;: &#39;DB_USER_NAME_STAGING&#39;}
+
+$ PYSCHOOL_DATABASE=development python cmdline-3a.py
+Current environment is &quot;development&quot;.
+Unknown environment for database settings.
 </pre></div>
 </div>
 </div>
@@ -178,7 +197,7 @@ True
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

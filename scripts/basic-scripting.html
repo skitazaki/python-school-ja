@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>スクリプトファイルの構成 &mdash; Python School 1.5.2 documentation</title>
+    <title>スクリプトファイルの構成 &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="基本的なスクリプト" href="index.html" />
     <link rel="next" title="CSV ファイルの処理方法" href="../csv/index.html" />
     <link rel="prev" title="トイプログラム - FizzBuzz" href="toy-program.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>スクリプトファイルの構成</span></h2>
       </div>
       <div class="topnav">
@@ -52,7 +52,7 @@
 <p>Python はモジュールのトップレベルから記述を開始できますが、
 だらだらと書き進めてしまうと可読性が低くなります。
 基本的な構成を統一することでソースコードを共有しやすい状態にしましょう。</p>
-<p>前のセクション (<a class="reference internal" href="toy-program.html"><em>トイプログラム - FizzBuzz</em></a>) から、次の部分を共通項として抽出できます。</p>
+<p>前のセクション (<a class="reference internal" href="toy-program.html"><em>トイプログラム - FizzBuzz</em></a>) からは、次の部分を共通項として抽出できます。</p>
 <ul class="simple">
 <li>main 関数の記述</li>
 <li>コマンドライン引数の処理</li>
@@ -67,7 +67,8 @@
 <li><a class="reference external" href="http://code.google.com/intl/ja/appengine/docs/python/runtime.html#App_Caching">アプリケーション キャッシュ</a> - code.google.com</li>
 </ul>
 <p><tt class="docutils literal"><span class="pre">main()</span></tt> を作ったら <tt class="docutils literal"><span class="pre">test()</span></tt> も作るようにしてください。
-実際に必要な処理と実験的な処理は分離しましょう。</p>
+実際に必要な処理と実験的な処理は分離しましょう。
+実装とテストケースを平行して実装することで、 <cite>print</cite> デバッグからの脱却にも役立ちます。</p>
 </div>
 <div class="section" id="id3">
 <h2>コマンドライン引数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
@@ -75,20 +76,24 @@
 オプションはハイフンから始まる文字列で、ハイフンが１つの場合はショートオプション、２つの場合はロングオプションと呼ばれます。
 また、値を取るオプションと取らないオプションもあります。
 詳しくは Unix 系のコマンドを調べてください。</p>
-<p>Python でコマンドライン引数を扱う場合には <tt class="docutils literal"><span class="pre">argparse</span></tt> か <tt class="docutils literal"><span class="pre">optparse</span></tt> を使います。
-新しくスクリプトを開発する場合には <tt class="docutils literal"><span class="pre">argparse</span></tt> を使いますが、Python 2.4 への後方互換性を考慮する場合には <tt class="docutils literal"><span class="pre">optparse</span></tt> を使いましょう。
-複数のモジュールからなるスクリプトを開発する場合には <tt class="docutils literal"><span class="pre">gflags</span></tt> も検討してください。</p>
+<p>Python でコマンドライン引数を扱う場合は標準モジュールの <cite>argparse</cite> を使います。
+Python 2.4 系もサポートする場合は <cite>optparse</cite> を使うことになりますが、その局面は多くないでしょう。</p>
+<p>サードパーティーのライブラリとしては <cite>docopt</cite> と <cite>gflags</cite> が実際的だと考えられます。
+<cite>docopt</cite> はドキュメントも一緒に書けること、Python 以外のプログラム言語（例えば Go）への移植が容易なことがメリットです。
+<cite>gflags</cite> は複数のモジュールからなるスクリプトを開発する場合に有用です。
+その他、Django や Twisted などのフレームワークを利用する場合はオプションライブラリが同梱されています。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://code.google.com/p/python-gflags/">python-gflags</a> - code.google.com</li>
+<li><a class="reference external" href="http://docopt.org/">docopt</a> - docopt.org - Command-line interface description language</li>
+<li><a class="reference external" href="http://code.google.com/p/python-gflags/">python-gflags</a> - code.google.com (更新は止まっています)</li>
 </ul>
 <div class="section" id="id4">
 <h3>オプションの処理<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>コマンドラインスクリプトの場合は、以下の引数をオプションで制御できないかを検討してください。</p>
 <ul class="simple">
-<li>help</li>
-<li>version</li>
-<li>verbosity     - 出力の冗長性を高くする</li>
-<li>quiet         - 出力の冗長性を低くする</li>
+<li>help          - スクリプトの使い方を表示する</li>
+<li>version       - スクリプトのバージョンを表示する</li>
+<li>verbosity     - ログ出力の冗長性を高くする</li>
+<li>quiet         - ログ出力の冗長性を低くする</li>
 <li>force         - 何が何でも実行させる</li>
 <li>dryrun        - 実際には実行しない</li>
 <li>configuration - 設定ファイルを指定する</li>
@@ -125,45 +130,46 @@
 <span class="sd">&quot;&quot;&quot;%prog [options] args</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">optparse</span>
 
 
 <span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and set up logging verbosity.</span>
 
-<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    :rtype: parsed arguments as Namespace object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
 
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+    <span class="k">return</span> <span class="n">args</span>
 
 
-<span class="k">def</span> <span class="nf">proc</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Main procedure with some tests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -194,7 +200,7 @@
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

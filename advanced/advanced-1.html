@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>デコレータ &mdash; Python School 1.5.2 documentation</title>
+    <title>デコレータ &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="発展的なことがら" href="index.html" />
     <link rel="next" title="モジュールのインポート方法いろいろ" href="advanced-2.html" />
     <link rel="prev" title="発展的なことがら" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>デコレータ</span></h2>
       </div>
       <div class="topnav">
@@ -57,7 +57,7 @@
 </ul>
 <p>日本語での一通りの解説はこちらの記事を参照してください。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://morchin.sakura.ne.jp/effective_python/decorator.html">1 デコレータとは</a> / Effective Python</li>
+<li><a class="reference external" href="http://www.nasuinfo.or.jp/FreeSpace/kenji/sf/python/virtualMachine/decorator.htm">python のデコレーター構文</a></li>
 </ul>
 <div class="section" id="id2">
 <h2>組み込みデコレータ<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -72,20 +72,20 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;Greetings from classmethod.&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Greetings from classmethod.&quot;</span><span class="p">)</span>
         <span class="n">cls</span><span class="o">.</span><span class="n">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;on Class-B&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot; from Class-B&quot;</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot;on Class-C&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="s">&quot; from Class-C&quot;</span><span class="p">)</span>
 
 
 <span class="n">B</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;Alice&quot;</span><span class="p">)</span>
@@ -93,7 +93,7 @@
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python decorator-sample.py
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python decorator-sample.py
 Greetings from classmethod.
 Hello Alice on Class-B
 Greetings from classmethod.
@@ -111,9 +111,9 @@ Hello Bob on Class-C
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://wiki.python.org/moin/PythonDecoratorLibrary">Python Decorator Library</a>  - wiki.python.org:</th></tr>
 <tr class="field-odd field"><td>&nbsp;</td><td class="field-body">様々なデコレータの例が掲載されています。
-自分で実装するときには目を通してみるとよいでしょう。</td>
+自分で実装するときには目を通してみるとよいでしょう。欲しいものが既にあるかもしれません。</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://docs.python.org/library/functools.html">9.8. functools — Higher order functions and operations on callable objects</a> (公式ドキュメント):</th></tr>
+<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="https://docs.python.org/3.4/library/functools.html">10.2. functools — Higher order functions and operations on callable objects</a> (公式ドキュメント):</th></tr>
 <tr class="field-even field"><td>&nbsp;</td><td class="field-body">自分で実装するときは、 <em>functools</em> モジュールの <tt class="docutils literal"><span class="pre">wraps</span></tt> デコレータを使うようにしましょう。
 <em>functools</em> モジュールは Python 2.5 から利用できます。</td>
 </tr>
@@ -149,7 +149,7 @@ Hello Bob on Class-C
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

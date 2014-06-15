@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>標準モジュールを使う &mdash; Python School 1.5.2 documentation</title>
+    <title>標準モジュール csv を使う &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,15 +23,15 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="CSV ファイルの処理方法" href="index.html" />
     <link rel="next" title="ユニコード文字列を考慮する" href="csv-3.html" />
     <link rel="prev" title="ファイルを読み込む" href="csv-1.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
-        <h2 class="heading"><span>標準モジュールを使う</span></h2>
+          <span>Python School 2.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>標準モジュール csv を使う</span></h2>
       </div>
       <div class="topnav">
       
@@ -47,8 +47,8 @@
       <div class="content">
         
         
-  <div class="section" id="id1">
-<h1>標準モジュールを使う<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="csv">
+<h1>標準モジュール csv を使う<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h1>
 <p>前の章のように自前で実装すると次の二点への対応が難しくなります。</p>
 <ul class="simple">
 <li>エスケープ処理</li>
@@ -56,7 +56,7 @@
 </ul>
 <p>標準 csv モジュールを使うとこうした問題点を回避できます。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/csv.html">13.1. csv — CSV File Reading and Writing</a> - docs.python.org (公式ドキュメント)</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/csv.html">13.1. csv — CSV File Reading and Writing</a> - docs.python.org (公式ドキュメント)</li>
 </ul>
 <p>ステップバイステップの使い方は、とりあえずこれを読んでください。</p>
 <ul class="simple">
@@ -64,59 +64,75 @@
 </ul>
 <div class="section" id="id2">
 <h2>csv モジュール<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>csv モジュールを使って、 <a class="reference internal" href="csv-1.html"><em>ファイルを読み込む</em></a> と同様の処理を実装しましょう。</p>
-<p><tt class="file docutils literal"><span class="pre">csv-2.py</span></tt></p>
+<p>csv モジュールを使って、 <a class="reference internal" href="csv-1.html"><em>ファイルを読み込む</em></a> と同様の処理を実装しましょう。
+実行結果は一緒になりますね。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
+<span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>  <span class="c"># import standard &quot;csv&quot; module</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">optparse</span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Parse arguments and sets up logging verbosity.</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and set up logging verbosity.</span>
 
-<span class="sd">    :rtype: normal options and arguments as tuple.</span>
+<span class="sd">    :rtype: parsed arguments as Namespace object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="c"># Add this line from boilerplate.</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;filename&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;CSV file path&quot;</span><span class="p">)</span>
 
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">opts</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">opts</span><span class="p">,</span> <span class="n">args</span>
+    <span class="k">return</span> <span class="n">args</span>
 
 
-<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices, and calculate up/down.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-            <span class="k">print</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>  <span class="c"># Instantiate CSV reader with file pointer.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="c"># Assign each field on individual variables.</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">price_begin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">price_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">price_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">price_end</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="c"># Calculate the differenciate of the day.</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">price_end</span> <span class="o">-</span> <span class="n">price_begin</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;up&#39;</span>
+            <span class="k">elif</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;down&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;same&#39;</span>
+            <span class="c"># Write out day, up/down/same, and diff.</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{:5}</span><span class="se">\t</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">fname</span> <span class="o">+</span> <span class="s">&quot; is not found.&quot;</span><span class="p">)</span>
-    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -128,55 +144,34 @@
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
-<p>処理する CSV は少し変更します。</p>
-<p><tt class="file docutils literal"><span class="pre">csv-2.csv</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre>ISO8601,&quot;June, 1988&quot;
-ISO8601:2000,&quot;December, 2000&quot;
-Leap Seconds,31 December 2008,http://tycho.usno.navy.mil/leapsec.html
-</pre></div>
-</div>
-<p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python csv-2.py csv-2.csv
-ISO8601 June, 1988
-ISO8601:2000    December, 2000
-Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
+<p>このファイルを <tt class="file docutils literal"><span class="pre">csv-2.py</span></tt> とすると、差分は以下の通りです。</p>
+<div class="highlight-diff"><div class="highlight"><pre><span class="gu">@@ -5,6 +5,7 @@</span>
+ &quot;&quot;&quot;
 
-&gt; python csv-2.py csv-1.csv
-2011-03-11      Earthquake
-2011-06-06      World IPv6 Day
-2011-11-11      Eleven Eleven
-2011-12-10      total lunar eclipse     not solar eclipse
-</pre></div>
-</div>
-<p><tt class="file docutils literal"><span class="pre">csv-1.py</span></tt> で処理した結果</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python csv-1.py csv-2.csv
-ISO8601 &quot;June    1988&quot;
-ISO8601:2000    &quot;December        2000&quot;
-Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
-</pre></div>
-</div>
-<p>ダブルクォートを考慮できていないことが分かります。</p>
-<p>差分</p>
-<div class="highlight-python"><div class="highlight"><pre>$ diff -U 1 csv-1.py csv-2.py
---- csv-1.py    2011-12-07 00:35:38.000000000 +0900
-+++ csv-2.py    2011-12-07 00:46:55.000000000 +0900
-@@ -6,2 +6,3 @@
-
-+import csv
+ import argparse
+<span class="gi">+import csv  # import standard &quot;csv&quot; module</span>
  import logging
-@@ -40,4 +41,4 @@
-     with open(fname) as reader:
--        for line in reader:
--            print line.strip().replace(&#39;,&#39;, &#39;\t&#39;)
-+        for row in csv.reader(reader):
-+            print &#39;\t&#39;.join(row)
+
+
+<span class="gu">@@ -41,9 +42,8 @@</span>
+     &quot;&quot;&quot;Parse daily Tokyo stock prices, and calculate up/down.
+     &quot;&quot;&quot;
+     with open(args.filename[0]) as fp:
+<span class="gd">-        for line in fp:</span>
+<span class="gd">-            l = line.rstrip(&#39;\r\n&#39;)</span>
+<span class="gd">-            t = l.split(&#39;,&#39;)</span>
+<span class="gi">+        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.</span>
+<span class="gi">+        for t in reader:</span>
+             # Assign each field on individual variables.
+             day = t[0]
+             price_begin = float(t[1])
 </pre></div>
 </div>
 </div>
 <div class="section" id="id3">
 <h2>宿題<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>csv モジュールの <tt class="docutils literal"><span class="pre">reader()</span></tt> 関数は <em>dialect</em> という引数を解釈します。
-これを切り替えることで、区切り文字を変更できます。</p>
+<p>csv モジュールの <tt class="docutils literal"><span class="pre">reader()</span></tt> 関数は <em>dialect</em> や <em>delimiter</em>, <em>quotechar</em> という引数を解釈します。
+これらを切り替えることで、エスケープ文字や区切り文字を変更できます。</p>
 <ul class="simple">
 <li>公式ドキュメントのコード例に目を通し、空白区切りやコロン区切りのデータを扱っている部分を確認してください。</li>
 <li>コマンドラインのオプションを解釈し、区切り文字をオプション引数で与えられるようにしてください。</li>
@@ -199,7 +194,7 @@ Leap Seconds    31 December 2008        http://tycho.usno.navy.mil/leapsec.html
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

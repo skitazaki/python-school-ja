@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>O/R マッパーを使ってデータベースを使う &mdash; Python School 1.5.2 documentation</title>
+    <title>O/R マッパー経由でデータベースを使う &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,20 +23,20 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="CSV ファイルの処理方法" href="index.html" />
     <link rel="next" title="コマンドライン操作" href="../cmdline/index.html" />
-    <link rel="prev" title="ファイル風オブジェクトを意識する" href="csv-5.html" /> 
+    <link rel="prev" title="クラスを定義する" href="csv-5.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
-        <h2 class="heading"><span>O/R マッパーを使ってデータベースを使う</span></h2>
+          <span>Python School 2.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>O/R マッパー経由でデータベースを使う</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="csv-5.html">ファイル風オブジェクトを意識する</a>
+        «&#160;&#160;<a href="csv-5.html">クラスを定義する</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
@@ -48,36 +48,32 @@
         
         
   <div class="section" id="o-r">
-<h1>O/R マッパーを使ってデータベースを使う<a class="headerlink" href="#o-r" title="Permalink to this headline">¶</a></h1>
-<p>CSV ファイルから読み込んだ情報をデータベースに保存します。</p>
-<p>データベースには SQLite を使い、O/R マッパーとして SQLAlchemy を使います。</p>
+<h1>O/R マッパー経由でデータベースを使う<a class="headerlink" href="#o-r" title="Permalink to this headline">¶</a></h1>
+<p>CSV ファイルから読み込んだ情報をデータベースに登録します。
+データベースには <em>SQLite</em> を使い、O/R マッパー (<a class="reference external" href="http://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E9%96%A2%E4%BF%82%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0">オブジェクト関係マッピング</a>) として <em>SQLAlchemy</em> を使います。</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.sqlite.org/">SQLite</a> - sqlite.org</li>
 <li><a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> - sqlalchemy.org</li>
 </ul>
-<div class="section" id="id1">
-<h2>SQLAlchemy の準備<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><em>SQLAlchemy</em> を使っておくと、後から MySQL や PostgreSQL へ変更することもできますし、
+複数の環境で異なるデータベースに接続して動かすこともできるようになります。</p>
+<div class="section" id="id2">
+<h2>SQLAlchemy の準備<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に <cite>SQLAlchemy</cite> を追加し、 <strong class="command">pip</strong> を実行します。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; Scripts/activate.bat
-&gt; pip install -r requirements.txt
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;SQLAlchemy&quot;</span> &gt;&gt; requirements.txt
+<span class="nv">$ </span>pip install -r requirements.txt
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に追加。</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="n">SQLAlchemy</span>
-</pre></div>
-</div>
 </div>
 <p>Python のインタラクティブシェルからモジュールを読み込めることを確認します。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">sqlalchemy</span><span class="p">)</span>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
+&gt;&gt;&gt; import sqlalchemy
+&gt;&gt;&gt; <span class="nb">help</span><span class="o">(</span>sqlalchemy<span class="o">)</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">help()</span></tt> 関数でモジュールのヘルプが表示されますので確認してみてください。</p>
+<p><tt class="docutils literal"><span class="pre">help()</span></tt> 関数でモジュールのヘルプが (大量に) 表示されますので眺めてみてください。</p>
 </div>
-<div class="section" id="id2">
-<h2>O/R マッパー経由でデータベースに保存<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>O/R マッパー経由でデータベースに保存<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>O/R マッパーを使うためにはいくつかの準備が必要になります。</p>
 <ul>
 <li><p class="first"><cite>sqlalchemy</cite> モジュールの読み込み</p>
@@ -99,76 +95,101 @@
 </dl>
 </li>
 </ul>
-<p>以上をスクリプトにまとめると次のようになります。</p>
-<p><tt class="file docutils literal"><span class="pre">csv-6.py</span></tt></p>
+<p>以上をスクリプトにまとめると次のようになります。(<tt class="file docutils literal"><span class="pre">csv-6.py</span></tt>)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">&quot;&quot;&quot;%prog [options] csv_file [sqlite_file]</span>
+<span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Date</span>
 
-<span class="kn">from</span> <span class="nn">pyschool.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
 <span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
 
-<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
+<span class="c"># SQLite On-Memory storage for test run.</span>
 <span class="n">DEFAULT_SQLITE_FILE</span> <span class="o">=</span> <span class="s">&#39;:memory:&#39;</span>
+
+<span class="c"># Declare input fields definition.</span>
+<span class="n">FIELDS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;datetime&#39;</span><span class="p">,</span> <span class="s">&#39;format&#39;</span><span class="p">:</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_begin&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_max&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_min&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_end&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">}</span>
+<span class="p">)</span>
 
 <span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">()</span>
 <span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">LeagueStats</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">StockPrice</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
 
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;league_stats&#39;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">&#39;stock_price&#39;</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">team</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
-    <span class="n">rank</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
-    <span class="n">point</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
-    <span class="n">match</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
-    <span class="n">goaldiff</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">price_begin</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">price_max</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">price_min</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">price_end</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;&lt;LeagueStats(&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">&#39;)&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">team</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;StockPrice(&#39;{}&#39;)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">price_end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">price_begin</span>
 
 
-<span class="k">def</span> <span class="nf">csv2sqlite</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Import a CSV format file to SQLite database.</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices, and calculate up/down.</span>
+<span class="sd">    After that, import them into SQLite database.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dsl</span> <span class="o">=</span> <span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">output</span>
+    <span class="c"># Prepare database connection, table, and session.</span>
+    <span class="n">dsl</span> <span class="o">=</span> <span class="s">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="ow">or</span> <span class="n">DEFAULT_SQLITE_FILE</span><span class="p">)</span>
     <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">dsl</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
     <span class="n">Session</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="n">stream</span> <span class="o">=</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-        <span class="c"># Read a header line.</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-            <span class="n">record</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">LeagueStats</span><span class="p">(</span><span class="n">team</span><span class="o">=</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;team&#39;</span><span class="p">],</span>
-                    <span class="n">rank</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;rank&#39;</span><span class="p">]),</span>
-                    <span class="n">point</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">]),</span>
-                    <span class="n">match</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;match&#39;</span><span class="p">]),</span>
-                    <span class="n">goaldiff</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">&#39;goaldiff&#39;</span><span class="p">]))</span>
-            <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>  <span class="c"># Instantiate CSV reader with file pointer.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="c"># Convert input values to declared name and type.</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">FIELDS</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;integer&#39;</span><span class="p">:</span>
+                    <span class="n">dt</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;float&#39;</span><span class="p">:</span>
+                    <span class="n">dt</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;datetime&#39;</span><span class="p">:</span>
+                    <span class="n">dt</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;format&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dt</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c"># Instantiate SQLAlchemy data model object.</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">StockPrice</span><span class="p">(</span><span class="o">**</span><span class="n">dt</span><span class="p">)</span>
+            <span class="c"># Show the same things with previous scripts.</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;up&#39;</span>
+            <span class="k">elif</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;down&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;same&#39;</span>
+            <span class="c"># Write out day, up/down/same, and diff.</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{:5}</span><span class="se">\t</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="c"># Don&#39;t forget to commit the changes you add.</span>
     <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">DEFAULT_SQLITE_FILE</span>
-    <span class="n">csv2sqlite</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
@@ -180,39 +201,35 @@
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
-<p>第一引数に CSV ファイルを渡します。
-第二引数がない場合はオンメモリで動作します。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python csv-6.py csv-5.csv
+<p>１列目を「日付」として扱うために <em>datetime</em> モジュールを利用しています。
+日付と時刻の処理は多くのプログラムで必要になりますので、少しずつ使い方に慣れていってください。</p>
+<p>コマンドラインで実行するときは、 <cite>&#8211;output</cite> オプションにファイル名を指定するとそのファイルをデータベースとして使用します。
+オプション未指定の場合はオンメモリで動作します。
+<a class="reference internal" href="csv-1.html"><em>ファイルを読み込む</em></a> で利用したデータを入力として与えてください。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python csv-6.py csv-1.csv
+<span class="nv">$ </span>python csv-6.py --output<span class="o">=</span>csv-6.sqlite csv-1.csv
 </pre></div>
 </div>
-<p>第二引数で出力ファイル名を指定できます。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python csv-6.py csv-5.csv csv-6.sqlite
-</pre></div>
-</div>
-<p>SQLite のビューアーとしては Lita などが便利です。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.dehats.com/drupal/?q=node/58">Lita - SQLite Administration Tool</a></li>
-</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
+<p class="last">トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
 マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
-ループ回数を取得するには <tt class="docutils literal"><span class="pre">enumerate()</span></tt> を使います。</p>
-<ul class="last simple">
-<li><a class="reference external" href="http://docs.python.org/library/functions.html#enumerate">enumerate</a> (公式ドキュメント)</li>
-</ul>
+組み込み関数 <tt class="docutils literal"><span class="pre">enumerate()</span></tt> を使ってループ回数をカウントし、適当な回数ごとにコミットすると良いでしょう。
+また、処理の進捗状況をレポートしておくと、バッチ実行したときに安心感があります。</p>
 </div>
 </div>
-<div class="section" id="id3">
-<h2>宿題<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>フィールドに条件を課す処理を比較しましょう。
-SQLite を参照する場合と、CSV を参照する場合を比べてみてください。</p>
-<p><a class="reference internal" href="csv-4.html"><em>組込み関数 (zip / dict) を使う</em></a> の「宿題」には挙動を切り替える問題があります。
-同様に、出力データフォーマットも切り替えてみましょう。</p>
+<div class="section" id="id4">
+<h2>宿題<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>CSV のデータを JSON で出力</li>
-<li>CSV のデータを任意の XML で出力</li>
+<li>１年分のデータを SQLite に登録してください。 <a class="reference external" href="http://k-db.com/">株価データダウンロードサイト</a> (k-db.com) から日経平均株価の日足を利用させて頂きましょう。</li>
+<li>データベースからレコードを抽出する処理を記述し、１年間の株価の動きをまとめてみましょう。
+始値から終値が上がった日と下がった日の数を集計してください。</li>
+<li>データベースを SQLite から MySQL または PostgreSQL に切り替えるために必要な手順をドキュメントにまとめてください。</li>
+<li>日付フィールド (<cite>day</cite>) には <em>UNIQUE</em> 制約を課していますので、オンメモリでないデータベースに対して同じ入力ファイルで複数回実行すると、
+制約違反になってしまいます。入力された日付のレコードがデータベースに存在するかを確認する処理を実装してください。</li>
 </ul>
+<p>以上で、CSV に関する処理は一通り学習できたと思います。
+手持ちのデータを処理するために、自分用のプロジェクトを作成してみましょう。</p>
 </div>
 </div>
 
@@ -221,7 +238,7 @@ SQLite を参照する場合と、CSV を参照する場合を比べてみてく
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="csv-5.html">ファイル風オブジェクトを意識する</a>
+        «&#160;&#160;<a href="csv-5.html">クラスを定義する</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
@@ -231,7 +248,7 @@ SQLite を参照する場合と、CSV を参照する場合を比べてみてく
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

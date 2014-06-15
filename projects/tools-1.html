@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>構成、ビルドのツール &mdash; Python School 1.5.2 documentation</title>
+    <title>構成、ビルドのツール &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="プロジェクトの構成" href="index.html" />
     <link rel="next" title="自動化を進める" href="tools-2.html" />
     <link rel="prev" title="Nose を使ったテスト" href="tests-2.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>構成、ビルドのツール</span></h2>
       </div>
       <div class="topnav">
@@ -50,8 +50,8 @@
   <div class="section" id="id1">
 <h1>構成、ビルドのツール<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p>どのプログラミング言語を使うにしろ、構成やビルド、それからリリースに関するツールは重要です。
-多くのソフトウェアでは <em>autotools</em> と <em>Makefile</em> が使われていますが、
-これから勉強するには読みにくいなど、いくつかの問題も抱えています。</p>
+伝統的なソフトウェアでは <em>autotools</em> と <em>Makefile</em> が使われていますが、
+これから勉強するには読みにくく、依存関係の記述が難しいなど、いくつかの問題も抱えています。</p>
 <p>Python で記述された構成管理のツールにもいくつかの選択肢があり、それぞれに長所と短所があります。
 これらのツールの多くは、対象とするソフトウェアのプログラミング言語とは独立しています。
 したがって、C 言語で記述されたソフトウェアを Python 製のツールで管理することもできます。</p>
@@ -59,7 +59,7 @@
 詳しくはそれぞれのリファレンスを参照してください。
 細かい TIPS などは検索エンジンで探してみましょう。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://pypi.python.org/pypi/zc.buildout">zc.buildout</a></li>
+<li><a class="reference external" href="http://www.buildout.org/en/latest/">zc.buildout</a></li>
 <li><a class="reference external" href="http://www.scons.org/">SCons</a></li>
 <li><a class="reference external" href="http://code.google.com/p/waf/">Waf</a></li>
 </ul>
@@ -67,8 +67,14 @@
 <ul class="simple">
 <li><a class="reference external" href="http://www.scons.org/wiki/SconsVsOtherBuildTools">SconsVsOtherBuildTools</a></li>
 </ul>
-<div class="section" id="zc-buildout">
-<h2>zc.buildout<a class="headerlink" href="#zc-buildout" title="Permalink to this headline">¶</a></h2>
+<p>なお、プロジェクトのプログラミング言語を Python に限定する場合は <tt class="file docutils literal"><span class="pre">setup.py</span></tt> を試すことから始めましょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.jp/3.3/distutils/setupscript.html">setup スクリプトを書く</a> - docs.python.jp</li>
+</ul>
+<div class="section" id="id2">
+<h2>zc.buildout<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>いくつかのページのリンクとその序文を引用します。詳細はそれぞれのページを読んでください。
+時間はかかると思いますが、得られるものは多いでしょう。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -87,33 +93,29 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="scons">
-<h2>SCons<a class="headerlink" href="#scons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>SCons<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>最近はあまり活発に開発されていない印象です。
+2014年3月に 2.3.1 がリリースされており、これが Python 2.7 以前をサポートする最後のバージョンになるそうです。
+リリース記事には、今後は Python 3.x 系のサポートにシフトすると記載されています。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name" colspan="2"><a class="reference external" href="http://cccis.jp/wiki/SCons/Makefile%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%AE%E3%81%AB%E7%96%B2%E3%82%8C%E3%81%9F%E4%BA%BA%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AESCons">SConsMakefileを書くのに疲れた人のためのSCons</a>:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">SConsはmakeやAntのように数多くあるビルドツールのうち一つであり、Pythonで書かれている。
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">SConsはmakeやAntのように数多くあるビルドツールのうち一つであり、Pythonで書かれている。
 ビルド設定のファイルをPythonで記述することができ、またSCons自身が依存関係解析の機能を持っているため、
-makeと比べるとずっと簡単にビルド環境を構築することができる。</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2"><a class="reference external" href="http://cydn.cybozu.co.jp/2008/05/scons.html">SCons (調査レポート)</a> - 簡単な使い方など:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
-<li>プログラムでビルドを制御できる</li>
-<li>プログラミングのパターンが C や C++ のソースコードのビルドに適している</li>
-<li>モジュール形式で、オブジェクト間の依存関係の制御が優れている
-(SCons を起動すると、まずビルドの依存性グラフを修正し、それからそれに基いてビルドを作成する)</li>
-<li>各プラットフォームでビルドが適切に行われたかどうかを試験するパッケージソフトが豊富にある</li>
-</ul>
-</td>
+makeと比べるとずっと簡単にビルド環境を構築することができる。</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="waf">
-<h2>Waf<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>Waf<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><em>waf</em> は SCons のやや古いバージョンから fork した実装です。
+単一バイナリの配布なので特別なインストールの必要がなく、
+ダウンロードしたファイルを環境変数 <em>PATH</em> の通ったディレクトリに配置して実行ビットを立てれば使い始められます。
+Python 2.x 系でも Python 3.x 系でも動きます。</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -125,22 +127,23 @@ Sconsからの派生で、比較的新しいソフトウェアです。</td>
 </tr>
 </tbody>
 </table>
-<p>waf はシステムワイドなインストールが不要で、バイナリをダウンロードして PATH を通せば使えます。
-<a class="reference internal" href="../advanced/advanced-2.html"><em>モジュールのインポート方法いろいろ</em></a> にファイルをダウンロードするスクリプトがあります。
-次のようにしてダウンロードし、 <tt class="file docutils literal"><span class="pre">waf.bat</span></tt> というバッチファイルで起動させれば使い始められます。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; python downloader.py http://waf.googlecode.com/files/waf-1.6.11
-&gt; copy waf-1.6.11 Scripts\waf
+<p>次のようにダウンロードして配置すればすぐに利用可能です。
+処理は <tt class="file docutils literal"><span class="pre">wscript</span></tt> という設定ファイルに記述してください。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> /path/to/your/bin
+<span class="nv">$ </span>curl -O http://ftp.waf.io/pub/release/waf-1.7.16
+<span class="nv">$ </span>chmod +x waf-1.7.16
+<span class="nv">$ </span>ln -s waf-1.7.16 waf
+<span class="nv">$ </span>waf
 </pre></div>
 </div>
-<p><tt class="file docutils literal"><span class="pre">waf.bat</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre>@echo off
-python %~dp0\waf %*
+<p>Windows の場合は <tt class="file docutils literal"><span class="pre">waf.bat</span></tt> のようなラッパーを用意してあげましょう。</p>
+<div class="highlight-bat"><div class="highlight"><pre><span class="p">@</span><span class="k">echo</span> <span class="k">off</span>
+python <span class="nv">%~dp0</span>\waf %*
 </pre></div>
 </div>
-<p>Waf は Node.js のビルドシステムとしても使われています。
-作者の Ryan Dahl は複雑だとも述べていますが、現状で使っているものをとりあえず知っておくのも良いでしょう。</p>
+<p>Waf は Node.js のビルドシステムとしても使われていました（現在は <a class="reference external" href="https://code.google.com/p/gyp/">gyp</a> に移行しています）。
+作者の Ryan Dahl は複雑だとも述べていましたので、好きずきと言えます。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://nodejs.org/docs/latest/api/addons.html">Addons (Node.js)</a></li>
 <li><a class="reference external" href="http://bostinno.com/2011/01/31/node-js-interview-4-questions-with-creator-ryan-dahl/">Node.js Interview: 4 Questions with Creator Ryan Dahl</a></li>
 </ul>
 </div>
@@ -161,7 +164,7 @@ python %~dp0\waf %*
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

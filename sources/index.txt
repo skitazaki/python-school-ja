@@ -22,9 +22,7 @@ Python の学習
    cmdline/index
    xml/index
    projects/index
-   webapps/index
    advanced/index
-
 
 なぜ Python か？
 ----------------
@@ -32,7 +30,7 @@ Python の学習
 * 記述量が少ない
     * タイプ量ではなく、ソースコード量の問題
     * 記述量が少なければ、必然的に読む量も少ない
-    * 読む量が少なければ、多くの人が議論できる
+    * 読む量が少なければ、多くの人が議論に参加できる
     * 多くの人が議論できれば、考える機会が多くなる
     * 人に依存した体制を避けられるかも？
 * 「禅」
@@ -47,7 +45,7 @@ Python の学習
         * `そろそろPython始めてみませんか?`_
 
 Perl や Ruby、PHP と比較されることも多くあります。
-もちろん、構文やライブラリ、処理系にコミュニティも違いますので一概に善し悪しは分かりません。
+もちろん、構文やライブラリ、処理系、そしてコミュニティも違いますので一概に善し悪しは分かりません。
 ひとつの切り口として、それぞれの言語が持つモットーがあります。
 
 Perl が "There's more than one way to do it" の考え方なのに対して、
@@ -63,11 +61,15 @@ Python は "Explicit is better than implicit" の考え方です。
 
 * `Python and Django on Heroku`_ - blog.heroku.com
 * `Heroku上でPython と Django`_ - infoq.com (上記の日本語解説)
+* `Getting Started with Python on Heroku`_ - devcenter.heroku.com
 
-データ・サイエンスの分野でも利用されることが増えています。
-科学計算に適したライブラリ NumPy もあります。
+データ処理の分野でも利用されることが増えています。
+科学計算に適したライブラリ NumPy や SciPy もあります。
 
 * `Python Displacing R As The Programming Language For Data Science`_ - readwrite.com
+* `Python for Data Science`_ (IPython_ 形式)
+* `Learn Data Science`_
+* `Getting Started With Python For Data Science`_
 
 英語でも構わなければ書籍もたくさんあります。
 
@@ -75,9 +77,15 @@ Python は "Explicit is better than implicit" の考え方です。
 
 .. _Python and Django on Heroku: http://blog.heroku.com/archives/2011/9/28/python_and_django/
 .. _Heroku上でPython と Django: http://www.infoq.com/jp/news/2011/10/python-django-heroku
+.. _`Getting Started with Python on Heroku`: https://devcenter.heroku.com/articles/getting-started-with-python
 .. _Pythonスタートアップ勉強会201109 python入門: http://www.slideshare.net/shimizukawa/python201109-python
 .. _TIOBEの2010年最優秀言語はPython: http://www.infoq.com/jp/news/2011/01/python-tiobe-award
 .. _そろそろPython始めてみませんか?: http://wiki.liris.org/article/python_intro
 .. _`Python Displacing R As The Programming Language For Data Science`: http://readwrite.com/2013/11/25/python-displacing-r-as-the-programming-language-for-data-science
+.. _IPython: http://ipython.org/
+.. _`Python for Data Science`: http://nbviewer.ipython.org/github/gumption/Python_for_Data_Science/blob/master/Python_for_Data_Science_all.ipynb
+.. _`Learn Data Science`: http://nborwankar.github.io/LearnDataScience/
+.. _`Getting Started With Python For Data Science`: https://www.kaggle.com/wiki/GettingStartedWithPythonForDataScience
 .. _`Python に関連する書籍`: http://hackershelf.com/topic/python/
 .. _`Dropboxは全部Pythonで信頼性の高いソフトウェアを作った（前編）～PyCon APAC 2013`: http://www.publickey1.jp/blog/13/dropboxpythonpycon_apac_2013.html
+.. _`Dropboxは全部Pythonで信頼性の高いソフトウェアを作った（後編）～PyCon APAC 2013`: http://www.publickey1.jp/blog/13/dropboxpythonpycon_apac_2013_1.html

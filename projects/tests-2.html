@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Nose を使ったテスト &mdash; Python School 1.5.2 documentation</title>
+    <title>Nose を使ったテスト &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="プロジェクトの構成" href="index.html" />
     <link rel="next" title="構成、ビルドのツール" href="tools-1.html" />
     <link rel="prev" title="標準モジュールを使ったテスト" href="tests-1.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>Nose を使ったテスト</span></h2>
       </div>
       <div class="topnav">
@@ -49,22 +49,17 @@
         
   <div class="section" id="nose">
 <h1>Nose を使ったテスト<a class="headerlink" href="#nose" title="Permalink to this headline">¶</a></h1>
-<p>個別のテストファイルに <tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__':</span></tt> を記述するのは煩雑なので、
+<p>前の章ではテストの実行関数をファイルごとに呼び出していました。
+ファイルが増えてくると個別に <tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__':</span></tt> を記述するのは煩雑なので、
 テストの実行には <a class="reference external" href="http://readthedocs.org/docs/nose/en/latest/">nose</a> というモジュールを使います。</p>
 <div class="section" id="id2">
 <h2>Nose のインストール<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> に <em>nose</em> の記述を追加して、 <strong class="command">pip</strong> を使ってインストールします。
 インストールできると、 <strong class="command">nosetests</strong> が使えるようになります。</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><tt class="file docutils literal"><span class="pre">requirements.txt</span></tt></p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="n">nose</span>
-</pre></div>
-</div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install -r requirements.txt
-$ nosetests -V
-nosetests version 1.1.2
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;nose&quot;</span> &gt;&gt; requirements.txt
+<span class="nv">$ </span>pip install -r requirements.txt
+<span class="nv">$ </span>nosetests -V
+nosetests version 1.3.3
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">--help</span></tt> オプションを付けて実行すると利用可能なオプションを一覧で確認できます。</p>
@@ -73,13 +68,13 @@ nosetests version 1.1.2
 <h2>簡単な実行方法<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p><strong class="command">nosetests</strong> は <cite>test</cite> から始まる関数を自動で認識してくれます。
 <a class="reference internal" href="tests-1.html"><em>標準モジュールを使ったテスト</em></a> で記述したスクリプトにはテストが含まれていますので、まずは確認してみます。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ nosetests --collect-only -v
-test (fibonacci_test.FibonacciTest) ... ok
-test (fibonacci_test2.FibonacciTest) ... ok
-test_invalid_argument (fibonacci_test2.FibonacciTest) ... ok
-test (fibonacci_test3.FibonacciTest) ... ok
-test_invalid_argument (fibonacci_test3.FibonacciTest) ... ok
-test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest) ... ok
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>nosetests --collect-only -v
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test.FibonacciTest<span class="o">)</span> ... ok
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test2.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>fibonacci_test2.FibonacciTest<span class="o">)</span> ... ok
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ok
+test_引数が日本語の場合は？ <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ok
 fibonacci_test3.test_undefined ... ok
 
 ----------------------------------------------------------------------
@@ -89,53 +84,59 @@ OK
 </pre></div>
 </div>
 <p>複数のスクリプトからテストケースを収集できていることが分かります。
-実際に実行してみます。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ nosetests -v 2&gt;tests.txt
+実際に実行してみます。(標準エラー出力の内容をテキストファイルに書き出します。)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>nosetests -v 2&gt;tests.txt
 
-$ head -n 10 tests.txt
-test (fibonacci_test.FibonacciTest) ... ok
-test (fibonacci_test2.FibonacciTest) ... ok
-test_invalid_argument (fibonacci_test2.FibonacciTest) ... ok
-test (fibonacci_test3.FibonacciTest) ... ok
-test_invalid_argument (fibonacci_test3.FibonacciTest) ... ok
-test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest) ... ERROR
-fibonacci_test3.test_undefined ... ERROR
+<span class="nv">$ </span>head -n 10 tests.txt
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test.FibonacciTest<span class="o">)</span> ... ok
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test2.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>fibonacci_test2.FibonacciTest<span class="o">)</span> ... ok
+<span class="nb">test</span> <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ok
+test_引数が日本語の場合は？ <span class="o">(</span>fibonacci_test3.FibonacciTest<span class="o">)</span> ... ERROR
+fibonacci_test3.test_undefined ... <span class="nv">ERROR</span>
 
-======================================================================
-ERROR: test_引数が日本語の場合は？ (fibonacci_test3.FibonacciTest)
+<span class="o">======================================================================</span>
 
-$ tail -n 7 tests.txt
-    self.test(*self.arg)
-TypeError: test_undefined() takes exactly 1 argument (0 given)
+<span class="nv">$ </span>tail -n 5 tests.txt
 
 ----------------------------------------------------------------------
-Ran 7 tests in 0.027s
+Ran 8 tests in 0.269s
 
-FAILED (errors=2)
+FAILED <span class="o">(</span><span class="nv">errors</span><span class="o">=</span>3<span class="o">)</span>
 </pre></div>
 </div>
-<p>確かにエラーになります。</p>
+<p>前回もエラーだったテストは確かにエラーになっています。
+出力結果はファイルに書き出されていますので、最後まで読んでみてください。</p>
 </div>
 <div class="section" id="id4">
 <h2>レポーティング<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>継続的にテストを実行させる場合、それぞれの実行結果をどのように保存すべきを考える必要があります。
 多くの場合は Jenkins などの CI ツールでジョブを自動化することになるでしょう。
-たいていのツールは xUnit のレポートを表示できます。
-そこで、 <strong class="command">nosetests</strong> の方でも XML 形式のレポートを出力できるようになっています。</p>
-<p>レポートを出力し、XML を整形して表示</p>
-<div class="highlight-python"><div class="highlight"><pre>$ nosetests --with-xunit
+こうした CI ツールの多くは xUnit のレポートを表示できます。
+<strong class="command">nosetests</strong> の方でも XML 形式のレポートを出力できるようになっています。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>nosetests --with-xunit
 
-$ xmllint --format nosetests.xml |head -n 5
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;testsuite name=&quot;nosetests&quot; tests=&quot;7&quot; errors=&quot;2&quot; failures=&quot;0&quot; skip=&quot;0&quot;&gt;
-  &lt;testcase classname=&quot;fibonacci_test.FibonacciTest&quot; name=&quot;test&quot; time=&quot;0.001&quot;/&gt;
-  &lt;testcase classname=&quot;fibonacci_test2.FibonacciTest&quot; name=&quot;test&quot; time=&quot;0.001&quot;/&gt;
-  &lt;testcase classname=&quot;fibonacci_test2.FibonacciTest&quot; name=&quot;test_invalid_argument&quot; time=&quot;0.000&quot;/&gt;
+<span class="nv">$ </span>xmllint --format nosetests.xml |head -n 5
+&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>?&gt;
+&lt;testsuite <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;nosetests&quot;</span> <span class="nv">tests</span><span class="o">=</span><span class="s2">&quot;7&quot;</span> <span class="nv">errors</span><span class="o">=</span><span class="s2">&quot;2&quot;</span> <span class="nv">failures</span><span class="o">=</span><span class="s2">&quot;0&quot;</span> <span class="nv">skip</span><span class="o">=</span><span class="s2">&quot;0&quot;</span>&gt;
+  &lt;testcase <span class="nv">classname</span><span class="o">=</span><span class="s2">&quot;fibonacci_test.FibonacciTest&quot;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span> <span class="nb">time</span><span class="o">=</span><span class="s2">&quot;0.001&quot;</span>/&gt;
+  &lt;testcase <span class="nv">classname</span><span class="o">=</span><span class="s2">&quot;fibonacci_test2.FibonacciTest&quot;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span> <span class="nb">time</span><span class="o">=</span><span class="s2">&quot;0.001&quot;</span>/&gt;
+  &lt;testcase <span class="nv">classname</span><span class="o">=</span><span class="s2">&quot;fibonacci_test2.FibonacciTest&quot;</span> <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;test_invalid_argument&quot;</span> <span class="nb">time</span><span class="o">=</span><span class="s2">&quot;0.000&quot;</span>/&gt;
 </pre></div>
 </div>
 <p>これらを繋ぎ込むことで、テスト結果を確認しながら実装を進めていくことが可能になります。</p>
-<p>テストの数が増加してきた場合には <a class="reference external" href="http://www.teamst.org/">TestLink</a> などが有効です。</p>
-<p>何をどこまでテストすべきかは、 <a class="reference external" href="http://dev.ariel-networks.com/articles/testpress-vol9/part1/">パッケージソフト開発のテスト体制</a> の記事を参考にして考えてみましょう。</p>
+<p>何をどこまでテストすべきかは、 <a class="reference external" href="http://dev.ariel-networks.com/articles/testpress-vol9/part1/">パッケージソフト開発のテスト体制</a> の記事を参考にして考えてみましょう。
+ソフトウェア・テストPRESS Vol.9 (2009年10月) の原稿だそうです。</p>
+</div>
+<div class="section" id="id6">
+<h2>宿題<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>これまでに書いたことのあるスクリプトにテストケースを作成してください。</li>
+<li>サンプルデータを扱うための <em>fixtures</em> について調べてください。 <cite>setup</cite>, <cite>teardown</cite> で実現できます。</li>
+<li>異なるバージョンの Python でテストを実行するための <a class="reference external" href="https://testrun.org/tox/latest/">tox</a> について調べてください。</li>
+<li>類似のツールである <a class="reference external" href="http://pytest.org/latest/">pytest</a> について調べてください。</li>
+</ol>
 </div>
 </div>
 
@@ -154,7 +155,7 @@ $ xmllint --format nosetests.xml |head -n 5
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

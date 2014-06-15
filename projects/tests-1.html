@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>標準モジュールを使ったテスト &mdash; Python School 1.5.2 documentation</title>
+    <title>標準モジュールを使ったテスト &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="プロジェクトの構成" href="index.html" />
     <link rel="next" title="Nose を使ったテスト" href="tests-2.html" />
     <link rel="prev" title="プロジェクトの構成" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>標準モジュールを使ったテスト</span></h2>
       </div>
       <div class="topnav">
@@ -78,30 +78,31 @@
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">13</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%4d</span><span class="s"> --fib--&gt; </span><span class="si">%4d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">fib</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:2}</span><span class="se">\t</span><span class="s">--fib--&gt;</span><span class="se">\t</span><span class="s">{:3}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">fib</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
 
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci.py
-   0 --fib--&gt;    0
-   1 --fib--&gt;    1
-   2 --fib--&gt;    1
-   3 --fib--&gt;    2
-   4 --fib--&gt;    3
-   5 --fib--&gt;    5
-   6 --fib--&gt;    8
-   7 --fib--&gt;   13
-   8 --fib--&gt;   21
-   9 --fib--&gt;   34
-  10 --fib--&gt;   55
-  11 --fib--&gt;   89
-  12 --fib--&gt;  144
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python fibonacci.py
+ 0      --fib--&gt;          0
+ 1      --fib--&gt;          1
+ 2      --fib--&gt;          1
+ 3      --fib--&gt;          2
+ 4      --fib--&gt;          3
+ 5      --fib--&gt;          5
+ 6      --fib--&gt;          8
+ 7      --fib--&gt;         13
+ 8      --fib--&gt;         21
+ 9      --fib--&gt;         34
+10      --fib--&gt;         55
+11      --fib--&gt;         89
+12      --fib--&gt;        144
 </pre></div>
 </div>
-<p>これに対するテストスクリプトを <tt class="file docutils literal"><span class="pre">fibonacci_test.py</span></tt> として作成します。</p>
+<p>これに対するテストスクリプトを <tt class="file docutils literal"><span class="pre">fibonacci_test.py</span></tt> として作成します。
+スクリプトを直接実行したときにテストが実行されるように、 <tt class="docutils literal"><span class="pre">unittest.main()</span></tt> を記述しておきます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
@@ -134,27 +135,19 @@
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>スクリプトを直接実行したときにテストが実行されるようにします。</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
 <p>実行結果 (通常実行と <tt class="docutils literal"><span class="pre">-v</span></tt> オプション付き実行)</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test.py
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python fibonacci_test.py
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.001s
+Ran 1 <span class="nb">test </span>in 0.001s
 
 OK
 
-$ python fibonacci_test.py -v
-test (__main__.FibonacciTest) ... ok
+<span class="nv">$ </span>python fibonacci_test.py -v
+<span class="nb">test</span> <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.001s
+Ran 1 <span class="nb">test </span>in 0.001s
 
 OK
 </pre></div>
@@ -176,9 +169,9 @@ OK
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test2.py -v
-test (__main__.FibonacciTest) ... ok
-test_invalid_argument (__main__.FibonacciTest) ... ok
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python fibonacci_test2.py -v
+<span class="nb">test</span> <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... ok
 
 ----------------------------------------------------------------------
 Ran 2 tests in 0.001s
@@ -197,54 +190,55 @@ OK
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Python 2 系ではメソッド名に日本語を使えませんが、
-<tt class="docutils literal"><span class="pre">setattr()</span></tt> で割り当ててあげることはできます。
-テストケースを日本語で管理したい場合には便利かもしれません。
+<p class="last">メソッド名に日本語を使えませんが、 <tt class="docutils literal"><span class="pre">setattr()</span></tt> で無理矢理に割り当ててあげることはできます。
+どうしてもテストケースを日本語で管理したい場合には便利かもしれません。
 (基本的には英語で記述すべきですが)</p>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test3.py -v 2&gt;test-error.txt
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python fibonacci_test3.py -v 2&gt;test-error.txt
 
-$ head -n 10 test-error.txt
-test (__main__.FibonacciTest) ... ok
-test_invalid_argument (__main__.FibonacciTest) ... ok
-test_引数が日本語の場合は？ (__main__.FibonacciTest) ... ERROR
+<span class="nv">$ </span>head -n 10 <span class="nb">test</span>-error.txt
+<span class="nb">test</span> <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... ok
+test_invalid_argument <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... ok
+test_引数が日本語の場合は？ <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span> ... <span class="nv">ERROR</span>
 
-======================================================================
-ERROR: test_引数が日本語の場合は？ (__main__.FibonacciTest)
+<span class="o">======================================================================</span>
+ERROR: test_引数が日本語の場合は？ <span class="o">(</span>__main__.FibonacciTest<span class="o">)</span>
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File &quot;src/fibonacci_test3.py&quot;, line 42, in test_undefined
-    fib(-1)
+Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">&quot;src/fibonacci_test3.py&quot;</span>, line 42, in test_undefined
+    fib<span class="o">(</span>-1<span class="o">)</span>
 
-$ tail -n 7 test-error.txt
-    assert type(n) == int
-RuntimeError: maximum recursion depth exceeded while calling a Python object
+<span class="nv">$ </span>tail -n 7 <span class="nb">test</span>-error.txt
+    assert <span class="nb">type</span><span class="o">(</span>n<span class="o">)</span> <span class="o">==</span> int
+RuntimeError: maximum recursion depth exceeded <span class="k">while </span>calling a Python object
 
 ----------------------------------------------------------------------
 Ran 3 tests in 0.016s
 
-FAILED (errors=1)
+FAILED <span class="o">(</span><span class="nv">errors</span><span class="o">=</span>1<span class="o">)</span>
 </pre></div>
 </div>
 <p>負の数から開始してしまうと再帰の行き着く先がありませんので無限ループになってしまいます。
-適切に <tt class="file docutils literal"><span class="pre">fibonacci.py</span></tt> を改修してください。</p>
-<p>こうしてテストと実装を繰り返すことで境界値条件が明確になり、変更の影響範囲を絞ることが可能になります。</p>
+適切に <tt class="file docutils literal"><span class="pre">fibonacci.py</span></tt> を改修してください。
+こうしてテストと実装を繰り返すことで境界値条件が明確になり、変更の影響範囲を絞ることが可能になります。</p>
 <p>再帰を使ったフィボナッチ数列の実装は、N が 30 くらいから非常に遅くなります。
 数学的な解決策としては、三項間漸化式を解いて N に関する方程式を導出する方法があります。
 Wikipedia のページなどを参考にして、異なる実装を考えてみるのも良いでしょう。</p>
 <p>また、フィボナッチ数列のように繰り返し計算する必要があるものでは
 「メモ化」という技法を採用することもあります。
 こちらも詳しくは Wikipedia のページなどを参考にしてください。
-なお「エキスパート Python」という書籍でもメモ化の実装には触れられています。</p>
+なお「エキスパート Python」という書籍でもメモ化の実装に触れられています。</p>
 </div>
 <div class="section" id="doctest">
 <h2>doctest の実行方法<a class="headerlink" href="#doctest" title="Permalink to this headline">¶</a></h2>
-<p>doctest はテストケースをスクリプトに直接記述します。
-まずはテスト対象となるスクリプトを記述します。
+<p><em>doctest</em> はテストケースをスクリプトに直接記述します。
+コメントの文字列を解析して、インタープリタへの入力と出力を比較してくれます。
+インタープリタで実行した結果をそのままテストとして保存できますので、 比較的簡単に導入できるでしょう。</p>
+<p>まずはテスト対象となるスクリプトを記述します。
 <em>datetime</em> モジュールを使って日付の文字列を変換してみましょう。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/datetime.html">8.1. datetime — Basic date and time types</a> - docs.python.org</li>
+<li><a class="reference external" href="https://docs.python.org/3.4/library/datetime.html">8.1. datetime — Basic date and time types</a> - docs.python.org</li>
 </ul>
 <p>以下のふたつの文字列を <em>datetime</em> オブジェクトに変換し、差分を計算してみます。</p>
 <ul class="simple">
@@ -263,8 +257,8 @@ Wikipedia のページなどを参考にして、異なる実装を考えてみ�
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">,</span> <span class="s">&quot;Argument must be string&quot;</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">))</span>
-    <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">dt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
+    <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">))</span>
+    <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">dt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
 
 
@@ -274,16 +268,16 @@ Wikipedia のページなどを参考にして、異なる実装を考えてみ�
     <span class="n">d1</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_1</span><span class="p">)</span>
     <span class="n">d2</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_2</span><span class="p">)</span>
     <span class="n">diff</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span>
-    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> ==&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">TEST_1</span><span class="p">,</span> <span class="n">TEST_2</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&quot;DIFF: days=</span><span class="si">%d</span><span class="s">, seconds=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} ==&gt; {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TEST_1</span><span class="p">,</span> <span class="n">TEST_2</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;DIFF: days={}, seconds={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
 
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python datestring_convert.py
-2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900
-DIFF: days=0, seconds=11372
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python datestring_convert.py
+2012-01-14 07:56:02 <span class="o">==</span>&gt; 2012-01-14 04:46:30 +0900
+DIFF: <span class="nv">days</span><span class="o">=</span>0, <span class="nv">seconds</span><span class="o">=</span>11372
 </pre></div>
 </div>
 <p>次に、 <tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__':</span></tt> の部分をインタープリタで実行します。
@@ -296,14 +290,16 @@ DIFF: days=0, seconds=11372
 <span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">diff</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> ==&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">TEST_1</span><span class="p">,</span> <span class="n">TEST_2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s">&quot;{} ==&gt; {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TEST_1</span><span class="p">,</span> <span class="n">TEST_2</span><span class="p">))</span>
 <span class="go">2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;DIFF: days=</span><span class="si">%d</span><span class="s">, seconds=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s">&quot;DIFF: days={}, seconds={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span><span class="p">))</span>
 <span class="go">DIFF: days=0, seconds=11372</span>
 </pre></div>
 </div>
 <p>正常に実行できることを確認できたら、メソッドのコメントに <em>そのまま</em> 貼り付けます。
-(<tt class="docutils literal"><span class="pre">&gt;&gt;&gt;</span></tt> プロンプトも含めて「そのまま」です)</p>
+(<tt class="docutils literal"><span class="pre">&gt;&gt;&gt;</span></tt> プロンプトも含めて「そのまま」です)
+使い方としてのドキュメントであり、同時にテストケースにもなる点が <em>doctest</em> のメリットです。
+スクリプトを直接実行したときにテストが実行されるように、main ブロックで <tt class="docutils literal"><span class="pre">doctest.testmod()</span></tt> を呼び出しておきましょう。</p>
 <p><tt class="file docutils literal"><span class="pre">datestring_convert_with_test.py</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
@@ -314,85 +310,44 @@ DIFF: days=0, seconds=11372
 <span class="k">def</span> <span class="nf">datestring_convert</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert datetime string which appears in subversion commit log.</span>
 
-<span class="sd">    &gt;&gt;&gt; from datestring_convert import datestring_convert</span>
 <span class="sd">    &gt;&gt;&gt; TEST_1 = &quot;2012-01-14 07:56:02&quot;</span>
 <span class="sd">    &gt;&gt;&gt; TEST_2 = &quot;2012-01-14 04:46:30 +0900&quot;</span>
 <span class="sd">    &gt;&gt;&gt; d1 = datestring_convert(TEST_1)</span>
 <span class="sd">    &gt;&gt;&gt; d2 = datestring_convert(TEST_2)</span>
 <span class="sd">    &gt;&gt;&gt; diff = d1 - d2</span>
-<span class="sd">    &gt;&gt;&gt; print &quot;%s ==&gt; %s&quot; % (TEST_1, TEST_2)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;{} ==&gt; {}&quot;.format(TEST_1, TEST_2))</span>
 <span class="sd">    2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900</span>
-<span class="sd">    &gt;&gt;&gt; print &quot;DIFF: days=%d, seconds=%d&quot; % (diff.days, diff.seconds)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;DIFF: days={}, seconds={}&quot;.format(diff.days, diff.seconds))</span>
 <span class="sd">    DIFF: days=0, seconds=11372</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">,</span> <span class="s">&quot;Argument must be string&quot;</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">))</span>
-    <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">dt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
+    <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">dt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">))</span>
+    <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">dt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">TEST_1</span> <span class="o">=</span> <span class="s">&quot;2012-01-14 07:56:02&quot;</span>
-    <span class="n">TEST_2</span> <span class="o">=</span> <span class="s">&quot;2012-01-14 04:46:30 +0900&quot;</span>
-    <span class="n">d1</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_1</span><span class="p">)</span>
-    <span class="n">d2</span> <span class="o">=</span> <span class="n">datestring_convert</span><span class="p">(</span><span class="n">TEST_2</span><span class="p">)</span>
-    <span class="n">diff</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span>
-    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> ==&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">TEST_1</span><span class="p">,</span> <span class="n">TEST_2</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&quot;DIFF: days=</span><span class="si">%d</span><span class="s">, seconds=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
 
 <span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
 </pre></div>
 </div>
-<p>Python の <em>doctest</em> モジュールにスクリプトを渡してみます。</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python -m doctest datestring_convert_with_test.py
+<p>Python の <em>doctest</em> モジュールにスクリプトを渡してみます。
+Python モジュールの実行例としても分かりやすいですね。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m doctest datestring_convert_with_test.py
 </pre></div>
 </div>
 <p>何も表示されずに終了しました。
-テストが正常に実行され、すべてのテストがパスしたのです。</p>
-<p>試しに、テスト文字列を変更して試してみてください。
-(コメントにある TEST_1 変数の値を変えてみます。)</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python -m doctest datestring_convert_with_test.py
-**********************************************************************
-File &quot;datestring_convert_with_test.py&quot;, line 16, in datestring_convert_with_test.datestring_convert
-Failed example:
-    print &quot;%s ==&gt; %s&quot; % (TEST_1, TEST_2)
-Expected:
-    2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900
-Got:
-    2012-01-14 07:56:01 ==&gt; 2012-01-14 04:46:30 +0900
-**********************************************************************
-File &quot;datestring_convert_with_test.py&quot;, line 18, in datestring_convert_with_test.datestring_convert
-Failed example:
-    print &quot;DIFF: days=%d, seconds=%d&quot; % (diff.days, diff.seconds)
-Expected:
-    DIFF: days=0, seconds=11372
-Got:
-    DIFF: days=0, seconds=11371
-**********************************************************************
-1 items had failures:
-   2 of   8 in datestring_convert_with_test.datestring_convert
-***Test Failed*** 2 failures.
+テストが正常に実行され、すべてのテストがパスしたのです。
+詳細なログが欲しい場合は <tt class="docutils literal"><span class="pre">-v</span></tt> オプションを付けてください。
+実行する処理と期待値が列挙されます。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m doctest -v datestring_convert_with_test.py
+<span class="o">(</span> ... 出力が大量なので省略 ... <span class="o">)</span>
 </pre></div>
 </div>
-<p>テストが失敗していることが分かります。
-doctest モジュールはコメントの文字列を解析して、
-インタープリタへの入力と出力を比較してくれるのです。
-上記の手順のように、インタープリタで実行した結果をそのままテストとして保存できますので、
-比較的簡単に導入できるでしょう。</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>スクリプトを直接実行したときにもテストが実行されるようにできます。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">doctest</span>
-    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>doctest モジュールを実行した場合の詳細なログが欲しい場合は <tt class="docutils literal"><span class="pre">-v</span></tt> オプションを付けます。</p>
-<div class="last highlight-python"><div class="highlight"><pre>$ python -m doctest -v datestring_convert_with_test.py
-</pre></div>
-</div>
-</div>
+<p>試しにテスト文字列を変更してから実行すると、テストが失敗することを確認できます。</p>
 <p>文字列を日付型に変換するためには <tt class="docutils literal"><span class="pre">strptime()</span></tt> も使えます。
 テストケースはそのままで、実装を変更してみてください。
 テストを記述しておくことによって外部仕様はそのままに、内部仕様を変更していくことが可能になります。</p>
@@ -414,7 +369,7 @@ doctest モジュールはコメントの文字列を解析して、
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

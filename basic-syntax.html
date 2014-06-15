@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>基本的な文法 &mdash; Python School 1.5.2 documentation</title>
+    <title>基本的な文法 &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,13 +23,13 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="index.html" />
     <link rel="next" title="基本的なスクリプト" href="scripts/index.html" />
     <link rel="prev" title="はじめの一歩" href="getting-started.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>基本的な文法</span></h2>
       </div>
       <div class="topnav">
@@ -51,7 +51,7 @@
 <p>基本的な文法を速足で確認します。
 丁寧に追いかけたい場合は公式のチュートリアルを参考にしてください。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.python.jp/doc/release/tutorial/">Python チュートリアル</a></li>
+<li><a class="reference external" href="http://docs.python.jp/3/tutorial/">Python チュートリアル</a></li>
 </ul>
 <div class="section" id="id2">
 <h2>条件分岐と繰り返し<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -65,24 +65,24 @@ Google の場合は半角空白２文字のようです。
 &#8220;#&#8221; 記号以降はコメントです。入力しないでください。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>             <span class="c"># time モジュールをインポート</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>       <span class="c"># time モジュールの time 関数を実行し、結果を変数 now に保存</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">now</span>               <span class="c"># now の値を表示</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>              <span class="c"># now の値を表示</span>
 <span class="go">1322531056.483</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">now</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>   <span class="c"># now が３で割り切れる場合</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;A&quot;</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">now</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># now を３で割ると１余る場合</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;B&quot;</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">else</span><span class="p">:</span>                   <span class="c"># 上記以外の場合</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;C&quot;</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">)</span>
 <span class="gp">... </span>                        <span class="c"># エンターを押す</span>
 <span class="go">B</span>
 </pre></div>
 </div>
-<p>インタラクティブシェルから抜けるには <tt class="docutils literal"><span class="pre">Ctrl+Z</span></tt> を入力してエンターを押します。</p>
+<p>インタラクティブシェルから抜けるには <tt class="docutils literal"><span class="pre">Ctrl+D</span></tt> (Windows の場合は <tt class="docutils literal"><span class="pre">Ctrl+Z</span></tt>) を入力してエンターを押します。</p>
 <p>繰り返し処理には <tt class="docutils literal"><span class="pre">for</span></tt> を使います。
 Java の拡張 for 文のように、オブジェクトのイテレーターを使って要素を走査します。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>     <span class="c"># range は組み込み関数</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="n">i</span>
-<span class="gp">... </span>                        <span class="c"># エンターを押す</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="gp">... </span>                       <span class="c"># エンターを押す</span>
 <span class="go">0</span>
 <span class="go">1</span>
 <span class="go">2</span>
@@ -92,27 +92,25 @@ Java の拡張 for 文のように、オブジェクトのイテレーターを�
 </div>
 <p>Python のコードを読み書きしていると、 <tt class="docutils literal"><span class="pre">for</span></tt> 文にはたくさんの書き方があるように感じるかもしれません。
 気になる場合はイテレーターやジェネレーターという考え方を学習してください。</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>予約語、標準モジュール</p>
 <p>Python の特徴として、予約語が少なく標準モジュールが充実していることが挙げられます。
-上述のサンプルでは、 <tt class="docutils literal"><span class="pre">import</span></tt> や <tt class="docutils literal"><span class="pre">print</span></tt> 、それから <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt> などが予約語で、 <tt class="docutils literal"><span class="pre">time</span></tt> が標準モジュールです。</p>
-<p>予約語の一覧はドキュメントで確認してください。</p>
+上述のサンプルでは、 <tt class="docutils literal"><span class="pre">import</span></tt> や <tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">elif</span></tt>, <tt class="docutils literal"><span class="pre">else</span></tt>, <tt class="docutils literal"><span class="pre">for</span></tt> などが予約語、
+<tt class="docutils literal"><span class="pre">print</span></tt> と <tt class="docutils literal"><span class="pre">range</span></tt> は組み込み関数、それから <tt class="docutils literal"><span class="pre">time</span></tt> が標準モジュールです。</p>
+<p>予約語と組み込み関数の一覧はドキュメントで確認してください。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#keywords">2.3.1. Keywords</a> (The Python Language Reference)</li>
+<li><a class="reference external" href="https://docs.python.org/3/reference/lexical_analysis.html#keywords">2.3.1. Keywords</a> (公式ドキュメント - 予約語)</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/functions.html">2. Built-in Functions</a> (公式ドキュメント - 組み込み関数)</li>
 </ul>
-<p>標準モジュールは使いながら覚えていきましょう。
+<p>標準モジュールはたくさんありますので使いながら覚えていきましょう。
 網羅的に学習したい場合には PyMOTW を読んでください。</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.doughellmann.com/PyMOTW/contents.html">Python Module of the Week</a></li>
 </ul>
-<p>また、組み込み関数もあります。
-組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>組み込み関数の上書き</p>
+<p class="last">組み込み関数と同じ名前の変数や関数を定義してもエラーにはなりませんが、
 多くの場合に予期せぬ振る舞いになってしまうでしょう。
-この一覧に掲載されている文字列を変数名や関数名には使わないでください。</p>
-<ul class="last simple">
-<li><a class="reference external" href="http://docs.python.org/library/functions.html">2. Built-in Functions</a> (公式ドキュメント)</li>
-</ul>
+上記の一覧に掲載されている文字列を変数名や関数名には使わないでください。</p>
 </div>
 <p><tt class="docutils literal"><span class="pre">if</span></tt> と <tt class="docutils literal"><span class="pre">for</span></tt> は後置することも可能です。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
@@ -134,9 +132,9 @@ Python の場合は <tt class="docutils literal"><span class="pre">try-except</s
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;Success&quot;</span>
-<span class="gp">... </span><span class="k">except</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;Error&quot;</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Success&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Error&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">Error</span>
 </pre></div>
@@ -162,38 +160,135 @@ Java の場合と同じように Python でも <tt class="docutils literal"><spa
 <ul class="simple">
 <li>Python 2.4 だと <tt class="docutils literal"><span class="pre">except</span></tt> と <tt class="docutils literal"><span class="pre">finally</span></tt> を同時に使えない。</li>
 <li>Python 2.4 だと後置IF文を使えない。</li>
-<li>Python 3.x では <tt class="docutils literal"><span class="pre">print()</span></tt> 文になる。</li>
-<li>標準モジュールが異なる。 (e.g. <em>json</em> が無い、など)</li>
+<li>Python 2.x では <tt class="docutils literal"><span class="pre">print</span></tt> 節、Python 3.x からは <tt class="docutils literal"><span class="pre">print()</span></tt> 文になる。</li>
+<li>標準モジュールが異なる。 (e.g. <em>json</em> は Python 2.6 以降、など)</li>
 <li>同じモジュールでもプロパティに違いがある。</li>
 <li>バージョンが古いと <cite>with</cite> を使えない。</li>
 <li>例外を補足する処理の記述方法が異なる。 (<tt class="docutils literal"><span class="pre">as</span></tt> を使うか否か)</li>
 <li>文字列に関するデータ型の発展が非常にややこしい。 (<tt class="docutils literal"><span class="pre">str</span></tt>, <tt class="docutils literal"><span class="pre">unicode</span></tt>, <tt class="docutils literal"><span class="pre">byte</span></tt>)</li>
 </ul>
+<p>こうした構文の違いをいちいち考慮するのは大変です。
+既存の Python 2.x 系のソースコードを Python 3.x 系に変換する場合は <strong class="command">2to3</strong> コマンド
+(<a class="reference external" href="https://docs.python.org/3/library/2to3.html">26.6. 2to3 - Automated Python 2 to 3 code translation</a>)、
+これから両方のバージョンに対応する場合は <a class="reference external" href="http://pythonhosted.org/six/">six</a> を使いましょう。</p>
 </div>
 <div class="section" id="id5">
 <h2>構文と規約<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP 8</a> (<a class="reference external" href="http://oldriver.org/python/pep-0008j.html">PEP 8 日本語</a>) で Style Guide for Python Code が定義されています。
-違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながりますので、
-できるだけ従うようにしましょう。</p>
-<p>ソースコードが PEP 8 に従っているかをチェックするツールもあります。
+違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながります。
+ソースコードが PEP 8 に従っているかをチェックするツール <a class="reference external" href="https://pypi.python.org/pypi/pep8">pep8</a> もあります。
 コードをコミットする前にチェッカーを実行する習慣を身につけてください。
 エディタのプラグインとして組込めるものもあります。
-例えば、Sublime Text を使っている場合は <a class="reference external" href="https://github.com/SublimeLinter/SublimeLinter">SublimeLinter</a> があります。</p>
+例えば、Sublime Text を使っている場合は <a class="reference external" href="https://github.com/SublimeLinter/SublimeLinter">SublimeLinter</a> があります。
+その他のエディタや IDE でも同様のツールがあるはずですので、まずは検索してみてください。</p>
+<p>ここでは例示として、以下のようなソースコード (<tt class="file docutils literal"><span class="pre">first-sample.py</span></tt>) を用意します。</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">print</span><span class="p">(</span><span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">40</span> <span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
+<span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;a=</span><span class="si">%d</span><span class="s">, b=</span><span class="si">%d</span><span class="s">, a+b=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span>  <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">))</span>
+<span class="n">p</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="p">:</span>
+  <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
+<span class="n">p</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+</pre></div>
+</td></tr></table></div>
+<p>実行すると以下の結果を得られます。</p>
+<div class="highlight-python"><div class="highlight"><pre>========================================
+Hello World.
+a=1, b=2, a+b=3
+a=2, b=1, a+b=3
+</pre></div>
+</div>
+<p>なんとなく動きはしますが、このソースコードの表記は不揃いです。
+チーム開発の場合はソースコード規約策定に関する活発な議論を始めるのも良いでしょうが、
+既存のルールとそれをチェックするツールも開発されています。まずはそれらを使ってみましょう。</p>
 <div class="section" id="id7">
-<h3>モジュールのインストール<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>PyPI に pep8 というモジュールがあります。
-引数として Python ファイルを与えると、規約に違反していないかを確認してくれます。</p>
-<p><strong class="command">pip</strong> を使ってインストールします。</p>
+<h3>pep8 による構文チェック<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>PyPI から pep8 モジュールをインストールします。
+<strong class="command">pip</strong> を使ってインストールします。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; pip install pep8
 </pre></div>
 </div>
-<p>論理的な整合性も確認してくれるツールとして <a class="reference external" href="http://pypi.python.org/pypi/pyflakes">pyflakes</a> があります。</p>
-<p><strong class="command">pip</strong> を使ってインストールします。</p>
+<p>Windows の場合は <tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダ、Linux などの場合は <tt class="file docutils literal"><span class="pre">bin</span></tt> に
+<strong class="command">pep8</strong> がインストールされます。</p>
+<p><strong class="command">pep8</strong> を実行してみます。</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pep8 first-sample.py
+first-sample.py:1:15: E202 whitespace before &#39;)&#39;
+first-sample.py:2:9: E231 missing whitespace after &#39;,&#39;
+first-sample.py:3:1: E302 expected 2 blank lines, found 0
+first-sample.py:4:33: E222 multiple spaces after operator
+first-sample.py:5:3: E201 whitespace after &#39;(&#39;
+first-sample.py:6:9: E203 whitespace before &#39;:&#39;
+first-sample.py:7:3: E111 indentation is not a multiple of four
+first-sample.py:8:7: E225 missing whitespace around operator
+first-sample.py:9:10: E401 multiple imports on one line
+</pre></div>
+</div>
+<p>空白の有無についてエラーを表示してくれます。
+エラーメッセージからも分かりますが、
+<a class="reference external" href="http://pep8.readthedocs.org/en/latest/intro.html#error-codes">エラーコードの一覧</a> を見ると、それぞれ以下の意味だと分かります。
+100番台はインデントに関すること、200番台は空白に関すること、
+300番台は空行に関すること、400番台は import に関することです。</p>
+<table border="1" class="docutils">
+<caption>Error codes から抜粋</caption>
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">コード</th>
+<th class="head">サンプルメッセージ</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>E111</td>
+<td>indentation is not a multiple of four</td>
+</tr>
+<tr class="row-odd"><td>E201</td>
+<td>whitespace after &#8216;(&#8216;</td>
+</tr>
+<tr class="row-even"><td>E202</td>
+<td>whitespace before &#8216;)&#8217;</td>
+</tr>
+<tr class="row-odd"><td>E203</td>
+<td>whitespace before &#8216;:&#8217;</td>
+</tr>
+<tr class="row-even"><td>E222</td>
+<td>multiple spaces after operator</td>
+</tr>
+<tr class="row-odd"><td>E225</td>
+<td>missing whitespace around operator</td>
+</tr>
+<tr class="row-even"><td>E231</td>
+<td>missing whitespace after &#8216;,&#8217;</td>
+</tr>
+<tr class="row-odd"><td>E302</td>
+<td>expected 2 blank lines, found 0</td>
+</tr>
+<tr class="row-even"><td>E401</td>
+<td>multiple imports on one line</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pyflakes">
+<h3>pyflakes による規約チェック<a class="headerlink" href="#pyflakes" title="Permalink to this headline">¶</a></h3>
+<p>論理的な整合性も確認してくれるツールとして <a class="reference external" href="http://pypi.python.org/pypi/pyflakes">pyflakes</a> があります。
+<strong class="command">pip</strong> を使って PyPI からインストールします。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; pip install pyflakes
 </pre></div>
 </div>
-<p>いずれも <tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダ (Linux などの場合は <tt class="file docutils literal"><span class="pre">bin</span></tt>) に
-<strong class="command">pep8</strong> と <strong class="command">pyflakes</strong> がインストールされます。</p>
+<p>Windows の場合は <tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダ、Linux などの場合は <tt class="file docutils literal"><span class="pre">bin</span></tt> に
+<strong class="command">pyflakes</strong> がインストールされます。</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Windows 環境の場合は、 pyflakes スクリプトを直接実行できません。
@@ -205,41 +300,14 @@ C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflake
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="id8">
-<h3>構文チェッカーの実行<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<p><tt class="file docutils literal"><span class="pre">first-sample.py</span></tt> という Python ファイルを用意します。</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">print</span> <span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">78</span>
-<span class="k">print</span> <span class="s">&quot;Hello World.&quot;</span>
-<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
-<span class="k">print</span> <span class="s">&quot;a=</span><span class="si">%d</span><span class="s">, b=</span><span class="si">%d</span><span class="s">, a+b=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
-<span class="k">print</span> <span class="s">&quot;a=</span><span class="si">%d</span><span class="s">, b=</span><span class="si">%d</span><span class="s">, a+b=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-</pre></div>
-</td></tr></table></div>
-<p><strong class="command">pep8</strong> を実行してみます。</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; pep8 first-sample.py
-first-sample.py:3:7: E222 multiple spaces after operator
-first-sample.py:6:32: E231 missing whitespace after &#39;,&#39;
-</pre></div>
-</div>
-<p>3行目と6行目に余計な空白が混入していることが分かります。</p>
-<p><strong class="command">pyflakes</strong> を実行してみます。</p>
+<p><strong class="command">pyflakes</strong> を上記の <tt class="file docutils literal"><span class="pre">first-sample.py</span></tt> に対して実行してみます。</p>
 <div class="highlight-python"><div class="highlight"><pre>&gt; pyflakes first-sample.py
-first-sample.py:8: &#39;os&#39; imported but unused
+first-sample.py:9: &#39;os&#39; imported but unused
+first-sample.py:9: &#39;sys&#39; imported but unused
 </pre></div>
 </div>
 <p>空白にはノータッチですが、使っていない <cite>import</cite> 文を検知してくれます。</p>
-<p>このふたつを組み合わせたものとして <strong class="command">flake8</strong> があります。
+<p>このふたつを組み合わせたものとして <strong class="command">flake8</strong> (<a class="reference external" href="https://pypi.python.org/pypi/flake8">flake8</a>) があります。
 <strong class="command">pip</strong> で簡単にインストールできますので、既存のコードがある場合も新規にプロジェクトを作成する場合も、
 日常的に構文チェッカーが実行されるようにしておきましょう。</p>
 <p>次は、もう少し実際的なスクリプトを記述していきます。</p>
@@ -262,7 +330,7 @@ first-sample.py:8: &#39;os&#39; imported but unused
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

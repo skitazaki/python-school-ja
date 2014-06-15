@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ファイルの一覧を確認する &mdash; Python School 1.5.2 documentation</title>
+    <title>ファイルの一覧を確認する &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="コマンドライン操作" href="index.html" />
     <link rel="next" title="ファイルシステムの階層を辿る" href="cmdline-2.html" />
     <link rel="prev" title="コマンドライン操作" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>ファイルの一覧を確認する</span></h2>
       </div>
       <div class="topnav">
@@ -51,7 +51,7 @@
 <h1>ファイルの一覧を確認する<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <p><cite>os</cite> モジュールを使って、カレントディレクトリのファイルを確認します。</p>
 <ul class="simple">
-<li><a class="reference external" href="http://docs.python.org/library/os.html">15.1. os — Miscellaneous operating system interfaces</a></li>
+<li><a class="reference external" href="https://docs.python.org/3.4/library/os.html">16.1. os — Miscellaneous operating system interfaces</a></li>
 </ul>
 <div class="section" id="id2">
 <h2>ファイル一覧を取得する<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -70,80 +70,52 @@
 <span class="go">1323302266.0</span>
 </pre></div>
 </div>
-<p>Unix タイムスタンプが返ってきますが、 <cite>datetime</cite> モジュールでラップすることで、
-表示するときに扱いやすくなります。</p>
+<p>Unix タイムスタンプが返ってきますが、 <cite>datetime</cite> モジュールでラップすると他の処理と組み合わせやすくなります。
+文字列にするときは <cite>strftime()</cite> に書式文字列を指定しましょう。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="s">&quot;README.rst&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="go">datetime.datetime(2011, 12, 8, 8, 57, 46)</span>
+<span class="go">datetime.datetime(2013, 12, 5, 0, 59, 49)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">_</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">)</span>
-<span class="go">&#39;2011-12-08&#39;</span>
+<span class="go">&#39;2013-12-05&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id4">
 <h2>ファイル一覧をソートする<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>ファイルの一覧を最終更新時刻でソートします。
-リストには <tt class="docutils literal"><span class="pre">sort()</span></tt> メソッドがありますが、これには比較関数を与えることができます。
-詳しくはこちらの記事を参照してください。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.python.jp/Zope/articles/tips/sorthowto">Sorting Mini-HOWTO （和訳）</a></li>
-</ul>
-<p>比較関数はリスト内のふたつの要素を比較しますので、最終更新時刻の差を考えます。
-昇順と降順を切り替える場合は引き算の順番を入れ替えます。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">timestamp_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-<span class="gp">...</span>
-</pre></div>
-</div>
-<p>これを <tt class="docutils literal"><span class="pre">sort()</span></tt> の引数に渡します。</p>
+リストには <tt class="docutils literal"><span class="pre">sort()</span></tt> メソッドがありますが、これには比較属性を与えることができます。
+元のリストを変更したくない場合は組み込み関数 <tt class="docutils literal"><span class="pre">sorted()</span></tt> を利用してください。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">timestamp_sort</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span>
-<span class="go">[&#39;.Python&#39;, &#39;include&#39;, &#39;lib&#39;, &#39;man&#39;, &#39;etc&#39;, &#39;README.rst&#39;, &#39;requirements.txt&#39;, &#39;bin&#39;, &#39;python-shool-ja-1.0.0.tar.bz2&#39;, &#39;.lock-waf_darwin_build&#39;, &#39;wscript&#39;, &#39;_build&#39;, &#39;.gitignore&#39;, &#39;.git&#39;, &#39;src&#39;, &#39;doc&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>わざわざ関数を定義するのが煩雑な場合には lambda 式を渡します。</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span>
-<span class="go">[&#39;.Python&#39;, &#39;include&#39;, &#39;lib&#39;, &#39;man&#39;, &#39;etc&#39;, &#39;README.rst&#39;, &#39;requirements.txt&#39;, &#39;bin&#39;, &#39;python-shool-ja-1.0.0.tar.bz2&#39;, &#39;.lock-waf_darwin_build&#39;, &#39;wscript&#39;, &#39;_build&#39;, &#39;.gitignore&#39;, &#39;.git&#39;, &#39;src&#39;, &#39;doc&#39;]</span>
-</pre></div>
-</div>
+<p>Python 2.x 系と Python 3.x 系では比較関数の書き方が異なります。
+移植する場合とリファレンスを読む場合は注意して実装に移すようにしてください。
+詳しくはこちらの記事を読んでみましょう。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python.jp/3.3/howto/sorting.html">ソート HOW TO</a></li>
+</ul>
 </div>
 <div class="section" id="id5">
 <h2>まとめ<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>以上をまとめて、カレントディレクトリのファイルとディレクトリの最終更新日時を表示させましょう。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-30s</span><span class="se">\t</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y/%m/</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="go">.Python                         2011/07/25 23:31:55</span>
-<span class="go">include                         2011/12/06 21:49:32</span>
-<span class="go">lib                             2011/12/06 21:49:32</span>
-<span class="go">man                             2011/12/06 21:56:40</span>
-<span class="go">etc                             2011/12/08 01:31:36</span>
-<span class="go">README.rst                      2011/12/08 08:57:46</span>
-<span class="go">requirements.txt                2011/12/09 00:58:53</span>
-<span class="go">bin                             2011/12/09 01:00:20</span>
-<span class="go">python-shool-ja-1.0.0.tar.bz2   2011/12/09 01:08:46</span>
-<span class="go">.lock-waf_darwin_build          2011/12/09 01:18:18</span>
-<span class="go">wscript                         2011/12/09 01:18:59</span>
-<span class="go">_build                          2011/12/09 01:19:00</span>
-<span class="go">.gitignore                      2011/12/09 01:20:41</span>
-<span class="go">.git                            2011/12/09 23:53:00</span>
-<span class="go">src                             2011/12/09 23:53:00</span>
-<span class="go">doc                             2011/12/10 00:27:51</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:30}</span><span class="se">\t</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y/%m/</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
+<p>ファイル名をさらに解析して処理を切り替える場面では、シェルスクリプトよりも Python の方が書きやすいことが多いでしょう。
+ファイル名から拡張子を取得するには <tt class="docutils literal"><span class="pre">os.path.splitext</span></tt> がありますので、
+<em>os</em> モジュールの内容は一通り確認してみましょう。</p>
 </div>
 </div>
 
@@ -162,7 +134,7 @@
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

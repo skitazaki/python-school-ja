@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>組込み関数 (zip / dict) を使う &mdash; Python School 1.5.2 documentation</title>
+    <title>組込み関数 (zip / dict) を使う &mdash; Python School 2.0.0 documentation</title>
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.5.2',
+        VERSION:     '2.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,14 +23,14 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
+    <link rel="top" title="Python School 2.0.0 documentation" href="../index.html" />
     <link rel="up" title="CSV ファイルの処理方法" href="index.html" />
-    <link rel="next" title="ファイル風オブジェクトを意識する" href="csv-5.html" />
+    <link rel="next" title="クラスを定義する" href="csv-5.html" />
     <link rel="prev" title="ユニコード文字列を考慮する" href="csv-3.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Python School 1.5.2 documentation</span></a></h1>
+          <span>Python School 2.0.0 documentation</span></a></h1>
         <h2 class="heading"><span>組込み関数 (zip / dict) を使う</span></h2>
       </div>
       <div class="topnav">
@@ -40,7 +40,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="csv-5.html">ファイル風オブジェクトを意識する</a>&#160;&#160;»
+        <a href="csv-5.html">クラスを定義する</a>&#160;&#160;»
         </p>
 
       </div>
@@ -49,186 +49,235 @@
         
   <div class="section" id="zip-dict">
 <h1>組込み関数 (zip / dict) を使う<a class="headerlink" href="#zip-dict" title="Permalink to this headline">¶</a></h1>
-<p>CSV はデータが単に羅列されたものですから、何番目のフィールドがどのような意味を持つかを教えてあげる必要があります。
-各フィールドの意味は、別の仕様書に記述されている場合と、ファイルの先頭ヘッダーに記述されている場合があります。</p>
-<p>ここでは前者を扱います。
-次のページで後者の方法を扱います。</p>
-<div class="section" id="id1">
-<h2>データの並びがあらかじめ分かっている場合<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>次のような CSV ファイルを考えます。</p>
-<blockquote>
-<div><table border="1" class="docutils">
-<colgroup>
-<col width="39%" />
-<col width="61%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">フィールド番号</th>
-<th class="head">意味</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>1</td>
-<td>順位</td>
-</tr>
-<tr class="row-odd"><td>2</td>
-<td>チーム</td>
-</tr>
-<tr class="row-even"><td>3</td>
-<td>勝点</td>
-</tr>
-<tr class="row-odd"><td>4</td>
-<td>試合</td>
-</tr>
-<tr class="row-even"><td>5</td>
-<td>得失点差</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p><tt class="file docutils literal"><span class="pre">csv-4.csv</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre>1,柏,72,34,+23
-2,名古屋,71,34,+31
-3,Ｇ大阪,70,34,+27
-4,仙台,56,34,+14
-5,横浜FM,56,34,+6
+<p>前の章でファイルの１行目にヘッダー行がある場合のファイル処理を実装しました。
+今度は、組込み関数 (<tt class="docutils literal"><span class="pre">zip</span></tt> / <tt class="docutils literal"><span class="pre">dict</span></tt>) を使って実現してみましょう。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-1.csv</span></tt> に英語でヘッダー行を追加して <tt class="file docutils literal"><span class="pre">csv-4.csv</span></tt> とします。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">day</span><span class="p">,</span><span class="n">price_begin</span><span class="p">,</span><span class="n">price_max</span><span class="p">,</span><span class="n">price_min</span><span class="p">,</span><span class="n">price_end</span>
+<span class="mi">2014</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span><span class="p">,</span><span class="mf">15138.75</span><span class="p">,</span><span class="mf">15144.34</span><span class="p">,</span><span class="mf">15042.59</span><span class="p">,</span><span class="mf">15077.24</span>
+<span class="mi">2014</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">05</span><span class="p">,</span><span class="mf">15112.59</span><span class="p">,</span><span class="mf">15141.14</span><span class="p">,</span><span class="mf">15016.81</span><span class="p">,</span><span class="mf">15079.37</span>
+<span class="mi">2014</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">04</span><span class="p">,</span><span class="mf">15067.41</span><span class="p">,</span><span class="mf">15071.78</span><span class="p">,</span><span class="mf">14985.21</span><span class="p">,</span><span class="mf">15067.96</span>
+<span class="mi">2014</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">03</span><span class="p">,</span><span class="mf">15089.04</span><span class="p">,</span><span class="mf">15091.49</span><span class="p">,</span><span class="mf">15026.01</span><span class="p">,</span><span class="mf">15034.25</span>
+<span class="mi">2014</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">02</span><span class="p">,</span><span class="mf">14777.51</span><span class="p">,</span><span class="mf">14963.91</span><span class="p">,</span><span class="mf">14777.51</span><span class="p">,</span><span class="mf">14935.92</span>
 </pre></div>
+</div>
+<div class="section" id="zip">
+<h2>zip のテスト<a class="headerlink" href="#zip" title="Permalink to this headline">¶</a></h2>
+<p>コンソールで <strong class="command">python</strong> を実行して REPL (<a class="reference external" href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read–eval–print loop</a>) モードに入りましょう。
+インタラクティブに動作を確認できます。</p>
+<p>２つのタプル &#8220;a&#8221;, &#8220;b&#8221; を用意して、それらに <tt class="docutils literal"><span class="pre">zip()</span></tt> を適用させます。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> <span class="o">(</span><span class="s2">&quot;A&quot;</span>, <span class="s2">&quot;B&quot;</span>, <span class="s2">&quot;C&quot;</span><span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">b</span> <span class="o">=</span> <span class="o">(</span>1, 2, 3<span class="o">)</span>
+&gt;&gt;&gt; zip<span class="o">(</span>a, b<span class="o">)</span>
+&lt;zip object at 0x1018e5320&gt;
+&gt;&gt;&gt; <span class="k">for </span>t in zip<span class="o">(</span>a, b<span class="o">)</span>:
+...     t
+...
+<span class="o">(</span><span class="s1">&#39;A&#39;</span>, 1<span class="o">)</span>
+<span class="o">(</span><span class="s1">&#39;B&#39;</span>, 2<span class="o">)</span>
+<span class="o">(</span><span class="s1">&#39;C&#39;</span>, 3<span class="o">)</span>
+</pre></div>
+</div>
+<p>それぞれの同じインデックスにある要素をまとめていることが分かりました。</p>
+</div>
+<div class="section" id="dict">
+<h2>dict のテスト<a class="headerlink" href="#dict" title="Permalink to this headline">¶</a></h2>
+<p>次に、 <tt class="docutils literal"><span class="pre">dict()</span></tt> を使ってみます。
+引数には配列の配列（多次元配列）を渡します。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> <span class="o">((</span><span class="s1">&#39;A&#39;</span>, 1<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;B&#39;</span>, 2<span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;C&#39;</span>, 3<span class="o">))</span>
+&gt;&gt;&gt; dict<span class="o">(</span>a<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;A&#39;</span>: 1, <span class="s1">&#39;B&#39;</span>: 2, <span class="s1">&#39;C&#39;</span>: 3<span class="o">}</span>
+</pre></div>
+</div>
+<p>先ほどの <tt class="docutils literal"><span class="pre">zip()</span></tt> と合わせて考えると、
+２つの配列から、それぞれのインデックス番号でまとめた辞書オブジェクトを生成できました。</p>
+</div>
+<div class="section" id="id1">
+<h2>実装の改修<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>列の情報を辞書で保持し、名称とデータ型を持つようにします。
+そして、入力行に対して <tt class="docutils literal"><span class="pre">zip</span></tt> と <tt class="docutils literal"><span class="pre">dict</span></tt> を適用することで辞書オブジェクトに変換します。
+辞書で扱うと、ソースコード内のマジックナンバーを少なく保てるメリットがあります。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-2.py</span></tt> を改修して <tt class="file docutils literal"><span class="pre">csv-4.py</span></tt> としています。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>  <span class="c"># import standard &quot;csv&quot; module</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># Declare fields definition.</span>
+<span class="n">FIELDS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;day&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;string&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_begin&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_max&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_min&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;price_end&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;float&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse arguments and set up logging verbosity.</span>
+
+<span class="sd">    :rtype: parsed arguments as Namespace object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filename&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;setting file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;output file&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&quot;FILE&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--dryrun&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dryrun&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;dry run&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;verbose mode&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-q&quot;</span><span class="p">,</span> <span class="s">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;quiet&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;quiet mode&quot;</span><span class="p">)</span>
+    <span class="c"># Add this line from boilerplate.</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--header&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;contains header row&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;--encoding&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;encoding&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&quot;Encoding of input file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;filename&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;CSV file path&quot;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">args</span>
+
+
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse daily Tokyo stock prices, and calculate up/down.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span> <span class="n">FIELDS</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">encoding</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>  <span class="c"># Instantiate CSV reader with file pointer.</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">header</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Skip header row: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;No header row is to be in input file.&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>  <span class="c"># Bind header and row</span>
+            <span class="c"># Calculate the differenciate of the day.</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="s">&#39;price_end&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="s">&#39;price_begin&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;up&#39;</span>
+            <span class="k">elif</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;down&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;same&#39;</span>
+            <span class="c"># Write out day, up/down/same, and diff.</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;{}</span><span class="se">\t</span><span class="s">{:5}</span><span class="se">\t</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dt</span><span class="p">[</span><span class="s">&#39;day&#39;</span><span class="p">],</span> <span class="n">message</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+</pre></div>
+</div>
+<p>ヘッダー行付きの <tt class="file docutils literal"><span class="pre">csv-4.csv</span></tt> を読み込む場合は <cite>&#8211;header</cite> オプションを付けて実行し、
+ヘッダー行無しの <tt class="file docutils literal"><span class="pre">csv-1.csv</span></tt> を読み込む場合はオプションを付けずに実行します。</p>
+<p><tt class="file docutils literal"><span class="pre">csv-2.py</span></tt> からの差分は以下の通りです。
+組み込み関数 <tt class="docutils literal"><span class="pre">next()</span></tt> を使って１行だけ読み込む処理も記載していますので、確認しておきましょう。</p>
+<div class="highlight-diff"><div class="highlight"><pre><span class="gu">@@ -8,6 +8,15 @@</span>
+ import csv  # import standard &quot;csv&quot; module
+ import logging
+
+<span class="gi">+# Declare fields definition.</span>
+<span class="gi">+FIELDS = (</span>
+<span class="gi">+    {&#39;id&#39;: &#39;day&#39;, &#39;type&#39;: &#39;string&#39;},</span>
+<span class="gi">+    {&#39;id&#39;: &#39;price_begin&#39;, &#39;type&#39;: &#39;float&#39;},</span>
+<span class="gi">+    {&#39;id&#39;: &#39;price_max&#39;, &#39;type&#39;: &#39;float&#39;},</span>
+<span class="gi">+    {&#39;id&#39;: &#39;price_min&#39;, &#39;type&#39;: &#39;float&#39;},</span>
+<span class="gi">+    {&#39;id&#39;: &#39;price_end&#39;, &#39;type&#39;: &#39;float&#39;}</span>
+<span class="gi">+)</span>
+<span class="gi">+</span>
+
+ def parse_args():
+     &quot;&quot;&quot;Parse arguments and set up logging verbosity.
+<span class="gu">@@ -26,6 +35,10 @@</span>
+     parser.add_argument(&quot;-q&quot;, &quot;--quiet&quot;, dest=&quot;quiet&quot;, default=False,
+                         action=&quot;store_true&quot;, help=&quot;quiet mode&quot;)
+     # Add this line from boilerplate.
+<span class="gi">+    parser.add_argument(&quot;--header&quot;, dest=&quot;header&quot;, default=False,</span>
+<span class="gi">+                        action=&quot;store_true&quot;, help=&quot;contains header row&quot;)</span>
+<span class="gi">+    parser.add_argument(&quot;--encoding&quot;, dest=&quot;encoding&quot;, default=&#39;utf-8&#39;,</span>
+<span class="gi">+                        help=&quot;Encoding of input file&quot;)</span>
+     parser.add_argument(&quot;filename&quot;, nargs=1, help=&quot;CVS file path&quot;)
+
+     args = parser.parse_args()
+<span class="gu">@@ -41,17 +54,18 @@</span>
+ def process(args):
+     &quot;&quot;&quot;Parse daily Tokyo stock prices, and calculate up/down.
+     &quot;&quot;&quot;
+<span class="gd">-    with open(args.filename[0]) as fp:</span>
+<span class="gi">+    header = tuple(map(lambda f: f[&#39;id&#39;], FIELDS))</span>
+<span class="gi">+    with open(args.filename[0], encoding=args.encoding) as fp:</span>
+         reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+<span class="gi">+        if args.header:</span>
+<span class="gi">+            _ = next(reader)</span>
+<span class="gi">+            logging.info(&#39;Skip header row: %s&#39;, _)</span>
+<span class="gi">+        else:</span>
+<span class="gi">+            logging.info(&#39;No header row is to be in input file.&#39;)</span>
+         for t in reader:
+<span class="gd">-            # Assign each field on individual variables.</span>
+<span class="gd">-            day = t[0]</span>
+<span class="gd">-            price_begin = float(t[1])</span>
+<span class="gd">-            price_max = float(t[2])</span>
+<span class="gd">-            price_min = float(t[3])</span>
+<span class="gd">-            price_end = float(t[4])</span>
+<span class="gi">+            dt = dict(zip(header, t))  # Bind header and row</span>
+             # Calculate the differenciate of the day.
+<span class="gd">-            diff = price_end - price_begin</span>
+<span class="gi">+            diff = float(dt[&#39;price_end&#39;]) - float(dt[&#39;price_begin&#39;])</span>
+             if diff &gt; 0:
+                 message = &#39;up&#39;
+             elif diff &lt; 0:
+<span class="gu">@@ -59,7 +73,7 @@</span>
+             else:
+                 message = &#39;same&#39;
+             # Write out day, up/down/same, and diff.
+<span class="gd">-            print(&#39;{}\t{:5}\t{}&#39;.format(day, message, round(diff, 2)))</span>
+<span class="gi">+            print(&#39;{}\t{:5}\t{}&#39;.format(dt[&#39;day&#39;], message, round(diff, 2)))</span>
+
+
+ def main():
+</pre></div>
+</div>
 </div>
 <div class="section" id="id2">
-<h3>辞書データに変換<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>データの並びに意味をマップさせるには、 <tt class="docutils literal"><span class="pre">zip()</span></tt> と <tt class="docutils literal"><span class="pre">dict()</span></tt> を組み合わせることで実現できます。</p>
-<p><tt class="file docutils literal"><span class="pre">csv-4.py</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
-
-<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">from</span> <span class="nn">pyschool.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
-<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
-
-<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
-<span class="n">LEAGUE_STATS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;rank&#39;</span><span class="p">,</span> <span class="s">&#39;team&#39;</span><span class="p">,</span> <span class="s">&#39;point&#39;</span><span class="p">,</span> <span class="s">&#39;match&#39;</span><span class="p">,</span> <span class="s">&#39;goaldiff&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-            <span class="n">record</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">LEAGUE_STATS</span><span class="p">,</span> <span class="n">row</span><span class="p">))</span>
-            <span class="k">print</span> <span class="n">record</span><span class="p">[</span><span class="s">&#39;rank&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
-                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;team&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
-                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;point&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
-                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;match&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="o">+</span> \
-                  <span class="n">record</span><span class="p">[</span><span class="s">&#39;goaldiff&#39;</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
-    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-
-<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
+<h2>宿題<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">フィールド定義に沿ってデータ型の変換も実施してください。
+つまり、相場の動きを以下のように記述できるようにしてください。</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># diff = float(dt[&#39;price_end&#39;]) - float(dt[&#39;price_begin&#39;])</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">dt</span><span class="p">[</span><span class="s">&#39;price_end&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dt</span><span class="p">[</span><span class="s">&#39;price_begin&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>なお、辞書の値だけを取り出すには <tt class="docutils literal"><span class="pre">values()</span></tt> メソッドも使えます。
-キーだけを取り出すには <tt class="docutils literal"><span class="pre">keys()</span></tt> を使います。</p>
-</div>
-<div class="section" id="id3">
-<h3>オブジェクトに変換<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>クラスを定義して、コンストラクタに渡す方法もあります。
-タプルに &#8220;*&#8221; 記号を付けると、引数には展開されて渡されます。
-(そういう書き方もあるよ、というレベルの話で、多用しないでください)</p>
-<p>オブジェクトに変換する場合には型をチェックしても良いでしょう。
-値の制約条件をチェックするのも有効です。</p>
-<p><tt class="file docutils literal"><span class="pre">csv-4a.py</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
-
-<span class="sd">&quot;&quot;&quot;%prog [options] csv_file</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">from</span> <span class="nn">pyschool.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
-<span class="kn">from</span> <span class="nn">pyschool.cmdline</span> <span class="kn">import</span> <span class="n">parse_args</span>
-
-<span class="n">DEFAULT_CSV_FILE</span> <span class="o">=</span> <span class="s">&#39;sample.csv&#39;</span>
-
-
-<span class="k">class</span> <span class="nc">LeagueStats</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">team</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">goaldiff</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">team</span> <span class="o">=</span> <span class="n">team</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">match</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">goaldiff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">goaldiff</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;</span><span class="si">%d</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%d</span><span class="se">\t</span><span class="si">%d</span><span class="se">\t</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">team</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">goaldiff</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a CSV format file to TSV format string.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-            <span class="n">record</span> <span class="o">=</span> <span class="n">LeagueStats</span><span class="p">(</span><span class="o">*</span><span class="n">row</span><span class="p">)</span>
-            <span class="k">print</span> <span class="n">record</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">DEFAULT_CSV_FILE</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> is not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,))</span>
-    <span class="n">csv2tsv</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
-    <span class="k">pass</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-
-<span class="c"># vim: set et ts=4 sw=4 cindent fileencoding=utf-8 :</span>
-</pre></div>
-</div>
-<p>クラスを定義するときは <tt class="docutils literal"><span class="pre">self</span></tt> というキーワードが欠かせません。
-メソッド内で使う場合も使わない場合も記述しなければなりませんが、
-<tt class="docutils literal"><span class="pre">self</span></tt> を使う必要のないメソッドは、そもそもそのクラスに定義すべきメソッドではないかもしれません。
-Python はトップレベルに関数を定義できますので、無理にクラスを定義する必要はないことを忘れないでください。</p>
-<p><tt class="docutils literal"><span class="pre">self</span></tt> の必要性について考えるためには <tt class="docutils literal"><span class="pre">&#64;classmethod</span></tt> 、 <tt class="docutils literal"><span class="pre">&#64;staticmethod</span></tt> 、デコレータの実装方法について学習しなければなりません。
-詳しく知りたい場合はこちらのブログを読んでから、再度考えてください。</p>
-<ul class="simple">
-<li><a class="reference external" href="http://neopythonic.blogspot.com/2008/10/why-explicit-self-has-to-stay.html">Why explicit self has to stay</a> (<a class="reference external" href="http://coreblog.org/ats/translation-of-why-explicit-self-has-to-stay">和訳 : なぜPythonのメソッド引数に明示的にselfと書くのか</a>)</li>
-</ul>
-</div>
-</div>
-<div class="section" id="id4">
-<h2>宿題<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p>オプションを変更することで挙動を切り替え可能にしましょう。</p>
-<ul class="simple">
-<li>出力データの区切り文字</li>
-<li>出力先 (標準出力とファイル)</li>
-<li>入力の文字エンコーディングと出力の文字エンコーディング</li>
-</ul>
-<p>ここまでは設定だけで使ってきませんでしたが、 <cite>logging</cite> モジュールを使ってログを出力できます。
-処理している行数を <em>INFO</em> レベルで出力するようにスクリプトを修正してみましょう。</p>
+</li>
+<li><p class="first"><cite>&#8211;header</cite> オプションでヘッダー行の有無を指定させていますが、自動的に認識させてください。</p>
+</li>
+<li><p class="first"><em>csv</em> モジュールには <tt class="docutils literal"><span class="pre">DictReader</span></tt> クラスがあります。このクラスを使って実装してください。</p>
+</li>
+<li><p class="first"><em>collections</em> モジュールの <a class="reference external" href="http://docs.python.jp/3.3/library/collections.html#collections.namedtuple">namedtuple()</a> を使って実装してください。</p>
+</li>
+</ol>
 </div>
 </div>
 
@@ -241,13 +290,13 @@ Python はトップレベルに関数を定義できますので、無理にク�
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="../index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="csv-5.html">ファイル風オブジェクトを意識する</a>&#160;&#160;»
+        <a href="csv-5.html">クラスを定義する</a>&#160;&#160;»
         </p>
 
       </div>
 
     <div class="footer">
-        &copy; Copyright 2013, KITAZAKI Shigeru.
+        &copy; Copyright 2014, KITAZAKI Shigeru.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

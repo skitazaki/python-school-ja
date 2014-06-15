@@ -1,14 +1,16 @@
 発展的なことがら
 ================
+
 とりあえずこちらの英語の資料に目を通してみましょう。
 (スライドで160枚程度)
 
-* `Effective Python Programming`_ (PDF) / OSCON 2005 - uop.edu.jo
+* `Effective Python Programming`_ (PDF_) / OSCON 2005
 
-.. _Effective Python Programming: http://www.uop.edu.jo/download/PdfCourses/python/effective_r27.pdf
+.. _`Effective Python Programming`: http://conferences.oreillynet.com/cs/os2005/view/e_sess/6680
+.. _PDF: http://www.interlink.com.au/anthony/tech/talks/OSCON2005/effective_r27.pdf
 
 このセクションでは、次に学んだ方が良さそうなことを少しずつ紹介します。
-用語を覚えておくと、書籍などを読むときに理解の助けになるかもしれません。
+まずは用語を覚えておくと、書籍などを読むときに理解の助けになるでしょう。
 
 目次:
 
@@ -17,10 +19,10 @@
 
    advanced-1
    advanced-2
-   advanced-3
-   advanced-4
    advanced-5
 
 ..
+   advanced-3
+   advanced-4
    advanced-6
 
