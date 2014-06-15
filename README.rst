@@ -22,10 +22,10 @@ Create virtual Python environment with `pyvenv`. ::
 
 Optional to generate HTML documents using Python 2.7 ::
 
-    $ cd doc
     $ virtualenv --distribute $HOME/.pyvenv/sphinx
     $ source $HOME/.pyvenv/sphinx/bin/activate
-    $ pip install -r requirements.txt
+    $ pip install -r doc-requirements.txt
+    $ cd doc
     $ make clean html
 
 Above procedures are written in ``devsetup.sh``.

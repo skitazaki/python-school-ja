@@ -1,37 +1,48 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""%prog [options] csv_file
+"""Parse daily Tokyo stock prices.
 """
 
-from csv import DictReader
-import os
+import csv  # import standard "csv" module
 
 from pyschool.cmdline import parse_args
 
-DEFAULT_CSV_FILE = 'sample.csv'
+
+class StockPrice(object):
+
+    def __init__(self, day, price_begin, price_max, price_min, price_end):
+        self.day = day
+        self.price_begin = float(price_begin)
+        self.price_max = float(price_max)
+        self.price_min = float(price_min)
+        self.price_end = float(price_end)
+
+    def diff(self):
+        return self.price_end - self.price_begin
 
 
-def csv2tsv(fname):
-    """Convert a CSV format file to TSV format string.
+def process(args):
+    """Parse daily Tokyo stock prices, and calculate up/down.
     """
-    with open(fname) as reader:
-        stream = DictReader(reader)
-        for record in stream:
-            # XXX: Convert encodings.
-            print record['rank'] + '\t' + \
-                  record['team'] + '\t' + \
-                  record['point'] + '\t' + \
-                  record['match'] + '\t' + \
-                  record['goaldiff']
+    with open(args.filename[0]) as fp:
+        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+        for t in reader:
+            p = StockPrice(*t)
+            diff = p.diff()
+            if diff > 0:
+                message = 'up'
+            elif diff < 0:
+                message = 'down'
+            else:
+                message = 'same'
+            # Write out day, up/down/same, and diff.
+            print('{}\t{:5}\t{}'.format(p.day, message, round(diff, 2)))
 
 
 def main():
-    opts, args = parse_args(__doc__)
-    fname = args[0] if args else DEFAULT_CSV_FILE
-    if not os.path.exists(fname):
-        raise SystemExit("\"%s\" is not found." % (fname,))
-    csv2tsv(fname)
+    args = parse_args()
+    process(args)
 
 
 def test():

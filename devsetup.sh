@@ -25,10 +25,10 @@ fi
 
 if [ ! -d $DOC_VENVDIR ]
 then
-    cd $BASEDIR/doc
     $VENV2 $DOC_VENVDIR
     source $DOC_VENVDIR/bin/activate
-    pip install -r requirements.txt
+    pip install -r doc-requirements.txt
+    cd $BASEDIR/doc
     make clean html
     cd -
 fi

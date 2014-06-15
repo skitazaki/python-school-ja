@@ -1,6 +1,7 @@
 ==============
 自動化を進める
 ==============
+
 まずはこれら一連の記事に目を通してみましょう。
 
 * `万人のためのオートメーション`_ - IBM developerWorks
@@ -33,3 +34,9 @@
 
 .. _Python のパッケージ化に関するガイド: http://www.ibm.com/developerworks/jp/opensource/library/os-pythonpackaging/
 
+宿題
+====
+
+1. Python のソースコードがコミットされたら :command:`flake8` で構文などを確認する仕組みを作ってください。
+2. プロジェクトのテスト、ドキュメント生成、パッケージングを行う処理を記述してください。
+   Jenkins や Travis-CI などの CI ツールのジョブに組み込んでください。

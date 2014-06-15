@@ -1,14 +1,16 @@
 ========================
 ファイルの一覧を確認する
 ========================
+
 `os` モジュールを使って、カレントディレクトリのファイルを確認します。
 
-* `15.1. os — Miscellaneous operating system interfaces`_
+* `16.1. os — Miscellaneous operating system interfaces`_
 
-.. _`15.1. os — Miscellaneous operating system interfaces`: http://docs.python.org/library/os.html
+.. _`16.1. os — Miscellaneous operating system interfaces`: https://docs.python.org/3.4/library/os.html
 
 ファイル一覧を取得する
 ======================
+
 ディレクトリ内のファイル一覧を取得するためには ``os.listdir()`` を使います。
 ::
 
@@ -18,6 +20,7 @@
 
 ファイルの最終更新時刻を取得する
 ================================
+
 ファイルの最終更新時刻を取得するためには ``os.path.getmtime()`` を使います。
 ::
 
@@ -25,82 +28,55 @@
     >>> os.path.getmtime("README.rst")
     1323302266.0
 
-Unix タイムスタンプが返ってきますが、 `datetime` モジュールでラップすることで、
-表示するときに扱いやすくなります。
+Unix タイムスタンプが返ってきますが、 `datetime` モジュールでラップすると他の処理と組み合わせやすくなります。
+文字列にするときは `strftime()` に書式文字列を指定しましょう。
 ::
 
     >>> import datetime
     >>> import os
     >>> t = os.path.getmtime("README.rst")
     >>> datetime.datetime.fromtimestamp(t)
-    datetime.datetime(2011, 12, 8, 8, 57, 46)
+    datetime.datetime(2013, 12, 5, 0, 59, 49)
     >>> d = _
     >>> d.strftime("%Y-%m-%d")
-    '2011-12-08'
+    '2013-12-05'
 
 ファイル一覧をソートする
 ========================
+
 ファイルの一覧を最終更新時刻でソートします。
-リストには ``sort()`` メソッドがありますが、これには比較関数を与えることができます。
-詳しくはこちらの記事を参照してください。
+リストには ``sort()`` メソッドがありますが、これには比較属性を与えることができます。
+元のリストを変更したくない場合は組み込み関数 ``sorted()`` を利用してください。
 
-* `Sorting Mini-HOWTO （和訳）`_
-
-.. _Sorting Mini-HOWTO （和訳）: http://www.python.jp/Zope/articles/tips/sorthowto
-
-比較関数はリスト内のふたつの要素を比較しますので、最終更新時刻の差を考えます。
-昇順と降順を切り替える場合は引き算の順番を入れ替えます。
-::
-
-    >>> import os
-    >>> def timestamp_sort(a, b):
-    ...     return int(os.path.getmtime(a) - os.path.getmtime(b))
-    ...
-
-これを ``sort()`` の引数に渡します。
 ::
 
     >>> import os
     >>> files = [f for f in os.listdir('.')]
-    >>> files.sort(timestamp_sort)
-    >>> files
-    ['.Python', 'include', 'lib', 'man', 'etc', 'README.rst', 'requirements.txt', 'bin', 'python-shool-ja-1.0.0.tar.bz2', '.lock-waf_darwin_build', 'wscript', '_build', '.gitignore', '.git', 'src', 'doc']
+    >>> files[0:5]
+    >>> files.sort(key=os.path.getmtime)
+    >>> files[0:5]
 
-わざわざ関数を定義するのが煩雑な場合には lambda 式を渡します。
-::
+Python 2.x 系と Python 3.x 系では比較関数の書き方が異なります。
+移植する場合とリファレンスを読む場合は注意して実装に移すようにしてください。
+詳しくはこちらの記事を読んでみましょう。
 
-    >>> files = [f for f in os.listdir('.')]
-    >>> files.sort(lambda a, b: int(os.path.getmtime(a) - os.path.getmtime(b)))
-    >>> files
-    ['.Python', 'include', 'lib', 'man', 'etc', 'README.rst', 'requirements.txt', 'bin', 'python-shool-ja-1.0.0.tar.bz2', '.lock-waf_darwin_build', 'wscript', '_build', '.gitignore', '.git', 'src', 'doc']
+* `ソート HOW TO`_
+
+.. _`ソート HOW TO`: http://docs.python.jp/3.3/howto/sorting.html
 
 まとめ
 ======
+
 以上をまとめて、カレントディレクトリのファイルとディレクトリの最終更新日時を表示させましょう。
 ::
 
     >>> from datetime import datetime
     >>> import os
-    >>> files = [f for f in os.listdir('.')]
-    >>> files.sort(lambda a, b: int(os.path.getmtime(a) - os.path.getmtime(b)))
-    >>> for f in files:
-    ...     print "%-30s\t%s" % (f,
-    ...             datetime.fromtimestamp(os.path.getmtime(f)).strftime("%Y/%m/%d %H:%M:%S"))
-    ...
-    .Python                         2011/07/25 23:31:55
-    include                         2011/12/06 21:49:32
-    lib                             2011/12/06 21:49:32
-    man                             2011/12/06 21:56:40
-    etc                             2011/12/08 01:31:36
-    README.rst                      2011/12/08 08:57:46
-    requirements.txt                2011/12/09 00:58:53
-    bin                             2011/12/09 01:00:20
-    python-shool-ja-1.0.0.tar.bz2   2011/12/09 01:08:46
-    .lock-waf_darwin_build          2011/12/09 01:18:18
-    wscript                         2011/12/09 01:18:59
-    _build                          2011/12/09 01:19:00
-    .gitignore                      2011/12/09 01:20:41
-    .git                            2011/12/09 23:53:00
-    src                             2011/12/09 23:53:00
-    doc                             2011/12/10 00:27:51
+    >>> files = os.listdir('.')
+    >>> for f in sorted(files, key=os.path.getmtime):
+    ...     t = datetime.fromtimestamp(os.path.getmtime(f))
+    ...     print("{:30}\t{}".format(f, t.strftime("%Y/%m/%d %H:%M:%S")))
 
+ファイル名をさらに解析して処理を切り替える場面では、シェルスクリプトよりも Python の方が書きやすいことが多いでしょう。
+ファイル名から拡張子を取得するには ``os.path.splitext`` がありますので、
+*os* モジュールの内容は一通り確認してみましょう。

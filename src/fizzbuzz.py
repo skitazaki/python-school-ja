@@ -1,28 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""FizzBuzz impl.
+"""Toy FizzBuzz implementation.
 """
 
-import optparse
+import argparse
+
+SEPARATOR = "=" * 78
 
 
 def parse_args():
-    parser = optparse.OptionParser()
-    opts, args = parser.parse_args()
-    return opts, args
+    parser = argparse.ArgumentParser()
+    parser.add_argument("number", type=int)
+    args = parser.parse_args()
+    if args.number <= 0:
+        parser.error("Number must be positive: {}".format(args.number))
+    return args.number
 
 
 def fizzbuzz(i):
     """Basic implementation."""
     if i % 15 == 0:
-        print "FizzBuzz"
+        return "FizzBuzz"
     elif i % 5 == 0:
-        print "Buzz"
+        return "Buzz"
     elif i % 3 == 0:
-        print "Fizz"
+        return "Fizz"
     else:
-        print i
+        return i
 
 
 def fizzbuzz_iter(n):
@@ -30,50 +35,39 @@ def fizzbuzz_iter(n):
     fb = ("Fizz", "Buzz")
     i = 1
     while i <= n:
-        t = [i % 3 == 0, i % 5 == 0]
-        s = ''
-        for t1, t2 in zip(t, fb):
-            if t1:
-                s += t2
+        t = (i % 3 == 0, i % 5 == 0)
+        s = ''.join(map(lambda t: t[1], filter(lambda t: t[0], zip(t, fb))))
         yield s if s else i
         i += 1
 
 
 def fizzbuzz_list(n):
-    """map, filter and lamba function. also showing enumerate and type."""
+    """map and lamba function. also showing enumerate and type, and zip."""
     ret = []
-    m0 = range(1, n + 1)
-    m1 = map(lambda i: i if i % 3 > 0 else "Fizz", m0)
-    m2 = map(lambda i: i if i % 5 > 0 else "Buzz", m0)
-    m3 = map(lambda i: i if i % 15 > 0 else "FizzBuzz", m0)
+    m = range(1, n + 1)
+    m1 = map(lambda i: i if i % 3 > 0 else "Fizz", m)
+    m2 = map(lambda i: i if i % 5 > 0 else "Buzz", m)
+    m3 = map(lambda i: i if i % 15 > 0 else "FizzBuzz", m)
     for i, t in enumerate(zip(m1, m2, m3)):
-        r = filter(lambda i: type(i) == str, t)
+        r = [i for i in t if type(i) == str]
         ret.append(list(r).pop() if r else str(i + 1))
     return ret
 
 
 def main():
-    opts, args = parse_args()
-    if len(args) != 1:
-        raise SystemExit("Give me the single NUMBER.")
-    try:
-        n = int(args[0])
-    except ValueError:
-        raise SystemError("Invalid input, INTERGER NUMBER is required.")
+    n = parse_args()
 
-    if n <= 0:
-        raise SystemError("Invalid input, positive NUMBER is required.")
-
-    print "=" * 78
+    print(SEPARATOR)
     for i in range(1, n + 1):
-        fizzbuzz(i)
+        val = fizzbuzz(i)
+        print(val)
 
-    print "=" * 78
+    print(SEPARATOR)
     for i in fizzbuzz_iter(n):
-        print i
+        print(i)
 
-    print "=" * 78
-    print '\n'.join(fizzbuzz_list(n))
+    print(SEPARATOR)
+    print('\n'.join(fizzbuzz_list(n)))
 
 
 def test():
@@ -86,7 +80,7 @@ def test():
     actual = fizzbuzz_list(16)
     assert len(expected) == len(actual)
     for e, a in zip(expected, actual):
-        assert e == a
+        assert e == a, 'expected={}, actual={}'.format(e, a)
 
 if __name__ == "__main__":
     main()

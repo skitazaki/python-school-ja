@@ -1,38 +1,44 @@
 ======================================
-O/R マッパーを使ってデータベースを使う
+O/R マッパー経由でデータベースを使う
 ======================================
-CSV ファイルから読み込んだ情報をデータベースに保存します。
 
-データベースには SQLite を使い、O/R マッパーとして SQLAlchemy を使います。
+CSV ファイルから読み込んだ情報をデータベースに登録します。
+データベースには *SQLite* を使い、O/R マッパー (`オブジェクト関係マッピング`_) として *SQLAlchemy* を使います。
 
 * `SQLite`_ - sqlite.org
 * `SQLAlchemy`_ - sqlalchemy.org
 
+*SQLAlchemy* を使っておくと、後から MySQL や PostgreSQL へ変更することもできますし、
+複数の環境で異なるデータベースに接続して動かすこともできるようになります。
+
 .. _SQLite: http://www.sqlite.org/
 .. _SQLAlchemy: http://www.sqlalchemy.org/
+.. _`オブジェクト関係マッピング`: http://ja.wikipedia.org/wiki/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E9%96%A2%E4%BF%82%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0
+
 
 SQLAlchemy の準備
 =================
-:file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。 ::
 
-    > Scripts/activate.bat
-    > pip install -r requirements.txt
+:file:`requirements.txt` に `SQLAlchemy` を追加し、 :command:`pip` を実行します。
 
-.. note::
+.. code-block:: bash
 
-    :file:`requirements.txt` に追加。 ::
+    $ echo "SQLAlchemy" >> requirements.txt
+    $ pip install -r requirements.txt
 
-        SQLAlchemy
+Python のインタラクティブシェルからモジュールを読み込めることを確認します。
 
-Python のインタラクティブシェルからモジュールを読み込めることを確認します。 ::
+.. code-block:: bash
 
+    $ python
     >>> import sqlalchemy
     >>> help(sqlalchemy)
 
-``help()`` 関数でモジュールのヘルプが表示されますので確認してみてください。
+``help()`` 関数でモジュールのヘルプが (大量に) 表示されますので眺めてみてください。
 
 O/R マッパー経由でデータベースに保存
 ====================================
+
 O/R マッパーを使うためにはいくつかの準備が必要になります。
 
 * `sqlalchemy` モジュールの読み込み
@@ -44,45 +50,42 @@ O/R マッパーを使うためにはいくつかの準備が必要になりま�
     * オブジェクトを生成 (必要な回数だけ繰り返し)
     * トランザクションをコミット
 
-以上をスクリプトにまとめると次のようになります。
-
-:file:`csv-6.py`
+以上をスクリプトにまとめると次のようになります。(:file:`csv-6.py`)
 
 .. literalinclude:: /../src/csv-6.py
+   :encoding: utf-8
    :language: python
 
-第一引数に CSV ファイルを渡します。
-第二引数がない場合はオンメモリで動作します。 ::
+１列目を「日付」として扱うために *datetime* モジュールを利用しています。
+日付と時刻の処理は多くのプログラムで必要になりますので、少しずつ使い方に慣れていってください。
 
-    > python csv-6.py csv-5.csv
+コマンドラインで実行するときは、 `--output` オプションにファイル名を指定するとそのファイルをデータベースとして使用します。
+オプション未指定の場合はオンメモリで動作します。
+:doc:`csv-1` で利用したデータを入力として与えてください。
 
-第二引数で出力ファイル名を指定できます。 ::
+.. code-block:: bash
 
-    > python csv-6.py csv-5.csv csv-6.sqlite
-
-SQLite のビューアーとしては Lita などが便利です。
-
-* `Lita - SQLite Administration Tool`_
-
-.. _`Lita - SQLite Administration Tool`: http://www.dehats.com/drupal/?q=node/58
+    $ python csv-6.py csv-1.csv
+    $ python csv-6.py --output=csv-6.sqlite csv-1.csv
 
 .. note::
 
     トランザクションを開きっ放しにして大量のデータを扱うとメモリエラーになります。
     マシンのメモリより大きいか、メモリをたくさん使うようなデータを扱う場合はこまめにコミットさせましょう。
-    ループ回数を取得するには ``enumerate()`` を使います。
-
-    * `enumerate`_ (公式ドキュメント)
-
-.. _enumerate: http://docs.python.org/library/functions.html#enumerate
+    組み込み関数 ``enumerate()`` を使ってループ回数をカウントし、適当な回数ごとにコミットすると良いでしょう。
+    また、処理の進捗状況をレポートしておくと、バッチ実行したときに安心感があります。
 
 宿題
 ====
-フィールドに条件を課す処理を比較しましょう。
-SQLite を参照する場合と、CSV を参照する場合を比べてみてください。
 
-:doc:`csv-4` の「宿題」には挙動を切り替える問題があります。
-同様に、出力データフォーマットも切り替えてみましょう。
+* １年分のデータを SQLite に登録してください。 `株価データダウンロードサイト`_ (k-db.com) から日経平均株価の日足を利用させて頂きましょう。
+* データベースからレコードを抽出する処理を記述し、１年間の株価の動きをまとめてみましょう。
+  始値から終値が上がった日と下がった日の数を集計してください。
+* データベースを SQLite から MySQL または PostgreSQL に切り替えるために必要な手順をドキュメントにまとめてください。
+* 日付フィールド (`day`) には *UNIQUE* 制約を課していますので、オンメモリでないデータベースに対して同じ入力ファイルで複数回実行すると、
+  制約違反になってしまいます。入力された日付のレコードがデータベースに存在するかを確認する処理を実装してください。
 
-* CSV のデータを JSON で出力
-* CSV のデータを任意の XML で出力
+以上で、CSV に関する処理は一通り学習できたと思います。
+手持ちのデータを処理するために、自分用のプロジェクトを作成してみましょう。
+
+.. _`株価データダウンロードサイト`: http://k-db.com/

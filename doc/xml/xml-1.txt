@@ -4,78 +4,95 @@ DOM, ElementTree, SAX
 
 XML 処理で利用する API
 ======================
+
 XML 処理で利用する API としては、次の２つが有名です。
+
 * SAX - Simple API for XML
 * DOM - Document Object Model
 
-多くの場合に DOM を使います。
-XML データがメモリに乗り切らないほどに 巨大 である場合は SAX を使います。
+多くの場合には DOM を使います。WebブラウザでXMLを扱う場合にも活用してくれます。
+一方、XML データがメモリに乗り切らないほどに巨大である場合は SAX を使います。
 
 その他に、Pull Parser という API もあります。
+(近年は XML 自体の利用頻度が減少している影響もあってあまり活発には聞きませんが)
 
-* Pull Parser
+* `XML Pull Parsing`_
 
-Python の場合、SAX と DOM の API は完備されており、
-Python 2.5 以上では ElementTree も標準ライブラリとして利用できます。
+.. _`XML Pull Parsing`: http://www.xmlpull.org/
 
-DOM のサンプル
-==============
-Maven で扱う POM ファイルを読み込み、
-アーティファクトに関する情報をオブジェクトにマップするスクリプトは次のように記述できます。
+Python の場合、SAX と DOM の API は標準ライブラリに完備されており、
+Python 2.5 以上では *ElementTree* も標準ライブラリとして利用できます。
+高速化・簡略化したい場合は `lxml`_ を使いましょう。
 
-POM ファイル (:file:`xml-1.xml`):
+.. _lxml: http://lxml.de/
+.. _ElementTree: http://docs.python.jp/3.3/library/xml.etree.elementtree.html
+
+ここでは、Maven で扱う POM ファイルを読み込み、
+アーティファクトに関する情報をオブジェクトにマップするスクリプトを記述してみます。
+
+POM ファイル (:file:`xml-1.xml`) は以下のものを使います。
 
 .. literalinclude:: /../etc/xml-1.xml
    :encoding: utf-8
    :language: xml
 
+DOM のサンプル
+==============
+
 Python スクリプト (:file:`xml-1.py`):
 
 .. literalinclude:: /../src/xml-1.py
 
-実行結果 ::
+実行結果
 
-    > python xml-1.py xml-1.xml
+.. code-block:: bash
+
+    $ python xml-1.py xml-1.xml
     sample-group/sample-group-commons/1.0.0
 
-ElementTree を使う
-==================
+ElementTree のサンプル
+============================
+
 DOM をそのまま扱うのは冗長な感じがありますので、多くの場合に何らかのライブラリを使います。
-Python 2.5 からは ElementTree が標準モジュールに入りました。
+Python では標準モジュールの *ElementTree* が良い選択肢と言えます。
 
-* `19.13. xml.etree.ElementTree — The ElementTree XML API`_
+* `20.6. xml.etree.ElementTree — ElementTree XML API`_
 
-.. _`19.13. xml.etree.ElementTree — The ElementTree XML API`: http://docs.python.org/library/xml.etree.elementtree.html
+.. _`20.6. xml.etree.ElementTree — ElementTree XML API`: http://docs.python.jp/3.3/library/xml.etree.elementtree.html
 
-ElementTree モジュールを使うと次のように記述できます。
-
-Python スクリプト (:file:`xml-2.py`):
+*ElementTree* モジュールを使うと次のように (:file:`xml-2.py`) 記述できます。
+ソースコードの分量はあまり変わりませんが、API の使い方としてはこちらの方が簡単でしょう。
 
 .. literalinclude:: /../src/xml-2.py
 
-実行結果 ::
+実行結果
 
-    > python xml-2.py xml-1.xml
+.. code-block:: bash
+
+    $ python xml-2.py xml-1.xml
     sample-group/sample-group-commons/1.0.0
 
 
 SAX のサンプル
 ==============
-DOM はデータをメモリに読み込むため、実行マシンのメモリ量を超えてしまうような XML データを扱うことができません。
-大きなデータを扱う場合にはストリーミング処理が必要になりますが、これを実現するのが SAX です。
 
-Python スクリプト (:file:`xml-3.py`):
+DOM はデータをメモリに読み込むため、実行マシンのメモリ量を超えてしまうような XML データを扱うことができません。
+大きなデータを扱う場合にはストリーミング処理が必要になります。これを実現するのが SAX です。
+
+:file:`xml-3.py` ではタグの開始と終了にフックさせて、子要素のテキストを抽出しています。
 
 .. literalinclude:: /../src/xml-3.py
 
-実行結果 ::
+実行結果
 
-    > python xml-3.py xml-1.xml
+.. code-block:: bash
+
+    $ python xml-3.py xml-1.xml
     sample-group/sample-group-commons/1.0.0
 
 ここでは比較のために同じ XML ファイルを扱っていますが、
-たとえば、Wikipedia のダンプデータを処理する場合には SAX が役に立ちます。
-実際に自分で Wikipedia のダンプデータを処理してみましょう。
+たとえば Wikipedia のダンプデータを処理する場合には SAX が役に立ちます。
+実際に自分で Wikipedia のダンプデータを処理して、膨大な記事から特徴的なテキストを抽出してみましょう。
 
 * `Index of /jawiki/latest/`_ - dumps.wikimedia.org
 
@@ -83,10 +100,12 @@ Python スクリプト (:file:`xml-3.py`):
 
 宿題
 ====
-「XMLの論考」のシリーズを読み、実際に Python スクリプト or Java プログラムを書いてみてください。
-古びてしまった記述もありますので、古そうだと感じたことをまとめてください。
 
-* `XMLの論考: 第1回`_
+IBM developerWorks には XML に関する記事が数多く寄稿されています。
+"XML", "Python" などで検索していくつかの記事を読んでみましょう。
+特に、以下の記事には目を通して *lxml* を使ってみてください。
+古びた記述を見つけた場合はまとめてみましょう。
 
-.. _`XMLの論考: 第1回`: http://www.ibm.com/developerworks/jp/xml/library/xml-matters1/
+* `lxml を使用して Python での XML 構文解析をハイパフォーマンスにする`_
 
+.. _`lxml を使用して Python での XML 構文解析をハイパフォーマンスにする`: http://www.ibm.com/developerworks/jp/xml/library/x-hiperfparse/index.html

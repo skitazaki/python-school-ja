@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 APPNAME = 'python-shool-ja'
-VERSION = '1.5.2'
+VERSION = '2.0.0'
 
 top = '.'
 out = '_build'

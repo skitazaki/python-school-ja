@@ -1,13 +1,14 @@
 ==========
 SSH を使う
 ==========
-*SSH* を使ってリモートのサーバを操作してみます。
 
-今回と次回は Linux サーバとのやり取りを想定しています。
-(Mac OSX でも構いません。Windows しか使わない / 使えない場合はスキップしてください。)
+*SSH* を使ってリモートのサーバを操作してみます。
+今回と次回は Linux もしくは Mac OSX での実装を想定しています。
+Windows しか使わない / 使えない場合はスキップしてください。
 
 リモートサーバの操作
 ====================
+
 :command:`ssh` コマンドを ``subprocess.call()`` に渡します。 ::
 
     >>> import subprocess
@@ -31,34 +32,30 @@ sshd を起動してから再度実行します。 ::
     Darwin Kernel Version 11.2.0: Tue Aug  9 20:54:00 PDT 2011; root:xnu-1699.24.8~1/RELEASE_X86_64
     0
 
-あとはコマンドを羅列していけば構いません。
+あとはコマンドを羅列していけば任意の処理を実現できます。
+しかし、シェルスクリプトをベースにした戻り値の確認はややこしいですし、コネクションを毎回張るのも煩雑なので、
+Python のモジュールを利用していきましょう。
 
 paramiko を使う
 ===============
-SSH2 プロトコルを扱うモジュールとして `paramiko` があります。
-コマンドを単に羅列するよりもプラグラマブルに管理できます。
 
-* `paramiko`_
+SSH プロトコルを扱うモジュールとして `paramiko`_ があります。
+コマンドを単に羅列するよりもプラグラマブルに管理できます。
 
 .. _paramiko: http://www.lag.net/paramiko/
 
 :file:`requirements.txt` に *paramiko* を追加し、 :command:`pip` でインストールします。 ::
 
-    $ source bin/activate
+    $ echo "paramiko" >> requirements.txt
     $ pip install -r requirements.txt
 
-.. note::
-
-    :file:`requirements.txt` に追加。 ::
-
-        paramiko
-
-モジュールが読み込めることを確認します。
-(すべてを表示すると多すぎるので、大文字の "SSH" から始まるものを抜粋) ::
+paramiko はバージョン 1.13 以降から Python 3.x 系に対応しましたので、
+まずはモジュールが読み込めることを確認します。
+すべてを表示すると多すぎるので、大文字の "SSH" から始まるものを抜粋しましょう。 ::
 
     >>> import paramiko
-    >>> filter(lambda s: s.startswith("SSH"), dir(paramiko))
-    ['SSHClient', 'SSHConfig', 'SSHException']
+    >>> ", ".join(filter(lambda s: s.startswith("SSH"), dir(paramiko)))
+    'SSHClient, SSHConfig, SSHException'
 
 サーバにログインして :command:`uptime` コマンドを実行します。
 
@@ -71,12 +68,10 @@ SSH2 プロトコルを扱うモジュールとして `paramiko` があります
 ``paramiko.Transport`` を使っていますが ``paramiko.SSHClient`` でも実現できます。
 興味があれば、様々な API を使ってみてください。
 
-また、上記のスクリプトは ``raw_input()`` と `getpass` モジュールを使っています。
+また、上記のスクリプトは ``input()`` と `getpass` モジュールを使っています。
+パスワードの入力が必要な場合には覚えておきましょう。
 
-* `15.10. getpass — Portable password input`_ (公式ドキュメント)
+* `16.10. getpass — Portable password input`_ (公式ドキュメント)
 
-.. _15.10. getpass — Portable password input: http://docs.python.org/library/getpass.html
-
-ユーザーからの入力を受け付ける方法には ``input()`` もあります。
-ケースバイケースで使い分けるようにしましょう。
+.. _16.10. getpass — Portable password input: https://docs.python.org/3.4/library/getpass.html
 

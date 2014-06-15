@@ -4,3 +4,4 @@ _build
 .ruby-version
 nosetests.xml
 .DS_Store
+.envrc

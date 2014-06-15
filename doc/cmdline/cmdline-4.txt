@@ -1,30 +1,23 @@
 ========================
 シェルコマンドを実行する
 ========================
-`subprocess` モジュールを使うことでシェルコマンドを実行できます。
 
-* `17.1. subprocess — Subprocess management`_ (公式ドキュメント)
+*subprocess* モジュールを使うことでシェルコマンドを実行できます。
 
-.. _17.1. subprocess — Subprocess management: http://docs.python.org/library/subprocess.html
+* `17.5. subprocess — Subprocess management`_ (公式ドキュメント)
+
+.. _17.5. subprocess — Subprocess management: https://docs.python.org/3.4/library/subprocess.html
 
 シェルコマンドの実行
 ====================
+
 もっとも簡単なコマンドの実行方法は ``subprocess.call()`` の呼び出しです。
 
-コマンドプロンプトで対話シェルに対して実行します。 (Windows)
+コマンドプロンプトで対話シェルに対して実行します。
 ::
 
     >>> import subprocess
-    >>> subprocess.call("python -V")
     >>> args = ['python', '-V']
-    >>> subprocess.call(args)
-
-Linux で実行する場合にはシェルコマンドを渡します。
-::
-
-    >>> import subprocess
-    >>> subprocess.call("ls")
-    >>> args = ['ls', '/var/log']
     >>> subprocess.call(args)
 
 `subprocess` モジュールは以下のモジュールの置き換えになりますので、
@@ -40,52 +33,41 @@ Linux で実行する場合にはシェルコマンドを渡します。
 
 コマンドの実行を待つ
 ====================
-少し込み入ったことを実装する場合には ``Popen`` を使います。
+
+少し混み入ったことを実装する場合には ``Popen`` を使います。
 ``subprocess.call()`` はこれのラッパーなわけです。
 
-Python 2.5 では ``check_call()`` 、 Python 2.7 では ``check_output()`` が追加されていますが、
-Python 2.4 でも ``Popen`` でガチャガチャと頑張れば同等の機能は実装できるはずです。
+大きめのファイルがあるディレクトリに対して、 :command:`du` コマンドを実行してみましょう。(Linux)
 
-``du`` コマンドが終わるのをまってみましょう。(Linux)
+::
 
-:file:`cmdline-4.py`
-
-.. literalinclude:: /../src/cmdline-4.py
-   :encoding: utf-8
-   :language: python
-
-実行結果 ::
-
-    $ python cmdline-4.py
-    [Before wait] Return Code None
-    1712    ./_build/doctrees
-    40      ./_build/html/sources
-    440     ./_build/html/static
-    1712    ./_build/html
-    3424    ./_build
-    3984    .
-    [After wait] Return Code 0
+    import subprocess
+    p = subprocess.Popen(['du', '-sh', '/var/log'])
+    print('[Before wait] Return Code is "{}".'.format(p.returncode))
+    p.wait()
+    print('[After wait] Return Code is "{}".'.format(p.returncode))
 
 呼び出したプロセスが終了するのを待ち受けたことが分かります。
 
 途中結果を待ち受けるには ``poll()`` 、プロセスにデータを渡すには ``communicate()`` を使います。
+timeout の指定もできますので、対話的なコマンドラインツールを実装するときにはマニュアルを読み返しましょう。
 
 宿題
 ====
-Wikipedia は XML 形式でデータを公開しています。
-記事の概要である :file:`jawiki-latest-abstract.xml` をダウンロードし、それを解凍するスクリプトを記述してください。
-単一のスクリプトで記述しても、 `subprocess` でふたつのスクリプトを組み合わせても構いません。
 
-* `Index of /jawiki/latest/`_ - dumps.wikimedia.org
+1. 指定ディレクトリ配下の直近１週間で更新されたファイルを別のディレクトリにコピーしてください。
+   前回の実行でコピーしてあれば何もしないでください。
+2. 1. のスクリプトで、コピー元とコピー先のディレクトリを INI 形式で管理してください。
+   ひとつの設定ファイルで複数の実行環境を切り替えられるようにしてください。
+3. Wikipedia の XML 形式の記事概要ファイルをダウンロードして解凍するスクリプトを記述してください。
+   `Index of /jawiki/latest/`_ - dumps.wikimedia.org からダウンロードできます。
+   データ量が大きいため、進捗が分かるように標準出力に何らかの情報を表示してください。
 
 .. _Index of /jawiki/latest/: http://dumps.wikimedia.org/jawiki/latest/
-
-データ量が大きいため、通信回線が太い環境でもそれなりに時間がかかります。
-その進捗が分かるように、標準出力に何らかの情報を表示してください。
 
 .. note::
 
     Linux や Mac の場合は :command:`wget` や :command:`curl` でダウンロードできますが、
     Windows の場合はそうしたツールが組み込まれていません。
     また、".tar.gz" や ".tar.bz2" を解凍する方法も標準では提供されていません。
-
+    Python を使うとマルチプラットフォームに対応したツールを実装できます。

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Usage: %prog [options] {POM_FILE}
+"""Parse Maven POM file.
 """
 
 import os
@@ -51,20 +51,21 @@ class ArtifactParser(ContentHandler):
 
 
 def main():
-    opts, args = parse_args()
-    pom = args[0]
-    if not os.path.exists(pom):
-        raise SystemExit(pom + ' was not found.')
+    args = parse_args()
+    fname = args.filename[0]
+    if not os.path.exists(fname):
+        raise SystemExit('"{}" is not found.'.format(fname))
     parser = ArtifactParser()
-    xml.sax.parse(pom, parser)
-    print Artifact(**(parser.artifact))
+    xml.sax.parse(fname, parser)
+    print(Artifact(**(parser.artifact)))
 
 
 def test():
     fname = "etc/xml-1.xml"
     parser = ArtifactParser()
     xml.sax.parse(fname, parser)
-    print parser.artifact
+    artifact = Artifact(**(parser.artifact))
+    assert 'sample-group/sample-group-commons/1.0.0' == repr(artifact)
 
 if __name__ == "__main__":
     main()

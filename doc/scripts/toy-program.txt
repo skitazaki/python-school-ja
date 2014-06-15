@@ -1,16 +1,19 @@
 =========================
 トイプログラム - FizzBuzz
 =========================
+
 お遊びがてら FizzBuzz_ を解きます。
 
 .. _FizzBuzz: http://ja.wikipedia.org/wiki/Fizz_Buzz
 
 実行例
 ======
-次のような結果を出力するスクリプトを書いてみましょう。
-::
 
-    > python fizzbuzz.py 16
+次のような結果を出力するスクリプトを書いてみましょう。
+
+.. code-block:: bash
+
+    $ python fizzbuzz.py 16
     1
     2
     Fizz
@@ -30,17 +33,18 @@
 
 スクリプト例
 ============
+
 例として３つの実装を示します。
 以下のことを身につけましょう。
 
 * 関数定義、main 関数
 * 引数処理、入力チェック
-* 組み込み関数: range, zip, enumerate
+* 組み込み関数: `range`, `zip`, `enumerate`
 * 後置 IF 文
-* ジェネレーター (yield)
+* ジェネレーター (`yield`)
 * ラムダ式
-* リスト操作: map / filter
-* 型 (type) の利用、リストとタプル
+* リスト操作: `map` / `filter`
+* 型 (`type`) の利用、リストとタプル
 * テストの作成、assert の利用
 * shebang の記述、エンコーディングの指定 (`PEP 263`_)
 
@@ -49,10 +53,10 @@
 .. literalinclude:: /../src/fizzbuzz.py
    :encoding: utf-8
    :language: python
-   :lines: 3-94
 
 宿題
 ====
+
 引数やオプションを追加して、自分で書いたスクリプトもしくは上記のスクリプトを改造しましょう。
 
 1. 特定の範囲だけを出力する。100から200など。
@@ -64,3 +68,5 @@
 .. _`profile, cProfile, pstats – Python プログラムのパフォーマンス解析`: http://www.doughellmann.com/PyMOTW-ja/profile/
 
 ワンライナーや剰余利用禁止などは Google で検索するとたくさん出てきます。
+同じことを実現する方法はいくつか存在しますが、実行効率や読みやすさは千差万別です。
+特別な理由が無い限りは、読みやすい平易なソースコードを書くように心がけましょう。

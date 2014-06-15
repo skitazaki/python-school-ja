@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Usage: %prog [options] {POM_FILE}
+"""Parse Maven POM file.
 """
 
 import logging
@@ -50,22 +50,18 @@ class Artifact(object):
 
 
 def main():
-    opts, args = parse_args()
-
-    if len(args) != 1:
-        raise SystemExit(__doc__)
-    pom = args[0]
-    if not os.path.exists(pom):
-        raise SystemExit(pom + ' was not found.')
-
-    artifact = Artifact.from_pom_file(pom)
-    print artifact
+    args = parse_args()
+    fname = args.filename[0]
+    if not os.path.exists(fname):
+        raise SystemExit('"{}" is not found.'.format(fname))
+    artifact = Artifact.from_pom_file(fname)
+    print(artifact)
 
 
 def test():
     fname = "etc/xml-1.xml"
     artifact = Artifact.from_pom_file(fname)
-    print artifact
+    assert 'sample-group/sample-group-commons/1.0.0' == repr(artifact)
 
 if __name__ == '__main__':
     main()

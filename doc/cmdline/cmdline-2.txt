@@ -1,11 +1,13 @@
 ============================
 ファイルシステムの階層を辿る
 ============================
+
 異なるディレクトリの情報を扱うために、パスの扱いを確認します。
 
 パスを連結する
 ==============
-``os.path.join()`` を使うことで、パス区切り文字を意識せずにファイルパスを扱えます。
+
+``os.path.join()`` を使うことで、Windows など異なるアーキテクチャのパス区切り文字を意識せずにファイルパスを扱えます。
 引数の数は可変長になっていますので、３つや４つもそのまま連結できます。
 ::
 
@@ -14,60 +16,67 @@
     './src/pyschool'
 
 モジュールのインポートでは下位パッケージまで指定することが一般的ですが、
-`os.path` に限っては `os` だけをインポートした方が良いでしょう。
+*os.path* に限っては *os* だけをインポートした方が良いでしょう。
 実際に読み込むファイルは実行環境に依存するためです。
 詳細は難しいかもしれませんが、「インポートするにもいくつかの方法がある」と覚えておきましょう。
 
-`os.path`_ (リリース 2.4 の日本語ドキュメント) ::
+`os.path`_ (リリース 3.3 の日本語ドキュメント)
 
-    posixpath や macpath のように、システムごとに対応付けられているパス名操作のためのシステム依存の標準モジュールです。
-    すなわち、正しく import が行われるかぎり、 os.path.split(file) は posixpath.split(file) と等価でありながらより汎用性があります。
-    このモジュール自体が import 可能なモジュールでもあるので注意してください。 : os.path として直接 import してもかまいません。
+    OS によって異なるパス名の決まりがあるため、標準ライブラリにはこのモジュールのいくつかのバージョンが含まれています。
+    ``os.path`` モジュールは常に現在 Python が動作している OS に適したパスモジュールであるため、ローカルのパスを扱うのに適しています。
+    各々のモジュールをインポートして 常に 一つのフォーマットを利用することも可能です。これらはすべて同じインタフェースを持っています:
 
-.. _os.path: http://www.python.jp/doc/2.4/lib/module-os.html
+    * ``posixpath`` UNIX スタイルのパス用
+    * ``ntpath`` Windows パス用
+    * ``macpath`` 古いスタイルの MacOS パス用
+    * ``os2emxpath`` OS/2 EMX パス用
+
+.. _os.path: http://docs.python.jp/3.3/library/os.path.html
 
 ファイル操作いろいろ
 ====================
-ファイルをコピーするためには `shutil` モジュールの ``copy()`` 関数を使います。
 
-* `shutil — High-level file operations`_ (公式ドキュメント)
+ファイルをコピーするには `shutil` モジュールの ``copy()`` 関数を使います。
 
-.. _shutil — High-level file operations: http://docs.python.org/library/shutil.html
+* `11.10. shutil — High-level file operations`_ (公式ドキュメント)
+
+.. _`11.10. shutil — High-level file operations`: https://docs.python.org/3.4/library/shutil.html
 
 ::
 
     >>> import shutil
     >>> shutil.copy("README.rst", "README.rst.backup")
-    >>> imort os
+    >>> import os
     >>> os.system("ls README*")
-    README.rst              README.rst.backup
-    0
+    >>> os.unlink("README.rst.backup")
 
-公式ドキュメントのサンプルスクリプトに目を通しておきましょう。
+公式ドキュメントのサンプルスクリプトにも目を通しておきましょう。
 アーカイブの作成方法なども掲載されています。
 
 ファイルシステムの階層を辿る
 ============================
+
 ``os.walk()`` を使うことで階層的にファイルシステムを走査できます。
 使い方は独特なので、公式ドキュメントの例にも目を通しておいてください。
 
 * `os — Miscellaneous operating system interfaces (os.walk)`_
 
-.. _`os — Miscellaneous operating system interfaces (os.walk)`: http://docs.python.org/library/os.html?highlight=os.walk#os.walk
+.. _`os — Miscellaneous operating system interfaces (os.walk)`: https://docs.python.org/3.4/library/os.html#os.walk
 
-カレントディレクトリ配下にある XML ファイルの一覧を出力すると、次のようになります。
+たとえば、カレントディレクトリ配下にある XML ファイルの一覧を出力するには次のように書きます。
 ::
 
-    >>> imort os
+    >>> import os
     >>> for root, dirs, files in os.walk("."):
     ...     xmls = filter(lambda f: f.endswith(".xml"), files)
     ...     for xml in xmls:
-    ...         print os.path.join(root, xml)
+    ...         print(os.path.join(root, xml))
     ...
-    ./lib/python2.7/site-packages/sphinx/themes/basic/opensearch.xml
 
 宿題
 ====
-バージョン管理されたディレクトリには、 ".svn" や ".git" のようなディレクトリが存在します。
-``os.walk()`` を使ったときに、これらを除外するスクリプトを記述してみましょう。
 
+1. 指定ディレクトリ配下の直近１週間で更新されたファイルの一覧を表示してください。
+2. バージョン管理されたディレクトリには、 ".svn" や ".git" のようなディレクトリが存在します。
+   ``os.walk()`` を使ったときに、これらを除外するスクリプトを記述してください。
+3. Emacs や Vim のバックアップファイルを除外するフィルタを記述してください。
