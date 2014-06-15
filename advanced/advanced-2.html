@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,7 +10,6 @@
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
     <link rel="up" title="発展的なことがら" href="index.html" />
     <link rel="next" title="ネットワークプログラミング" href="advanced-3.html" />
@@ -186,17 +182,18 @@ API ドキュメントがソースに記述されている場合には、 <tt cl
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>$ python mylib-sample.py
+<div class="highlight-python"><div class="highlight"><pre>$ python mylib-sample.py
 
 ----- cmdline module -----
 
-['__builtins__', '__doc__', '__file__', '__name__', '__package__', 'logging', 'optparse', 'parse_args']
+[&#39;__builtins__&#39;, &#39;__doc__&#39;, &#39;__file__&#39;, &#39;__name__&#39;, &#39;__package__&#39;, &#39;logging&#39;, &#39;optparse&#39;, &#39;parse_args&#39;]
 
 ----- parse_args() document -----
 
 Parse arguments and sets up logging verbosity.
 
-    :rtype: normal options and arguments as tuple.</pre>
+    :rtype: normal options and arguments as tuple.
+</pre></div>
 </div>
 </div>
 <div class="section" id="id6">
@@ -211,10 +208,11 @@ Parse arguments and sets up logging verbosity.
 そこに Python スクリプトを記述しても構いません。</p>
 <p>前述の <tt class="file docutils literal"><span class="pre">cmdline.py</span></tt> を <em>pyschool</em> というディレクトリに置き、
 <em>pyschool</em> ディレクトリに空の <tt class="file docutils literal"><span class="pre">__init__.py</span></tt> ファイルを置きます。</p>
-<div class="highlight-python"><pre>$ tree pyschool/
+<div class="highlight-python"><div class="highlight"><pre>$ tree pyschool/
 pyschool/
 ├── __init__.py
-└── cmdline.py</pre>
+└── cmdline.py
+</pre></div>
 </div>
 <p>モジュールの情報を確認してみます。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyschool.cmdline</span>
@@ -272,17 +270,19 @@ URL のクエリストリング (&#8221;?&#8221; の後ろの部分) を解析�
 <li><a class="reference external" href="http://docs.python.org/library/urlparse.html#urlparse.parse_qs">http://docs.python.org/library/urlparse.html#urlparse.parse_qs</a></li>
 </ul>
 <p>ドキュメントには次のように記述されています。</p>
-<div class="highlight-python"><pre>New in version 2.6: Copied from the cgi module.
+<div class="highlight-python"><div class="highlight"><pre>New in version 2.6: Copied from the cgi module.
 
-[日本語] バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。</pre>
+[日本語] バージョン 2.6 で新しく追加されました。cgi モジュールからコピーしています。
+</pre></div>
 </div>
 <p><cite>cgi</cite> モジュールの <tt class="docutils literal"><span class="pre">parse_qs()</span></tt> ドキュメントには次のように記述されています。</p>
-<div class="highlight-python"><pre>This function is deprecated in this module.
+<div class="highlight-python"><div class="highlight"><pre>This function is deprecated in this module.
 Use urlparse.parse_qs() instead. It is maintained here only for backward compatiblity.
 
 [日本語] このモジュールにおけるこの関数は非推奨です。
 urlparse.parse_qs() を代わりに使ってください。
-ここでの記述は後方互換性のためだけに残されています。</pre>
+ここでの記述は後方互換性のためだけに残されています。
+</pre></div>
 </div>
 <p>ということで、Python 2.4 と Python 2.7 の両方で動作するスクリプトを記述するためには、
 ちょっとした気遣いが必要になります。</p>
@@ -321,7 +321,7 @@ urlparse.parse_qs() を代わりに使ってください。
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

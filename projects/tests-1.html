@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,7 +10,6 @@
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
     <link rel="up" title="プロジェクトの構成" href="index.html" />
     <link rel="next" title="Nose を使ったテスト" href="tests-2.html" />
@@ -89,7 +85,7 @@
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>$ python fibonacci.py
+<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci.py
    0 --fib--&gt;    0
    1 --fib--&gt;    1
    2 --fib--&gt;    1
@@ -102,7 +98,8 @@
    9 --fib--&gt;   34
   10 --fib--&gt;   55
   11 --fib--&gt;   89
-  12 --fib--&gt;  144</pre>
+  12 --fib--&gt;  144
+</pre></div>
 </div>
 <p>これに対するテストスクリプトを <tt class="file docutils literal"><span class="pre">fibonacci_test.py</span></tt> として作成します。</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
@@ -146,7 +143,7 @@
 </div>
 </div>
 <p>実行結果 (通常実行と <tt class="docutils literal"><span class="pre">-v</span></tt> オプション付き実行)</p>
-<div class="highlight-python"><pre>$ python fibonacci_test.py
+<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test.py
 .
 ----------------------------------------------------------------------
 Ran 1 test in 0.001s
@@ -159,7 +156,8 @@ test (__main__.FibonacciTest) ... ok
 ----------------------------------------------------------------------
 Ran 1 test in 0.001s
 
-OK</pre>
+OK
+</pre></div>
 </div>
 <p>次に、引数チェックのテストを導入します。</p>
 <p><tt class="file docutils literal"><span class="pre">fibonacci_test2.py</span></tt> (メソッドのみ抜粋)</p>
@@ -178,14 +176,15 @@ OK</pre>
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>$ python fibonacci_test2.py -v
+<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test2.py -v
 test (__main__.FibonacciTest) ... ok
 test_invalid_argument (__main__.FibonacciTest) ... ok
 
 ----------------------------------------------------------------------
 Ran 2 tests in 0.001s
 
-OK</pre>
+OK
+</pre></div>
 </div>
 <p>小数点を含む数字や文字列を渡した場合には例外が投げられており、
 その場合にはテストがパスするようになっています。</p>
@@ -204,7 +203,7 @@ OK</pre>
 (基本的には英語で記述すべきですが)</p>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>$ python fibonacci_test3.py -v 2&gt;test-error.txt
+<div class="highlight-python"><div class="highlight"><pre>$ python fibonacci_test3.py -v 2&gt;test-error.txt
 
 $ head -n 10 test-error.txt
 test (__main__.FibonacciTest) ... ok
@@ -215,7 +214,7 @@ test_引数が日本語の場合は？ (__main__.FibonacciTest) ... ERROR
 ERROR: test_引数が日本語の場合は？ (__main__.FibonacciTest)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "src/fibonacci_test3.py", line 42, in test_undefined
+  File &quot;src/fibonacci_test3.py&quot;, line 42, in test_undefined
     fib(-1)
 
 $ tail -n 7 test-error.txt
@@ -225,7 +224,8 @@ RuntimeError: maximum recursion depth exceeded while calling a Python object
 ----------------------------------------------------------------------
 Ran 3 tests in 0.016s
 
-FAILED (errors=1)</pre>
+FAILED (errors=1)
+</pre></div>
 </div>
 <p>負の数から開始してしまうと再帰の行き着く先がありませんので無限ループになってしまいます。
 適切に <tt class="file docutils literal"><span class="pre">fibonacci.py</span></tt> を改修してください。</p>
@@ -281,9 +281,10 @@ Wikipedia のページなどを参考にして、異なる実装を考えてみ�
 </pre></div>
 </div>
 <p>実行結果</p>
-<div class="highlight-python"><pre>$ python datestring_convert.py
+<div class="highlight-python"><div class="highlight"><pre>$ python datestring_convert.py
 2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900
-DIFF: days=0, seconds=11372</pre>
+DIFF: days=0, seconds=11372
+</pre></div>
 </div>
 <p>次に、 <tt class="docutils literal"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__':</span></tt> の部分をインタープリタで実行します。
 スクリプトを読み込めるように、スクリプトと同じディレクトリに移動してから
@@ -344,25 +345,26 @@ DIFF: days=0, seconds=11372</pre>
 </pre></div>
 </div>
 <p>Python の <em>doctest</em> モジュールにスクリプトを渡してみます。</p>
-<div class="highlight-python"><pre>$ python -m doctest datestring_convert_with_test.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ python -m doctest datestring_convert_with_test.py
+</pre></div>
 </div>
 <p>何も表示されずに終了しました。
 テストが正常に実行され、すべてのテストがパスしたのです。</p>
 <p>試しに、テスト文字列を変更して試してみてください。
 (コメントにある TEST_1 変数の値を変えてみます。)</p>
-<div class="highlight-python"><pre>$ python -m doctest datestring_convert_with_test.py
+<div class="highlight-python"><div class="highlight"><pre>$ python -m doctest datestring_convert_with_test.py
 **********************************************************************
-File "datestring_convert_with_test.py", line 16, in datestring_convert_with_test.datestring_convert
+File &quot;datestring_convert_with_test.py&quot;, line 16, in datestring_convert_with_test.datestring_convert
 Failed example:
-    print "%s ==&gt; %s" % (TEST_1, TEST_2)
+    print &quot;%s ==&gt; %s&quot; % (TEST_1, TEST_2)
 Expected:
     2012-01-14 07:56:02 ==&gt; 2012-01-14 04:46:30 +0900
 Got:
     2012-01-14 07:56:01 ==&gt; 2012-01-14 04:46:30 +0900
 **********************************************************************
-File "datestring_convert_with_test.py", line 18, in datestring_convert_with_test.datestring_convert
+File &quot;datestring_convert_with_test.py&quot;, line 18, in datestring_convert_with_test.datestring_convert
 Failed example:
-    print "DIFF: days=%d, seconds=%d" % (diff.days, diff.seconds)
+    print &quot;DIFF: days=%d, seconds=%d&quot; % (diff.days, diff.seconds)
 Expected:
     DIFF: days=0, seconds=11372
 Got:
@@ -370,7 +372,8 @@ Got:
 **********************************************************************
 1 items had failures:
    2 of   8 in datestring_convert_with_test.datestring_convert
-***Test Failed*** 2 failures.</pre>
+***Test Failed*** 2 failures.
+</pre></div>
 </div>
 <p>テストが失敗していることが分かります。
 doctest モジュールはコメントの文字列を解析して、
@@ -386,7 +389,8 @@ doctest モジュールはコメントの文字列を解析して、
 </pre></div>
 </div>
 <p>doctest モジュールを実行した場合の詳細なログが欲しい場合は <tt class="docutils literal"><span class="pre">-v</span></tt> オプションを付けます。</p>
-<div class="last highlight-python"><pre>$ python -m doctest -v datestring_convert_with_test.py</pre>
+<div class="last highlight-python"><div class="highlight"><pre>$ python -m doctest -v datestring_convert_with_test.py
+</pre></div>
 </div>
 </div>
 <p>文字列を日付型に変換するためには <tt class="docutils literal"><span class="pre">strptime()</span></tt> も使えます。
@@ -411,7 +415,7 @@ doctest モジュールはコメントの文字列を解析して、
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

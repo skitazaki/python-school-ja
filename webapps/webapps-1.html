@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,7 +10,6 @@
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
     <link rel="up" title="Webアプリケーションの実装" href="index.html" />
     <link rel="next" title="アプリケーションの作成" href="webapps-2.html" />
@@ -58,15 +54,17 @@
 <p><strong class="command">virtualenv</strong> を使って専用環境を作成します。
 ちょっとしたツールを Web アプリケーションとして実装してみますので、
 <em>webapp-tools</em> としておきましょう。</p>
-<div class="highlight-python"><pre>&gt; D:
+<div class="highlight-python"><div class="highlight"><pre>&gt; D:
 &gt; cd D:\sandbox
-&gt; C:\Python27\Scripts\virtualenv.exe --distribute webapp-tools</pre>
+&gt; C:\Python27\Scripts\virtualenv.exe --distribute webapp-tools
+</pre></div>
 </div>
 <p><cite>webapp-tools</cite> フォルダに <tt class="file docutils literal"><span class="pre">requirements.txt</span></tt> を作成し、 <strong class="command">pip</strong> で読み込ませます。</p>
-<div class="highlight-python"><pre>&gt; cd webapp-tools
+<div class="highlight-python"><div class="highlight"><pre>&gt; cd webapp-tools
 &gt; notepad requirements.txt        # 下記参照
 &gt; Scripts\activate
-&gt; pip install -r requirements.txt</pre>
+&gt; pip install -r requirements.txt
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -80,12 +78,13 @@
 <li>Scripts フォルダに <tt class="file docutils literal"><span class="pre">django-admin.py</span></tt> というファイルが追加されていること。</li>
 <li>Python インタープリタを起動して、 <em>django</em> モジュールをインポートできること。</li>
 </ol>
-<div class="highlight-python"><pre>&gt; python Scripts\django-admin.py --version
+<div class="highlight-python"><div class="highlight"><pre>&gt; python Scripts\django-admin.py --version
 1.3
 &gt; python
 &gt;&gt;&gt; import django
 &gt;&gt;&gt; django.VERSION
-(1, 3, 0, 'final', 0)</pre>
+(1, 3, 0, &#39;final&#39;, 0)
+</pre></div>
 </div>
 <p>実装するときは、virtualenv の有効化を忘れないようにしましょう。</p>
 </div>
@@ -93,14 +92,16 @@
 <h2>プロジェクトを作成する<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">django-admin.py</span></tt> を使ってプロジェクトを作成します。
 まずはお遊び用の環境ということで、 <em>sandbox</em> を作りましょう。</p>
-<div class="highlight-python"><pre>&gt; python Scripts\django-admin.py startproject sandbox</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python Scripts\django-admin.py startproject sandbox
+</pre></div>
 </div>
 <p><em>sandbox</em> というフォルダが作成されます。次のような Python スクリプトが配置されます。</p>
-<div class="highlight-python"><pre>&gt; dir /b sandbox
+<div class="highlight-python"><div class="highlight"><pre>&gt; dir /b sandbox
 manage.py
 settings.py
 urls.py
-__init__.py</pre>
+__init__.py
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -109,8 +110,9 @@ __init__.py</pre>
 また、 <tt class="file docutils literal"><span class="pre">wsgi.py</span></tt> というファイルも追加されるでしょう。</p>
 </div>
 <p>まずは <tt class="file docutils literal"><span class="pre">settings.py</span></tt> を編集します。</p>
-<div class="highlight-python"><pre>&gt; cd sandbox
-&gt; notepad settings.py        # 下記参照</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; cd sandbox
+&gt; notepad settings.py        # 下記参照
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -129,20 +131,22 @@ __init__.py</pre>
 </div>
 </div>
 <p>次に、Django プロジェクトの管理スクリプト <tt class="file docutils literal"><span class="pre">manage.py</span></tt> を使ってデータベースを作成します。</p>
-<div class="highlight-python"><pre>&gt; python manage.py syncdb</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python manage.py syncdb
+</pre></div>
 </div>
 <p>次の質問には &#8220;yes&#8221; と答え、ユーザー名、メールアドレス、パスワードをそれぞれ入力します。</p>
 <blockquote>
 <div>Would you like to create one now? (yes/no): yes</div></blockquote>
 <p>作業中のフォルダに、先ほど指定したデータベースファイル <tt class="file docutils literal"><span class="pre">sandbox.sqlite</span></tt> が作成されています。</p>
-<div class="highlight-python"><pre>&gt; dir /b
+<div class="highlight-python"><div class="highlight"><pre>&gt; dir /b
 manage.py
 sandbox.sqlite
 settings.py
 settings.pyc
 urls.py
 __init__.py
-__init__.pyc</pre>
+__init__.pyc
+</pre></div>
 </div>
 </div>
 <div class="section" id="id3">
@@ -189,13 +193,14 @@ __init__.pyc</pre>
 <div class="section" id="id4">
 <h2>テストサーバを起動する<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>Django の管理ツール <tt class="file docutils literal"><span class="pre">manage.py</span></tt> を使ってテストサーバを起動します。</p>
-<div class="highlight-python"><pre>&gt; python manage.py runserver
+<div class="highlight-python"><div class="highlight"><pre>&gt; python manage.py runserver
 Validating models...
 
 0 errors found
-Django version 1.3, using settings 'sandbox.settings'
+Django version 1.3, using settings &#39;sandbox.settings&#39;
 Development server is running at http://127.0.0.1:8000/
-Quit the server with CTRL-BREAK.</pre>
+Quit the server with CTRL-BREAK.
+</pre></div>
 </div>
 <p>Web ブラウザで <a class="reference external" href="http://localhost:8000/">8000 番ポート</a> にアクセスすると、 Django のエラー画面が表示されます。</p>
 <div class="figure">
@@ -228,7 +233,7 @@ Ctrl+BREAK (Linux などの場合は Ctrl+C) でテストサーバを停止で�
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

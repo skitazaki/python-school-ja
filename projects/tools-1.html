@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,7 +10,6 @@
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
     <link rel="up" title="プロジェクトの構成" href="index.html" />
     <link rel="next" title="自動化を進める" href="tools-2.html" />
@@ -132,12 +128,14 @@ Sconsからの派生で、比較的新しいソフトウェアです。</td>
 <p>waf はシステムワイドなインストールが不要で、バイナリをダウンロードして PATH を通せば使えます。
 <a class="reference internal" href="../advanced/advanced-2.html"><em>モジュールのインポート方法いろいろ</em></a> にファイルをダウンロードするスクリプトがあります。
 次のようにしてダウンロードし、 <tt class="file docutils literal"><span class="pre">waf.bat</span></tt> というバッチファイルで起動させれば使い始められます。</p>
-<div class="highlight-python"><pre>&gt; python downloader.py http://waf.googlecode.com/files/waf-1.6.11
-&gt; copy waf-1.6.11 Scripts\waf</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; python downloader.py http://waf.googlecode.com/files/waf-1.6.11
+&gt; copy waf-1.6.11 Scripts\waf
+</pre></div>
 </div>
 <p><tt class="file docutils literal"><span class="pre">waf.bat</span></tt></p>
-<div class="highlight-python"><pre>@echo off
-python %~dp0\waf %*</pre>
+<div class="highlight-python"><div class="highlight"><pre>@echo off
+python %~dp0\waf %*
+</pre></div>
 </div>
 <p>Waf は Node.js のビルドシステムとしても使われています。
 作者の Ryan Dahl は複雑だとも述べていますが、現状で使っているものをとりあえず知っておくのも良いでしょう。</p>
@@ -164,7 +162,7 @@ python %~dp0\waf %*</pre>
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,7 +10,6 @@
     
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="../static/jquery.js"></script>
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="../index.html" />
     <link rel="up" title="Webアプリケーションの実装" href="index.html" />
     <link rel="next" title="発展的なことがら" href="../advanced/index.html" />
@@ -82,19 +78,22 @@ Apache+Tomcat で Web アプリケーションを作成した経験のある人�
 </div>
 <p><a class="reference external" href="http://trac.saddi.com/flup">flup</a> というモジュールを使って AJP 互換で動作させます。
 まずは <strong class="command">pip</strong> を使ってインストールします。</p>
-<div class="highlight-python"><pre>$ cat &lt;&lt;EOF &gt;&gt;requirements.txt
+<div class="highlight-python"><div class="highlight"><pre>$ cat &lt;&lt;EOF &gt;&gt;requirements.txt
 &gt; Django=1.3.1
 &gt; flup==1.0.2
 &gt; EOF
-$ pip install -r requirements.txt</pre>
+$ pip install -r requirements.txt
+</pre></div>
 </div>
-<div class="highlight-python"><pre>$ python manage.py runfcgi protocol=ajp host=127.0.0.1 port=3000</pre>
+<div class="highlight-python"><div class="highlight"><pre>$ python manage.py runfcgi protocol=ajp host=127.0.0.1 port=3000
+</pre></div>
 </div>
 <p>次に、Webサーバでプロキシを設定します。</p>
 <p>Apache の場合は <em>/usr/local/apache2/conf/extra/httpd-proxy.conf</em> に次のような記述を追加します。</p>
-<div class="highlight-python"><pre>&lt;Location /logview&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;Location /logview&gt;
     ProxyPass   ajp://localhost:3000/logview
-&lt;/Location&gt;</pre>
+&lt;/Location&gt;
+</pre></div>
 </div>
 <p>適切に設定できると、以下の画面を表示できます。</p>
 <div class="figure">
@@ -145,7 +144,7 @@ $ pip install -r requirements.txt</pre>
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

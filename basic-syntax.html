@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,11 +10,10 @@
     
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.5.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,7 +23,6 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Python School 1.5.2 documentation" href="index.html" />
     <link rel="next" title="基本的なスクリプト" href="scripts/index.html" />
     <link rel="prev" title="はじめの一歩" href="getting-started.html" /> 
@@ -188,11 +184,13 @@ Java の場合と同じように Python でも <tt class="docutils literal"><spa
 <p>PyPI に pep8 というモジュールがあります。
 引数として Python ファイルを与えると、規約に違反していないかを確認してくれます。</p>
 <p><strong class="command">pip</strong> を使ってインストールします。</p>
-<div class="highlight-python"><pre>&gt; pip install pep8</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; pip install pep8
+</pre></div>
 </div>
 <p>論理的な整合性も確認してくれるツールとして <a class="reference external" href="http://pypi.python.org/pypi/pyflakes">pyflakes</a> があります。</p>
 <p><strong class="command">pip</strong> を使ってインストールします。</p>
-<div class="highlight-python"><pre>&gt; pip install pyflakes</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; pip install pyflakes
+</pre></div>
 </div>
 <p>いずれも <tt class="file docutils literal"><span class="pre">Scripts</span></tt> フォルダ (Linux などの場合は <tt class="file docutils literal"><span class="pre">bin</span></tt>) に
 <strong class="command">pep8</strong> と <strong class="command">pyflakes</strong> がインストールされます。</p>
@@ -202,8 +200,9 @@ Java の場合と同じように Python でも <tt class="docutils literal"><spa
 Scripts フォルダに <tt class="file docutils literal"><span class="pre">pyflakes.bat</span></tt> というファイルを作成して、
 スクリプトのラッパーを作成してください。
 次のようなバッチファイルになります。(パスは要調整)</p>
-<div class="last highlight-python"><pre>@echo off
-C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflakes %*</pre>
+<div class="last highlight-python"><div class="highlight"><pre>@echo off
+C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflakes %*
+</pre></div>
 </div>
 </div>
 </div>
@@ -228,14 +227,16 @@ C:\sandbox\python-school\Scripts\python C:\sandbox\python-school\Scripts\pyflake
 </pre></div>
 </td></tr></table></div>
 <p><strong class="command">pep8</strong> を実行してみます。</p>
-<div class="highlight-python"><pre>&gt; pep8 first-sample.py
+<div class="highlight-python"><div class="highlight"><pre>&gt; pep8 first-sample.py
 first-sample.py:3:7: E222 multiple spaces after operator
-first-sample.py:6:32: E231 missing whitespace after ','</pre>
+first-sample.py:6:32: E231 missing whitespace after &#39;,&#39;
+</pre></div>
 </div>
 <p>3行目と6行目に余計な空白が混入していることが分かります。</p>
 <p><strong class="command">pyflakes</strong> を実行してみます。</p>
-<div class="highlight-python"><pre>&gt; pyflakes first-sample.py
-first-sample.py:8: 'os' imported but unused</pre>
+<div class="highlight-python"><div class="highlight"><pre>&gt; pyflakes first-sample.py
+first-sample.py:8: &#39;os&#39; imported but unused
+</pre></div>
 </div>
 <p>空白にはノータッチですが、使っていない <cite>import</cite> 文を検知してくれます。</p>
 <p>このふたつを組み合わせたものとして <strong class="command">flake8</strong> があります。
@@ -262,7 +263,7 @@ first-sample.py:8: 'os' imported but unused</pre>
 
     <div class="footer">
         &copy; Copyright 2013, KITAZAKI Shigeru.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
