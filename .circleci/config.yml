@@ -20,7 +20,8 @@ jobs:
           command: |
             # `sphinx-build` is installed in user space
             echo "PATH is " $PATH
-            ls . $HOME $HOME/.local/lib/python3.8/site-packages
+            pwd
+            ls . $HOME $HOME/.local/lib/python3.8/site-packages/sphinx
             cd doc && make html
           name: Build HTML documents
 
