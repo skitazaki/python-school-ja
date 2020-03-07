@@ -12,8 +12,8 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
-          command: ./manage.py test
-          name: Test
+          command: cd doc && make html
+          name: Build HTML documents
 
 workflows:
   main:
