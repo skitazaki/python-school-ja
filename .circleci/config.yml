@@ -39,10 +39,7 @@ jobs:
           at: doc/_build
       - run:
           name: Disable jekyll builds
-          command: |
-            pwd
-            ls . doc doc/_build
-            touch doc/_build/html/.nojekyll
+          command: touch doc/_build/html/.nojekyll
       - run:
           name: Install and configure dependencies
           command: |
