@@ -1,0 +1,24 @@
+# Basic libraries
+flake8
+pyyaml
+requests
+
+# Test tools
+nose
+pytest
+
+# Database
+SQLAlchemy
+mysql-connector-python
+py-postgresql
+pymongo
+
+# Server tools
+paramiko
+fabric
+
+# Web application
+Django==1.6
+
+# Misc.
+httpie
