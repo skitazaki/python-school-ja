@@ -9,14 +9,16 @@ jobs:
     steps:
       - checkout
       - python/load-cache
-      - python/install-deps:
-          local: false  # Need `sphinx-build` under PATH
+      - python/install-deps
       - python/save-cache
       - run:
           command: python --version && python3 --version
           name: Show Python versions
       - run:
-          command: cd doc && make html
+          command: |
+            # `sphinx-build` is installed in user space
+            export PATH=$HOME/.local/bin:$PATH
+            cd doc && make html
           name: Build HTML documents
 
 workflows:
