@@ -6,11 +6,16 @@ orbs:
 jobs:
   build-and-test:
     executor: python/default
+    parameters:
+      local: false  # Need `sphinx-build` under PATH
     steps:
       - checkout
       - python/load-cache
       - python/install-deps
       - python/save-cache
+      - run:
+          command: python --version && python3 --version
+          name: Show Python versions
       - run:
           command: cd doc && make html
           name: Build HTML documents
