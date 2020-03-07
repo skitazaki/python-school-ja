@@ -5,7 +5,8 @@ orbs:
 
 jobs:
   build-and-test:
-    executor: python/default
+    executor: python/default:
+      tag: "3.8"
     steps:
       - checkout
       - python/load-cache
@@ -17,10 +18,8 @@ jobs:
       - run:
           command: |
             # `sphinx-build` is installed in user space
-            echo $PATH
-            export PATH=$HOME/.local/bin:$PATH
-            echo $PATH
-            ls $HOME/.local/bin $HOME/.local
+            echo "PATH is " $PATH
+            ls $HOME/.local $HOME/.local/lib $HOME/.local/lib/python3.8
             cd doc && make html
           name: Build HTML documents
 
