@@ -4,8 +4,10 @@ orbs:
   python: circleci/python@0.2.1
 
 jobs:
-  build-and-test:
-    executor: python/default
+  build:
+    executor:
+      name: python/default
+      tag: "3.8"
     steps:
       - checkout
       - python/load-cache
@@ -25,5 +27,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - build-and-test:
-          tag: "3.8"
+      - build:
