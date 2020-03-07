@@ -10,9 +10,15 @@ jobs:
       tag: "3.8"
     steps:
       - checkout
-      - python/load-cache
+      # - python/load-cache
+      - load-cache:
+          key: pip-{{ checksum "requirements.txt" }}-console_script
       - python/install-deps
       - python/save-cache
+      - save-cache:
+          key: pip-{{ checksum "requirements.txt" }}-console_script
+          paths:
+            - /home/circleci/.local/bin/
       - run:
           command: python --version && python3 --version
           name: Show Python versions
@@ -20,8 +26,6 @@ jobs:
           command: |
             # `sphinx-build` is installed in user space
             echo "PATH is " $PATH
-            pwd
-            ls . $HOME $HOME/.local/lib/python3.8/site-packages/sphinx
             cd doc && make html
           name: Build HTML documents
 
