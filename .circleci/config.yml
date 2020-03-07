@@ -6,12 +6,11 @@ orbs:
 jobs:
   build-and-test:
     executor: python/default
-    parameters:
-      local: false  # Need `sphinx-build` under PATH
     steps:
       - checkout
       - python/load-cache
-      - python/install-deps
+      - python/install-deps:
+          local: false  # Need `sphinx-build` under PATH
       - python/save-cache
       - run:
           command: python --version && python3 --version
