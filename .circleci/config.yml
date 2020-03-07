@@ -17,7 +17,10 @@ jobs:
       - run:
           command: |
             # `sphinx-build` is installed in user space
+            echo $PATH
             export PATH=$HOME/.local/bin:$PATH
+            echo $PATH
+            ls $HOME/.local/bin $HOME/.local
             cd doc && make html
           name: Build HTML documents
 
