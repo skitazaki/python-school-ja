@@ -56,4 +56,4 @@ workflows:
       - docs-build
       - docs-deploy:
           requires:
-            - doc-build
+            - docs-build
