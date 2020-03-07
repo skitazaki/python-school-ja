@@ -10,12 +10,13 @@ jobs:
       tag: "3.8"
     steps:
       - checkout
-      # - python/load-cache
-      - load-cache:
-          key: pip-{{ checksum "requirements.txt" }}-console_script
+      - restore_cache:
+          keys:
+            # - pip-{{ checksum "requirements.txt" }}  # equivalent with python/load-cache
+            - pip-{{ checksum "requirements.txt" }}-console_script
       - python/install-deps
       - python/save-cache
-      - save-cache:
+      - save_cache:
           key: pip-{{ checksum "requirements.txt" }}-console_script
           paths:
             - /home/circleci/.local/bin/
