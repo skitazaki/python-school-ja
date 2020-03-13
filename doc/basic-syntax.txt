@@ -19,7 +19,7 @@
 Google の場合は半角空白２文字のようです。
 しばらく Python を書いてみて慣れてきたら、 `Google Python Style Guide`_ も参考にしてみましょう。
 
-.. _`Google Python Style Guide`: http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
+.. _`Google Python Style Guide`: http://google.github.io/styleguide/pyguide.html
 
 Python のインタラクティブシェルを使って、次のように確認できます。
 "#" 記号以降はコメントです。入力しないでください。 ::
@@ -66,7 +66,7 @@ Python の特徴として、予約語が少なく標準モジュールが充実�
 標準モジュールはたくさんありますので使いながら覚えていきましょう。
 網羅的に学習したい場合には PyMOTW を読んでください。
 
-* `Python Module of the Week`_
+* `Python 3 Module of the Week`_
 
 .. note:: 組み込み関数の上書き
 
@@ -76,7 +76,7 @@ Python の特徴として、予約語が少なく標準モジュールが充実�
 
 .. _`2.3.1. Keywords`: https://docs.python.org/3/reference/lexical_analysis.html#keywords
 .. _`2. Built-in Functions`: https://docs.python.org/3/library/functions.html
-.. _Python Module of the Week: http://www.doughellmann.com/PyMOTW/contents.html
+.. _Python 3 Module of the Week: https://pymotw.com/3/
 
 ``if`` と ``for`` は後置することも可能です。 ::
 
@@ -120,26 +120,13 @@ Python の場合は ``try-except`` という構文を使います。
 データベース接続を閉じる処理などです。
 Java の場合と同じように Python でも ``finally`` を使えます。
 
-実行環境によって注意すること
+Python 2 と Python 3
 ============================
 
-Python は多くの環境で動作しますし、Linux や MacOSX では初めからインストールされています。
-しかし、そのバージョンは少しずつ異なります。
-異なるバージョンに対してスクリプトを記述する場合の注意点をいくつか列挙しておきます。
-
-* Python 2.4 だと ``except`` と ``finally`` を同時に使えない。
-* Python 2.4 だと後置IF文を使えない。
-* Python 2.x では ``print`` 節、Python 3.x からは ``print()`` 文になる。
-* 標準モジュールが異なる。 (e.g. *json* は Python 2.6 以降、など)
-* 同じモジュールでもプロパティに違いがある。
-* バージョンが古いと `with` を使えない。
-* 例外を補足する処理の記述方法が異なる。 (``as`` を使うか否か)
-* 文字列に関するデータ型の発展が非常にややこしい。 (``str``, ``unicode``, ``byte``)
-
-こうした構文の違いをいちいち考慮するのは大変です。
-既存の Python 2.x 系のソースコードを Python 3.x 系に変換する場合は :command:`2to3` コマンド
-(`26.6. 2to3 - Automated Python 2 to 3 code translation`_)、
-これから両方のバージョンに対応する場合は `six`_ を使いましょう。
+Python は多くの環境で動作しますが、Python 2 と Python 3 は多くの点で異なります。
+Python 2 で新しいスクリプトを記述することはありませんが、既存のスクリプトを読むまたは移植することはあるかもしれません。
+:command:`2to3` コマンド (`26.6. 2to3 - Automated Python 2 to 3 code translation`_)、
+や `six`_ を参照して下さい。
 
 .. _six: http://pythonhosted.org/six/
 .. _`26.6. 2to3 - Automated Python 2 to 3 code translation`: https://docs.python.org/3/library/2to3.html
@@ -151,9 +138,8 @@ Python は多くの環境で動作しますし、Linux や MacOSX では初め�
 違反しても構文エラーにはなりませんが、読みやすいコードを書くことにつながります。
 ソースコードが PEP 8 に従っているかをチェックするツール `pep8`_ もあります。
 コードをコミットする前にチェッカーを実行する習慣を身につけてください。
-エディタのプラグインとして組込めるものもあります。
-例えば、Sublime Text を使っている場合は `SublimeLinter`_ があります。
-その他のエディタや IDE でも同様のツールがあるはずですので、まずは検索してみてください。
+また、CI/CD のパイプラインにチェッカーを組み込みましょう。
+エディタのプラグインとして組込めるものもありますので、まずは検索してみましょう。
 
 ここでは例示として、以下のようなソースコード (:file:`first-sample.py`) を用意します。
 
@@ -175,9 +161,8 @@ Python は多くの環境で動作しますし、Linux や MacOSX では初め�
 既存のルールとそれをチェックするツールも開発されています。まずはそれらを使ってみましょう。
 
 .. _PEP 8: http://www.python.org/dev/peps/pep-0008/
-.. _PEP 8 日本語: http://oldriver.org/python/pep-0008j.html
+.. _PEP 8 日本語: https://pep8-ja.readthedocs.io/ja/latest/
 .. _pep8: https://pypi.python.org/pypi/pep8
-.. _`SublimeLinter`: https://github.com/SublimeLinter/SublimeLinter
 
 pep8 による構文チェック
 ------------------------
@@ -185,7 +170,7 @@ pep8 による構文チェック
 PyPI から pep8 モジュールをインストールします。
 :command:`pip` を使ってインストールします。 ::
 
-    > pip install pep8
+    > python3 -m pip install pep8
 
 Windows の場合は :file:`Scripts` フォルダ、Linux などの場合は :file:`bin` に
 :command:`pep8` がインストールされます。
@@ -231,7 +216,7 @@ pyflakes による規約チェック
 論理的な整合性も確認してくれるツールとして pyflakes_ があります。
 :command:`pip` を使って PyPI からインストールします。 ::
 
-    > pip install pyflakes
+    > python3 -m pip install pyflakes
 
 .. _pyflakes: http://pypi.python.org/pypi/pyflakes
 
@@ -260,6 +245,9 @@ Windows の場合は :file:`Scripts` フォルダ、Linux などの場合は :fi
 :command:`pip` で簡単にインストールできますので、既存のコードがある場合も新規にプロジェクトを作成する場合も、
 日常的に構文チェッカーが実行されるようにしておきましょう。
 
+その他に :command:`black` の利用も検討してみましょう。
+
 .. _flake8: https://pypi.python.org/pypi/flake8
+.. _black: https://black.readthedocs.io/en/stable/
 
 次は、もう少し実際的なスクリプトを記述していきます。
