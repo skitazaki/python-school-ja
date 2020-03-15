@@ -31,7 +31,7 @@ def fizzbuzz(i):
 
 
 def fizzbuzz_iter(n):
-    """Generator, using zip and postposion IF statement."""
+    """Generator, using `zip` and postposition IF statement."""
     fb = ("Fizz", "Buzz")
     i = 1
     while i <= n:
@@ -42,7 +42,7 @@ def fizzbuzz_iter(n):
 
 
 def fizzbuzz_list(n):
-    """map and lamba function. also showing enumerate and type, and zip."""
+    """`map` and `lambda` functions, showing usages of `enumerate`, `type`, and `zip`."""
     ret = []
     m = range(1, n + 1)
     m1 = map(lambda i: i if i % 3 > 0 else "Fizz", m)
