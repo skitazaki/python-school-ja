@@ -30,7 +30,25 @@ jobs:
       - persist_to_workspace:
           root: doc/_build
           paths: html
-  docs-deploy:
+  docs-package:
+    docker:
+      - image: alpine:3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: doc/_build
+      - run:
+          command: |
+            mv doc/_build/html python-school-ja
+            tar -cjf python-school-ja.tar.bz2 python-school-ja
+          name: Create a document package
+      - store_artifacts:
+          path: python-school-ja.tar.bz2
+  docs-publish:
+    # Publish HTML documents on GitHub Pages.
+    # See the following article for the steps
+    # Deploying documentation to GitHub Pages with continuous integration - CircleCI
+    # (https://circleci.com/blog/automatically-deploy-private-docker-images-to-aws-ecr/)  docs-deploy:
     docker:
       - image: node:12
     steps:
@@ -46,11 +64,22 @@ jobs:
             npm install -g --silent gh-pages@2.2.0
             git config user.email "circleci@example.com"
             git config user.name "circleci-build"
-
+      - add_ssh_keys:
+          fingerprints:
+            - "1f:36:6e:72:55:67:f2:01:a0:22:cf:1d:f1:fe:12:f6"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dotfiles --message "[skip ci] Publish GiHub Pages" --dist doc/_build/html
 workflows:
   main:
     jobs:
       - docs-build
-      - docs-deploy:
+      - docs-package:
           requires:
             - docs-build
+      - docs-publish:
+          requires:
+            - docs-build
+          filters:
+            branches:
+              only: master
