@@ -34,30 +34,30 @@ csv モジュールを使って、 :doc:`csv-1` と同様の処理を実装し�
     +import csv  # import standard "csv" module
      import logging
 
-@@ -43,16 +44,15 @@
-     """Parse daily Tokyo stock prices, and calculate up/down.
-     """
-     with open(args.filename[0], encoding=args.encoding) as fp:
-+        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+    @@ -43,16 +44,15 @@
+         """Parse daily Tokyo stock prices, and calculate up/down.
+         """
+         with open(args.filename[0], encoding=args.encoding) as fp:
+    +        reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
          next(fp)  # skip header line
--        for line in fp:
--            l = line.rstrip('\r\n')
--            t = l.split(',')
-+        for t in reader:
-             # Assign each field on individual variables.
--            day = t[0].strip('"')
--            price_end = float(t[1].strip('"'))
--            price_begin = float(t[2].strip('"'))
--            price_max = float(t[3].strip('"'))
--            price_min = float(t[4].strip('"'))
-+            day = t[0]
-+            price_end = float(t[1])
-+            price_begin = float(t[2])
-+            price_max = float(t[3])
-+            price_min = float(t[4])
-             # Calculate the differenciate of the day.
-             diff = price_end - price_begin
-             if diff > 0:
+    -        for line in fp:
+    -            l = line.rstrip('\r\n')
+    -            t = l.split(',')
+    +        for t in reader:
+              # Assign each field on individual variables.
+    -            day = t[0].strip('"')
+    -            price_end = float(t[1].strip('"'))
+    -            price_begin = float(t[2].strip('"'))
+    -            price_max = float(t[3].strip('"'))
+    -            price_min = float(t[4].strip('"'))
+    +            day = t[0]
+    +            price_end = float(t[1])
+    +            price_begin = float(t[2])
+    +            price_max = float(t[3])
+    +            price_min = float(t[4])
+              # Calculate the differenciate of the day.
+              diff = price_end - price_begin
+              if diff > 0:
 
 宿題
 ====
