@@ -1,8 +1,6 @@
 language: python
 python:
-- '2.7'
-before_install:
-- cp doc-requirements.txt requirements.txt
+  - '3.8'
 script: cd doc; make clean html; cd -
 after_success: ./update-gh-pages.sh
 env:

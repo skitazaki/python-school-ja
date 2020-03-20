@@ -4,12 +4,14 @@ Nose を使ったテスト
 
 前の章ではテストの実行関数をファイルごとに呼び出していました。
 ファイルが増えてくると個別に ``if __name__ == '__main__':`` を記述するのは煩雑なので、
-テストの実行には `nose`_ というモジュールを使います。
+テストの実行には `pytest`_ を使います。
 
-.. _nose: http://readthedocs.org/docs/nose/en/latest/
+.. _`pytest`: https://docs.pytest.org/en/latest/
 
 Nose のインストール
 ===================
+
+TODO: Change Nose to pytest
 
 :file:`requirements.txt` に *nose* の記述を追加して、 :command:`pip` を使ってインストールします。
 インストールできると、 :command:`nosetests` が使えるようになります。
@@ -94,18 +96,11 @@ Nose のインストール
 
 これらを繋ぎ込むことで、テスト結果を確認しながら実装を進めていくことが可能になります。
 
-何をどこまでテストすべきかは、 `パッケージソフト開発のテスト体制`_ の記事を参考にして考えてみましょう。
-ソフトウェア・テストPRESS Vol.9 (2009年10月) の原稿だそうです。
-
-.. _パッケージソフト開発のテスト体制: http://dev.ariel-networks.com/articles/testpress-vol9/part1/
-
 宿題
 ====
 
 1. これまでに書いたことのあるスクリプトにテストケースを作成してください。
 2. サンプルデータを扱うための *fixtures* について調べてください。 `setup`, `teardown` で実現できます。
 3. 異なるバージョンの Python でテストを実行するための tox_ について調べてください。
-4. 類似のツールである `pytest`_ について調べてください。
 
-.. _tox: https://testrun.org/tox/latest/
-.. _`pytest`: http://pytest.org/latest/
+.. _tox: https://tox.readthedocs.io/en/latest/

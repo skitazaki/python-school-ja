@@ -60,12 +60,12 @@
 引数やオプションを追加して、自分で書いたスクリプトもしくは上記のスクリプトを改造しましょう。
 
 1. 特定の範囲だけを出力する。100から200など。
-2. Linux 上の bash で実行したときに出力に色を付ける。"Fizz"=青、"Buzz"=赤、"FizzBuzz"=黄。
+2. Linux 上の bash で実行した出力に色を付ける。ex. "Fizz"=青、"Buzz"=赤、"FizzBuzz"=黄。
 3. 標準出力を横取りして出力結果を assert する。
 4. 通常の実行かテストの実行かを切り替える。
-5. プロファイリングする。  (`profile, cProfile, pstats – Python プログラムのパフォーマンス解析`_)
+5. プロファイリングする。  (`profile and pstats — Performance Analysis — PyMOTW 3`_)
 
-.. _`profile, cProfile, pstats – Python プログラムのパフォーマンス解析`: http://www.doughellmann.com/PyMOTW-ja/profile/
+.. _`profile and pstats — Performance Analysis — PyMOTW 3`: https://pymotw.com/3/profile/index.html
 
 ワンライナーや剰余利用禁止などは Google で検索するとたくさん出てきます。
 同じことを実現する方法はいくつか存在しますが、実行効率や読みやすさは千差万別です。

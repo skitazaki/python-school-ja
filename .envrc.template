@@ -1,5 +1,0 @@
-PYVENV_DIR=$HOME/.pyvenv/`basename $PWD`
-PYVENV=pyvenv-3.4
-
-[ -d $PYVENV_DIR ] || $PYVENV $PYVENV_DIR
-source $PYVENV_DIR/bin/activate

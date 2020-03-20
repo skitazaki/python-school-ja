@@ -1,4 +1,0 @@
-# Use Python 2.x due to `sphinxtogithub'
-Sphinx
-livereload
--e git+git://github.com/michaeljones/sphinx-to-github.git#egg=sphinx-to-github

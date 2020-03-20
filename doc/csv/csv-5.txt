@@ -13,21 +13,20 @@ Python の場合は `class` キーワードを使ってクラスを定義しま�
 何度か実装を繰り返すとその必要性や意味について疑問が出てくる場合がほとんどでしょう。
 詳しく知りたい場合はこちらのブログ記事を読んでみましょう。
 
-* `Why explicit self has to stay`_ (`和訳 : なぜPythonのメソッド引数に明示的にselfと書くのか`_)
+* `Why explicit self has to stay`_
 
 なお、 ``self`` を使う必要のないメソッドは、そもそもそのクラスに定義すべきメソッドではないかもしれません。
 Python はトップレベルに関数を定義できますので、無理にクラスを定義する必要はないことを忘れないでください。
 （Java の場合はすべての関数を何らかのクラスに実装する必要があります）
 
 .. _Why explicit self has to stay: http://neopythonic.blogspot.com/2008/10/why-explicit-self-has-to-stay.html
-.. _`和訳 : なぜPythonのメソッド引数に明示的にselfと書くのか`: http://coreblog.org/ats/translation-of-why-explicit-self
 
 
 簡単な構文と定義
 ======================
 
 *StockPrice* というクラスを定義してみます。
-コンストラクタとして「日付,始値,高値,安値,終値」を受け付けます。
+コンストラクタとして「データ日付,終値,始値,高値,安値」を受け付けます。
 内部的に値を保持するときは小数に変換します。
 １日の動き値は ``diff()`` というメソッドで呼び出せるようにします。
 
@@ -35,12 +34,12 @@ Python はトップレベルに関数を定義できますので、無理にク�
 
     class StockPrice(object):
 
-        def __init__(self, day, price_begin, price_max, price_min, price_end):
+        def __init__(self, day, price_end, price_begin, price_max, price_min):
             self.day = day
+            self.price_end = float(price_end)
             self.price_begin = float(price_begin)
             self.price_max = float(price_max)
             self.price_min = float(price_min)
-            self.price_end = float(price_end)
 
         def diff(self):
             return self.price_end - self.price_begin
@@ -51,7 +50,7 @@ Python はトップレベルに関数を定義できますので、無理にク�
 
 .. code-block:: python
 
-    r = "2014-06-06,15138.75,15144.34,15042.59,15077.24".split(",")
+    r = "2014-06-06,15077.24,15138.75,15144.34,15042.59".split(",")
     p1 = StockPrice(r[0], r[1], r[2], r[3], r[4])
     print(p1)
     p2 = StockPrice(*r)
@@ -67,57 +66,6 @@ Python はトップレベルに関数を定義できますので、無理にク�
    :encoding: utf-8
    :language: python
 
-
-:file:`csv-2.py` からの差分は以下の通りです。
-
-.. code-block:: diff
-
-    @@ -9,6 +9,19 @@
-     import logging
-
-
-    +class StockPrice(object):
-    +
-    +    def __init__(self, day, price_begin, price_max, price_min, price_end):
-    +        self.day = day
-    +        self.price_begin = float(price_begin)
-    +        self.price_max = float(price_max)
-    +        self.price_min = float(price_min)
-    +        self.price_end = float(price_end)
-    +
-    +    def diff(self):
-    +        return self.price_end - self.price_begin
-    +
-    +
-     def parse_args():
-         """Parse arguments and set up logging verbosity.
-
-    @@ -44,14 +57,8 @@
-         with open(args.filename[0]) as fp:
-             reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
-             for t in reader:
-    -            # Assign each field on individual variables.
-    -            day = t[0]
-    -            price_begin = float(t[1])
-    -            price_max = float(t[2])
-    -            price_min = float(t[3])
-    -            price_end = float(t[4])
-    -            # Calculate the differenciate of the day.
-    -            diff = price_end - price_begin
-    +            p = StockPrice(*t)
-    +            diff = p.diff()
-                 if diff > 0:
-                     message = 'up'
-                 elif diff < 0:
-    @@ -59,7 +66,7 @@
-                 else:
-                     message = 'same'
-                 # Write out day, up/down/same, and diff.
-    -            print('{}\t{:5}\t{}'.format(day, message, round(diff, 2)))
-    +            print('{}\t{:5}\t{}'.format(p.day, message, round(diff, 2)))
-
-
-     def main():
 
 パッケージング
 ========================================

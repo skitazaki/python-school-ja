@@ -9,30 +9,14 @@ fabric を使う
 
 .. _fabric: http://www.fabfile.org/
 
-.. warning::
-
-    Python 2.5 以上が必要で、まだ Python 3.x 系には対応していません。
-    CentOS 標準のものは Python 2.4 なので、自分で 2.7 をインストールしてください。
-    Ubuntu や MacOSX Lion は Python 2.7 がインストールされているはずなので、そのまま使い始められます。
-
-    Python 3.x 系への対応はこちらの Issue で確認できます。
-    依存する *paramiko* の Issue は Close されましたので、たまには確認してみましょう。
-
-    * `Python 3.3 support #1050`_
-
-.. _`Python 3.3 support #1050`: https://github.com/fabric/fabric/issues/1050
-
 fabric のインストール
 =====================
 
-Python 2.7 の環境を :command:`virtualenv` で作成し、
 :command:`pip` で *fabric* をインストールします。
 
 .. code-block:: bash
 
-    $ virtualenv --distribute $HOME/.pyvenv/python-school-ja-py27
-    $ source $HOME/.pyvenv/python-school-ja-py27/bin/activate
-    $ pip install fabric
+    $ python3 -m pip install fabric
 
 :command:`fab` コマンドが使えるようになります。
 

@@ -11,37 +11,26 @@ Full HTML documents are available at:
 Setup
 ---------
 
-Create virtual Python environment with `pyvenv`. ::
+Create a virtual Python environment with `venv`. ::
 
-    $ pyvenv $HOME/.pyvenv/python-school-ja
+    $ python3 -m venv $HOME/.pyvenv/python-school-ja
     $ source $HOME/.pyvenv/python-school-ja/bin/activate
-    $ pip-3.3 install -r requirements.txt
-    $ curl http://waf.googlecode.com/files/waf-1.7.13 >$HOME/.pyvenv/python-school-ja/bin/waf
-    $ chmod +x $HOME/.pyvenv/python-school-ja/bin/waf
-    $ waf configure
+    $ python3 -m pip install -U pip
+    $ python3 -m pip install -r requirements.txt
 
-Optional to generate HTML documents using Python 2.7 ::
+Generate HTML documents. ::
 
-    $ virtualenv --distribute $HOME/.pyvenv/sphinx
-    $ source $HOME/.pyvenv/sphinx/bin/activate
-    $ pip install -r doc-requirements.txt
-    $ cd doc
-    $ make clean html
-
-Above procedures are written in ``devsetup.sh``.
+    $ cd doc && make html
 
 Edit
 -----
 
 Run web server which watches source files using ``livereload``. ::
 
-    $ livereload -p 8000
+    $ python3 -m pip install "livereload>=2.6"
+    $ python3 docserver.py
 
 Edit documents under `doc` directory.
-
-Check syntax with ``flake8`` for Python 3.x syntax ::
-
-    $ waf
 
 Note
 ----

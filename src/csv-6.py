@@ -20,10 +20,10 @@ DEFAULT_SQLITE_FILE = ':memory:'
 # Declare input fields definition.
 FIELDS = (
     {'id': 'day', 'type': 'datetime', 'format': '%Y-%m-%d'},
+    {'id': 'price_end', 'type': 'float'},
     {'id': 'price_begin', 'type': 'float'},
     {'id': 'price_max', 'type': 'float'},
     {'id': 'price_min', 'type': 'float'},
-    {'id': 'price_end', 'type': 'float'}
 )
 
 Session = sessionmaker()
@@ -37,9 +37,9 @@ class StockPrice(Base):
     id = Column(Integer, primary_key=True)
     day = Column(Date, nullable=False, unique=True)
     price_begin = Column(Float, nullable=False)
+    price_end = Column(Float, nullable=False)
     price_max = Column(Float, nullable=False)
     price_min = Column(Float, nullable=False)
-    price_end = Column(Float, nullable=False)
 
     def __repr__(self):
         return "<StockPrice('{}')>".format(self.day)
@@ -58,8 +58,9 @@ def process(args):
     Base.metadata.create_all(engine)
     Session.configure(bind=engine)
     session = Session()
-    with open(args.filename[0]) as fp:
+    with open(args.filename[0], encoding=args.encoding) as fp:
         reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+        _ = next(reader)  # skip header line
         for t in reader:
             # Convert input values to declared name and type.
             dt = {}
@@ -83,7 +84,7 @@ def process(args):
             else:
                 message = 'same'
             # Write out day, up/down/same, and diff.
-            print('{}\t{:5}\t{}'.format(p.day, message, round(diff, 2)))
+            print(f'{p.day}\t{message:5}\t{round(diff, 2)}')
             session.add(p)
     # Don't forget to commit the changes you add.
     session.commit()

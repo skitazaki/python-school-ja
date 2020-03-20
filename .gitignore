@@ -5,3 +5,4 @@ _build
 nosetests.xml
 .DS_Store
 .envrc
+.vscode

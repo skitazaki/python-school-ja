@@ -2,7 +2,7 @@
 標準モジュールを使ったテスト
 ============================
 
-Python の標準モジュールには有名なテスト実行方法が２つあります。
+Python の標準モジュールにはテスト実行方法が２つあります。
 どちらも Doug Hellmann の PyMOTW で説明されています。 (英語)
 
 * `unittest – Automated testing framework`_
@@ -11,8 +11,8 @@ Python の標準モジュールには有名なテスト実行方法が２つあ�
 *unittest* は `xUnit`_ の Python 実装です。
 *doctest* はコメントに記述されたコード片をテストしてくれるモジュールで、Python 独特の機能です。
 
-.. _doctest – Testing through documentation: http://www.doughellmann.com/PyMOTW/doctest/
-.. _unittest – Automated testing framework: http://www.doughellmann.com/PyMOTW/unittest/
+.. _doctest – Testing through documentation: https://pymotw.com/3/doctest/
+.. _unittest – Automated testing framework: https://pymotw.com/3/unittest/
 .. _xUnit: http://en.wikipedia.org/wiki/XUnit
 
 unittest の実行方法
@@ -114,7 +114,6 @@ unittest の実行方法
 
     メソッド名に日本語を使えませんが、 ``setattr()`` で無理矢理に割り当ててあげることはできます。
     どうしてもテストケースを日本語で管理したい場合には便利かもしれません。
-    (基本的には英語で記述すべきですが)
 
 実行結果
 

@@ -20,9 +20,3 @@
    advanced-1
    advanced-2
    advanced-5
-
-..
-   advanced-3
-   advanced-4
-   advanced-6
-
