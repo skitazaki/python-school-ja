@@ -52,13 +52,6 @@ JavaScript を使った簡単な Web ページを実装する場合には便利�
 
     $ python3 -m http.server
 
-なお、Python 2 系では `SimpleHTTPServer` というモジュールでした。
-ブログ記事などを読む場合は気をつけましょう。
-
-.. code-block:: bash
-
-    $ python -m SimpleHTTPServer
-
 日本語を扱うときに便利なこと
 ============================
 
@@ -97,9 +90,3 @@ JSON を書き出すときにいくつかのオプションを指定すると実
             }
         ]
     }
-
-Python 2.x 系ではこちらの記事を参考にしてください。
-
-* `python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする`_
-
-.. _python2.6でdictionaryをjson化した際、日本語が\uXXXXにエスケープされないようにする: http://iyukki.blog56.fc2.com/blog-entry-137.html

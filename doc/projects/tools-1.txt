@@ -7,104 +7,11 @@
 これから勉強するには読みにくく、依存関係の記述が難しいなど、いくつかの問題も抱えています。
 
 Python で記述された構成管理のツールにもいくつかの選択肢があり、それぞれに長所と短所があります。
-これらのツールの多くは、対象とするソフトウェアのプログラミング言語とは独立しています。
-したがって、C 言語で記述されたソフトウェアを Python 製のツールで管理することもできます。
+ツールの多くは、対象とするソフトウェアのプログラミング言語とは独立しています。
+したがって、C 言語で記述されたソフトウェアを Python 製のツールで管理することもできますし、
+Python プロジェクトの管理に他の言語で記述されたツールを使うこともできます。
 
-ここでは次の３つのツールに関するリンクを紹介します。
-詳しくはそれぞれのリファレンスを参照してください。
-細かい TIPS などは検索エンジンで探してみましょう。
 
-* `zc.buildout`_
-* `SCons`_
-* `Waf`_
+- `List of build automation software`_ on Wikipedia
 
-いくつかのビルドシステムの比較記事はこちらにまとめられています。
-
-* `SconsVsOtherBuildTools`_
-
-.. _zc.buildout: http://www.buildout.org/en/latest/
-.. _SCons: http://www.scons.org/
-.. _Waf: http://code.google.com/p/waf/
-.. _SconsVsOtherBuildTools: http://www.scons.org/wiki/SconsVsOtherBuildTools
-
-なお、プロジェクトのプログラミング言語を Python に限定する場合は :file:`setup.py` を試すことから始めましょう。
-
-* `setup スクリプトを書く`_ - docs.python.jp
-
-.. _`setup スクリプトを書く`: http://docs.python.jp/3.3/distutils/setupscript.html
-
-zc.buildout
-===========
-
-いくつかのページのリンクとその序文を引用します。詳細はそれぞれのページを読んでください。
-時間はかかると思いますが、得られるものは多いでしょう。
-
-:`zc.buildout (Python Hack-a-thon 4 ハンズオン 中級コース)`_:
-    buildout はPythonベースのビルドシステムです。
-    パーツという単位で アプリケーションを作成、組み立て、配置などを行い、非Pythonベースのものも構築可能です。
-:`zc.buildoutを使ってプロジェクトを管理する`_:
-    eggs、setuptoolsと依存管理、そして開発環境のセットアップにzc.buildoutを使う方法を学びます。
-:`rod.recipe.mongodb 1.2.2`_:
-    Buildout recipe for downloading and installing mongoDB.
-    (MongoDB をダウンロードしてインストールするレシピ)
-
-.. _`zc.buildout (Python Hack-a-thon 4 ハンズオン 中級コース)`: http://www.freia.jp/taka/docs/pyhack4/buildout/index.html
-.. _zc.buildoutを使ってプロジェクトを管理する: http://plone.jp/documentation/buildout-tutorial-jp
-.. _rod.recipe.mongodb 1.2.2: http://pypi.python.org/pypi/rod.recipe.mongodb/
-
-SCons
-=====
-
-最近はあまり活発に開発されていない印象です。
-2014年3月に 2.3.1 がリリースされており、これが Python 2.7 以前をサポートする最後のバージョンになるそうです。
-リリース記事には、今後は Python 3.x 系のサポートにシフトすると記載されています。
-
-:`SConsMakefileを書くのに疲れた人のためのSCons`_:
-    SConsはmakeやAntのように数多くあるビルドツールのうち一つであり、Pythonで書かれている。
-    ビルド設定のファイルをPythonで記述することができ、またSCons自身が依存関係解析の機能を持っているため、
-    makeと比べるとずっと簡単にビルド環境を構築することができる。
-
-.. _SConsMakefileを書くのに疲れた人のためのSCons: http://cccis.jp/wiki/SCons/Makefile%E3%82%92%E6%9B%B8%E3%81%8F%E3%81%AE%E3%81%AB%E7%96%B2%E3%82%8C%E3%81%9F%E4%BA%BA%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AESCons
-
-Waf
-===
-
-*waf* は SCons のやや古いバージョンから fork した実装です。
-単一バイナリの配布なので特別なインストールの必要がなく、
-ダウンロードしたファイルを環境変数 *PATH* の通ったディレクトリに配置して実行ビットを立てれば使い始められます。
-Python 2.x 系でも Python 3.x 系でも動きます。
-
-:`waf チュートリアル`_ (純粋関数型雑記帳):
-    waf は Python ベースのビルドシステムです。
-    同様のことを行うツールとして、Autotools、Scons、CMake、Antなどがあります。
-    Sconsからの派生で、比較的新しいソフトウェアです。
-
-.. _waf チュートリアル: http://d.hatena.ne.jp/tanakh/20100212
-
-次のようにダウンロードして配置すればすぐに利用可能です。
-処理は :file:`wscript` という設定ファイルに記述してください。
-
-.. code-block:: bash
-
-    $ cd /path/to/your/bin
-    $ curl -O http://ftp.waf.io/pub/release/waf-1.7.16
-    $ chmod +x waf-1.7.16
-    $ ln -s waf-1.7.16 waf
-    $ waf
-
-Windows の場合は :file:`waf.bat` のようなラッパーを用意してあげましょう。
-
-.. code-block:: bat
-
-    @echo off
-    python %~dp0\waf %*
-
-Waf は Node.js のビルドシステムとしても使われていました（現在は gyp_ に移行しています）。
-作者の Ryan Dahl は複雑だとも述べていましたので、好きずきと言えます。
-
-* `Node.js Interview: 4 Questions with Creator Ryan Dahl`_
-
-.. _`Node.js Interview: 4 Questions with Creator Ryan Dahl`: http://bostinno.com/2011/01/31/node-js-interview-4-questions-with-creator-ryan-dahl/
-.. _gyp: https://code.google.com/p/gyp/
-
-.. _buildbot: http://trac.buildbot.net/
+.. _`List of build automation software`: https://en.wikipedia.org/wiki/List_of_build_automation_software
