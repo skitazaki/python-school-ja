@@ -17,6 +17,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", dest="filename",
                         help="setting file", metavar="FILE")
+    parser.add_argument("-e", "--encoding", dest="encoding", default='utf8',
+                        help="input file encoding")
     parser.add_argument("-o", "--output", dest="output",
                         help="output file", metavar="FILE")
     parser.add_argument("-n", "--dryrun", dest="dryrun",
@@ -41,15 +43,16 @@ def parse_args():
 def process(args):
     """Parse daily Tokyo stock prices, and calculate up/down.
     """
-    with open(args.filename[0]) as fp:
+    with open(args.filename[0], encoding=args.encoding) as fp:
         reader = csv.reader(fp)  # Instantiate CSV reader with file pointer.
+        next(reader)  # skip header line
         for t in reader:
             # Assign each field on individual variables.
             day = t[0]
-            price_begin = float(t[1])
-            price_max = float(t[2])
-            price_min = float(t[3])
-            price_end = float(t[4])
+            price_end = float(t[1])
+            price_begin = float(t[2])
+            price_max = float(t[3])
+            price_min = float(t[4])
             # Calculate the differenciate of the day.
             diff = price_end - price_begin
             if diff > 0:
@@ -59,7 +62,7 @@ def process(args):
             else:
                 message = 'same'
             # Write out day, up/down/same, and diff.
-            print('{}\t{:5}\t{}'.format(day, message, round(diff, 2)))
+            print(f'{day}\t{message:5}\t{round(diff, 2)}')
 
 
 def main():

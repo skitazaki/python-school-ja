@@ -15,6 +15,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", dest="filename",
                         help="setting file", metavar="FILE")
+    parser.add_argument("-e", "--encoding", dest="encoding", default='utf8',
+                        help="input file encoding")
     parser.add_argument("-o", "--output", dest="output",
                         help="output file", metavar="FILE")
     parser.add_argument("-n", "--dryrun", dest="dryrun",
@@ -23,11 +25,6 @@ def parse_args():
                         action="store_true", help="verbose mode")
     parser.add_argument("-q", "--quiet", dest="quiet", default=False,
                         action="store_true", help="quiet mode")
-    # Add this line from boilerplate.
-    parser.add_argument("--header", dest="header", default=False,
-                        action="store_true", help="contains header row")
-    parser.add_argument("--encoding", dest="encoding", default='utf-8',
-                        help="encoding of input file")
     parser.add_argument("filename", nargs=1, help="input file path")
 
     args = parser.parse_args()
