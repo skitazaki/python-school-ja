@@ -5,7 +5,7 @@ DOM, ElementTree, SAX
 XML 処理で利用する API
 ======================
 
-XML 処理で利用する API としては、次の２つが有名です。
+XML 処理の API は次の２つが有名です。
 
 * SAX - Simple API for XML
 * DOM - Document Object Model
@@ -20,8 +20,7 @@ XML 処理で利用する API としては、次の２つが有名です。
 
 .. _`XML Pull Parsing`: http://www.xmlpull.org/
 
-Python の場合、SAX と DOM の API は標準ライブラリに完備されており、
-Python 2.5 以上では *ElementTree* も標準ライブラリとして利用できます。
+Python では SAX と DOM の API に加えて *ElementTree* も標準ライブラリに含まれます。
 高速化・簡略化したい場合は `lxml`_ を使いましょう。
 
 .. _lxml: http://lxml.de/
