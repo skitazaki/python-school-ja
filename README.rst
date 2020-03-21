@@ -23,6 +23,11 @@ Generate HTML documents. ::
 
     $ cd docs && make html && cd -
 
+For scripts, install additional packages including local one. ::
+
+    $ python3 -m pip install -r requirements-dev.txt
+    $ python3 -m pip install -e .
+
 Edit
 -----
 
@@ -32,3 +37,8 @@ Run web server which watches source files using ``livereload``. ::
     $ python3 docserver.py
 
 Edit source documents under `docs/` directory.
+
+If you edit Python scripts under `src/` directory, run a linter and a test runner. ::
+
+    $ flake8 src/
+    $ pytest src/

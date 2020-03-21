@@ -1,4 +1,9 @@
 language: python
 python:
   - '3.8'
-script: cd docs; make clean html; cd -
+install:
+  - python3 -m pip install -r requirements-dev.txt
+  - python3 -m pip install .
+script:
+  - flake8 src/
+  - pytest src/

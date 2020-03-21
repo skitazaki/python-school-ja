@@ -1,11 +1,6 @@
 # Basic libraries
-flake8
-pyyaml
+PyYAML
 requests
-
-# Test tools
-nose
-pytest
 
 # Database
 SQLAlchemy
