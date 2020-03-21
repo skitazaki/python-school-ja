@@ -1,4 +1,4 @@
 language: python
 python:
   - '3.8'
-script: cd doc; make clean html; cd -
+script: cd docs; make clean html; cd -

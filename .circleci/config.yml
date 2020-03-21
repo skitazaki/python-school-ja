@@ -25,10 +25,10 @@ jobs:
           command: python --version && python3 --version
           name: Show Python versions
       - run:
-          command: cd doc && make html
+          command: cd docs && make html && cd -
           name: Build HTML documents
       - persist_to_workspace:
-          root: doc/_build
+          root: docs/_build
           paths: html
   docs-package:
     docker:
@@ -36,10 +36,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: doc/_build
+          at: docs/_build
       - run:
           command: |
-            mv doc/_build/html python-school-ja
+            mv docs/_build/html python-school-ja
             tar -cjf python-school-ja.tar.bz2 python-school-ja
           name: Create a document package
       - store_artifacts:
@@ -54,10 +54,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: doc/_build
+          at: docs/_build
       - run:
           name: Disable jekyll builds
-          command: touch doc/_build/html/.nojekyll
+          command: touch docs/_build/html/.nojekyll
       - run:
           name: Install and configure dependencies
           command: |
@@ -69,7 +69,7 @@ jobs:
             - "1f:36:6e:72:55:67:f2:01:a0:22:cf:1d:f1:fe:12:f6"
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --dotfiles --message "[skip ci] Publish GiHub Pages" --dist doc/_build/html
+          command: gh-pages --dotfiles --message "[skip ci] Publish GiHub Pages" --dist docs/_build/html
 workflows:
   main:
     jobs:
