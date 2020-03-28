@@ -30,9 +30,9 @@ For scripts, install additional packages including local one. ::
 Edit
 -----
 
-Run web server which watches source files using ``livereload``. ::
+Run a web server which watches source files using ``livereload``. ::
 
-    $ python3 -m pip install "livereload>=2.6"
+    $ python3 -m pip install -e ".[docs]"
     $ python3 docserver.py
 
 Edit source documents under `docs/` directory.

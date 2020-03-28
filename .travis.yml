@@ -4,5 +4,5 @@ python:
 install:
   - python3 -m pip install -e ".[dev,test]"
 script:
-  - flake8 src/ || :
+  - flake8 src/ || true
   - pytest src/
