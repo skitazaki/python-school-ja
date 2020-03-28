@@ -1,4 +1,8 @@
 language: python
 python:
   - '3.8'
-script: cd docs; make clean html; cd -
+install:
+  - python3 -m pip install -e ".[dev,test]"
+script:
+  - flake8 src/ || true
+  - pytest src/
