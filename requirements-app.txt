@@ -13,7 +13,7 @@ paramiko
 fabric
 
 # Web application
-Django==1.11.28
+Django==2.2.24
 
 # Misc.
 httpie
